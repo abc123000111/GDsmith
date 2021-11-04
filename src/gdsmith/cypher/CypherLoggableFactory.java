@@ -1,4 +1,4 @@
-package gdsmith;
+package gdsmith.cypher;
 
 import gdsmith.common.log.Loggable;
 import gdsmith.common.log.LoggableFactory;

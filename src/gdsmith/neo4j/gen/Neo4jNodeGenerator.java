@@ -1,6 +1,6 @@
 package gdsmith.neo4j.gen;
 
-import gdsmith.CypherQueryAdapter;
+import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.neo4j.Neo4jGlobalState;
 
 public class Neo4jNodeGenerator {

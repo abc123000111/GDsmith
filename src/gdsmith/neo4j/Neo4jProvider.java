@@ -3,6 +3,7 @@ package gdsmith.neo4j;
 import gdsmith.*;
 import gdsmith.common.log.LoggableFactory;
 
+import gdsmith.cypher.*;
 import org.neo4j.driver.Driver;
 import gdsmith.neo4j.gen.Neo4jNodeGenerator;
 

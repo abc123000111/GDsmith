@@ -1,5 +1,6 @@
-package gdsmith;
+package gdsmith.cypher;
 
+import gdsmith.GlobalState;
 import gdsmith.common.query.ExpectedErrors;
 import gdsmith.common.query.Query;
 
