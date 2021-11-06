@@ -1,14 +1,15 @@
 package gdsmith.neo4j.ast;
 
 import gdsmith.cypher.ast.ICypherType;
+import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.IProperty;
 
 public class Property implements IProperty {
     private String key;
-    private Object value;
+    private IExpression value;
     private Neo4jType type;
 
-    public Property(String key, Neo4jType type, Object value){
+    public Property(String key, Neo4jType type, IExpression value){
         this.key = key;
         this.value = value;
         this.type = type;
@@ -20,7 +21,7 @@ public class Property implements IProperty {
     }
 
     @Override
-    public Object getVal() {
+    public IExpression getVal() {
         return value;
     }
 
@@ -33,4 +34,24 @@ public class Property implements IProperty {
     public void setKey(String key) {
         this.key = key;
     }
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        sb.append(key).append(":");
+        value.toTextRepresentation(sb);
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Property)){
+            return false;
+        }
+        return ((Property) o).key.equals(key);
+    }
+
+    @Override
+    public int hashCode(){
+        return key.hashCode();
+    }
+
 }

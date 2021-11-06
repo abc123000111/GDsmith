@@ -14,4 +14,10 @@ public class IdentifierExpression implements IExpression {
     public IIdentifier getIdentifier(){
         return identifier;
     }
+
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        sb.append(identifier.getName());
+    }
 }

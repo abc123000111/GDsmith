@@ -3,6 +3,7 @@ package gdsmith.neo4j.gen;
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.cypher.ast.*;
 import gdsmith.neo4j.Neo4jGlobalState;
+import gdsmith.neo4j.Neo4jSchema;
 import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.dsl.*;
 
@@ -13,35 +14,20 @@ public class Neo4jNaiveQueryGenerator {
     public CypherQueryAdapter generateQuery(Neo4jGlobalState globalState){
         ClauseSequenceBuilder builder = new ClauseSequenceBuilder();
 
-        ClauseSequence clauseSequence = builder.createMatch().createMatch().createReturn().build(new BasicConditionGenerator(globalState.getSchema()) {
-            @Override
-            public IExpression generateMatchCondition(IMatch matchClause) {
-                return null;
-            }
+        Neo4jSchema schema = globalState.getSchema();
 
-            @Override
-            public IExpression generateWithCondition(IWith withClause) {
-                return null;
-            }
-        },
-                new BasicAliasGenerator(globalState.getSchema(), builder.getIdentifierBuilder()) {
-                    @Override
-                    public List<IRet> generateReturnAlias(IReturn returnClause, IIdentifierBuilder identifierBuilder) {
-                        return null;
-                    }
+        //示例：使用ClauseSequenceBuilder流式生成query，在build时需要传入条件，别名，模式的生成策略，以及全局符号表
+        ClauseSequence sequence = builder.createMatch().createMatch().
+                createReturn().build(new NaiveConditionGenerator(schema),
+                    new NaiveAliasGenerator(schema, builder.getIdentifierBuilder()),
+                    new NaivePatternGenerator(schema, builder.getIdentifierBuilder()), schema);
 
-                    @Override
-                    public List<IRet> generateWithAlias(IWith withClause, IIdentifierBuilder identifierBuilder) {
-                        return null;
-                    }
-                },
-                new BasicPatternGenerator(globalState.getSchema(), builder.getIdentifierBuilder()) {
-                    @Override
-                    public IPatternTuple generatePattern(IMatch matchClause, IIdentifierBuilder identifierBuilder) {
-                        return null;
-                    }
-                });
+        StringBuilder sb = new StringBuilder();
 
-        return new CypherQueryAdapter("");
+        //转化为字符串
+        sequence.toTextRepresentation(sb);
+        String query = sb.toString();
+
+        return new CypherQueryAdapter(query);
     }
 }

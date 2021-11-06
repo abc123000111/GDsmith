@@ -1,5 +1,6 @@
 package gdsmith.neo4j.dsl;
 
+import gdsmith.neo4j.Neo4jSchema;
 import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.ast.Match;
 import gdsmith.neo4j.ast.Return;
@@ -7,7 +8,7 @@ import gdsmith.neo4j.ast.With;
 
 public class ClauseSequenceBuilder {
 
-    private final IdentifierBuilder identifierBuilder;
+    protected final IdentifierBuilder identifierBuilder;
     private final ClauseSequence clauseSequence;
 
     public static class IdentifierBuilder implements IIdentifierBuilder{
@@ -40,7 +41,9 @@ public class ClauseSequenceBuilder {
             this.builder = builder;
         }
         public ClauseSequence build(IConditionGenerator conditionGenerator, IAliasGenerator aliasGenerator,
-                                    IPatternGenerator patternGenerator){
+                                    IPatternGenerator patternGenerator, Neo4jSchema schema){
+            new QueryFiller(builder.clauseSequence, patternGenerator, conditionGenerator, aliasGenerator,
+                    schema, builder.identifierBuilder).startVisit();
             return builder.clauseSequence;
         }
     }

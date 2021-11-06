@@ -40,4 +40,13 @@ public class BinaryLogicalExpression implements IExpression{
     public BinaryLogicalOperation getOperation(){
         return op;
     }
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        sb.append("(");
+        left.toTextRepresentation(sb);
+        sb.append(" ").append(op.getTextRepresentation()).append(" ");
+        right.toTextRepresentation(sb);
+        sb.append(")");
+    }
 }

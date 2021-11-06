@@ -10,4 +10,11 @@ public class GetPropertyExpression implements IExpression {
         this.fromExpression = fromExpression;
         this.propertyName = propertyName;
     }
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        sb.append("(");
+        fromExpression.toTextRepresentation(sb);
+        sb.append(".").append(propertyName).append(")");
+    }
 }

@@ -1,8 +1,8 @@
 package gdsmith.cypher.ast;
 
-public interface IProperty {
+public interface IProperty extends ITextRepresentation{
     ICypherType getType();
-    Object getVal();
+    IExpression getVal();
     String getKey();
     void setKey(String key);
 }

@@ -1,4 +1,4 @@
 package gdsmith.cypher.ast;
 
-public interface IExpression {
+public interface IExpression extends ITextRepresentation{
 }

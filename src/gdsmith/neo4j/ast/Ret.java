@@ -9,6 +9,27 @@ public class Ret implements IRet {
     private IExpression expression;
     private IIdentifier identifier;
 
+    public Ret(IIdentifier identifier){
+        this.identifier = identifier;
+        isAll = false;
+    }
+
+    public Ret(IExpression expression, String name){
+        this.expression = expression;
+        this.identifier = new Alias(name);
+        isAll = false;
+    }
+
+    public Ret(IExpression expression){
+        this.expression = expression;
+        isAll = false;
+    }
+
+    public Ret(){
+        isAll = true;
+    }
+
+
     @Override
     public boolean isAll() {
         return isAll;
@@ -27,5 +48,21 @@ public class Ret implements IRet {
     @Override
     public IIdentifier getIdentifier() {
         return identifier;
+    }
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        if(isAll()){
+            sb.append("*");
+            return;
+        }
+        if(expression != null){
+            expression.toTextRepresentation(sb);
+            if(identifier == null) {
+                return;
+            }
+            sb.append(" AS ");
+        }
+        sb.append(identifier.getName());
     }
 }

@@ -7,46 +7,49 @@ import java.util.List;
 
 public class Symtab implements ICypherSymtab {
 
-    private ICypherSymtab parentSymtab = null;
+    private final ICypherClause parentClause;
     private boolean extendParent = false;
 
-    private List<IPatternTuple> patternTuples = new ArrayList<>();
+    private List<IPattern> patterns = new ArrayList<>();
+    private List<IRet> aliasDefinitions = new ArrayList<>();
 
-    public Symtab(boolean extendParent){
+
+    public Symtab(ICypherClause parentClause, boolean extendParent){
+        this.parentClause = parentClause;
         this.extendParent = extendParent;
     }
 
-    public Symtab(ICypherSymtab parentSymtab, boolean extendParent){
-        this.parentSymtab = parentSymtab;
-        this.extendParent = extendParent;
-    }
-
 
     @Override
-    public List<IPatternTuple> getPatterns() {
-        return patternTuples;
+    public List<IPattern> getPatterns() {
+        return patterns;
     }
 
     @Override
-    public void deletePattern(IPatternTuple pattern) {
-
+    public void setPatterns(List<IPattern> patterns) {
+        this.patterns = patterns;
     }
 
     @Override
-    public void addPattern(IPatternTuple pattern) {
-
+    public List<IRet> getAliasDefinitions() {
+        return aliasDefinitions;
     }
+
+    @Override
+    public void setAliasDefinition(List<IRet> aliasDefinitions) {
+        this.aliasDefinitions = aliasDefinitions;
+    }
+
 
     @Override
     public List<INodePattern> getLocalNodePatterns() {
         List<INodePattern> nodes = new ArrayList<>();
 
-        for(IPatternTuple patternTuple : patternTuples){
-            for(IPattern pattern : patternTuple.getPatterns()){
-                if(pattern instanceof INodePattern){
-                    nodes.add((INodePattern) pattern);
+        for(IPattern pattern : patterns){
+            for(IPatternElement patternElement : pattern.getPatternElements()){
+                if(patternElement instanceof INodePattern && !patternElement.isAnonymous()){
+                    nodes.add((INodePattern) patternElement);
                 }
-
             }
         }
 
@@ -57,12 +60,11 @@ public class Symtab implements ICypherSymtab {
     public List<IRelationPattern> getLocalRelationPatterns() {
         List<IRelationPattern> relations = new ArrayList<>();
 
-        for(IPatternTuple patternTuple : patternTuples){
-            for(IPattern pattern : patternTuple.getPatterns()){
-                if(pattern instanceof IRelationPattern){
-                    relations.add((IRelationPattern) pattern);
+        for(IPattern pattern : patterns){
+            for(IPatternElement patternElement : pattern.getPatternElements()){
+                if(patternElement instanceof IRelationPattern && !patternElement.isAnonymous()){
+                    relations.add((IRelationPattern) patternElement);
                 }
-
             }
         }
 
@@ -71,15 +73,23 @@ public class Symtab implements ICypherSymtab {
 
     @Override
     public List<INodePattern> getAvailableNodePatterns() {
-        if(extendParent){
+        if(!extendParent || parentClause.getPrevClause() == null){
             return getLocalNodePatterns();
         }
-        List<INodePattern> nodes = parentSymtab.getAvailableNodePatterns();
-        for(IPatternTuple patternTuple : patternTuples){
-            for(IPattern pattern : patternTuple.getPatterns()){
-                if(pattern instanceof INodePattern && nodes.contains(pattern)){ //todo 是否应该覆盖equals
-                    nodes.add((INodePattern) pattern);
-                }
+        List<INodePattern> nodes = getLocalNodePatterns();
+        for(INodePattern node : nodes){
+            if(node instanceof NodePattern){
+                ((NodePattern) node).setFormerDef(null);
+            }
+        }
+        List<INodePattern> extendedNodes = parentClause.getPrevClause().getAvailableNodeIdentifiers();
+        for(INodePattern extendedNode : extendedNodes){
+            if(!nodes.contains(extendedNode)){
+                nodes.add(extendedNode);
+            }
+            else {
+                INodePattern node = nodes.get(nodes.indexOf(extendedNode));
+                ((NodePattern)node).setFormerDef(extendedNode);
             }
         }
         return nodes;
@@ -87,27 +97,26 @@ public class Symtab implements ICypherSymtab {
 
     @Override
     public List<IRelationPattern> getAvailableRelationPatterns() {
-        if(extendParent){
+        if(!extendParent || parentClause.getPrevClause() == null){
             return getLocalRelationPatterns();
         }
-        List<IRelationPattern> relations = parentSymtab.getAvailableRelationPatterns();
-        for(IPatternTuple patternTuple : patternTuples){
-            for(IPattern pattern : patternTuple.getPatterns()){
-                if(pattern instanceof IRelationPattern && relations.contains(pattern)){ //todo 是否应该覆盖equals
-                    relations.add((IRelationPattern) pattern);
-                }
+        List<IRelationPattern> relations = getLocalRelationPatterns();
+        for(IRelationPattern relation : relations){
+            if(relation instanceof RelationPattern){
+                ((RelationPattern) relation).setFormerDef(null);
+            }
+        }
+        List<IRelationPattern> extendedRelations = parentClause.getPrevClause().getAvailableRelationIdentifiers();
+        for(IRelationPattern extendedRelation : extendedRelations){
+            if(!relations.contains(extendedRelation)){
+                relations.add(extendedRelation);
+            }
+            else {
+                IRelationPattern relationPattern = relations.get(relations.indexOf(extendedRelation));
+                ((RelationPattern)relationPattern).setFormerDef(extendedRelation);
             }
         }
         return relations;
     }
 
-    @Override
-    public ICypherSymtab getParent() {
-        return parentSymtab;
-    }
-
-    @Override
-    public void setParent(ICypherSymtab parent) {
-        this.parentSymtab = parent;
-    }
 }

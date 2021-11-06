@@ -2,7 +2,8 @@ package gdsmith.neo4j.ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
 
-public class SingleLogicalExpression {
+public class SingleLogicalExpression implements IExpression{
+
     public enum SingleLogicalOperation{
         SMALLER("IS NULL"),
         EQUAL("IS NOT NULL"),
@@ -33,6 +34,14 @@ public class SingleLogicalExpression {
 
     public SingleLogicalOperation getOperation(){
         return op;
+    }
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        sb.append("(");
+        child.toTextRepresentation(sb);
+        sb.append(" ").append(op.getTextRepresentation());
+        sb.append(")");
     }
 
 }

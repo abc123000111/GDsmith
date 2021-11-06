@@ -1,9 +1,10 @@
 package gdsmith.neo4j.ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
-import gdsmith.mysql.ast.MySQLBinaryComparisonOperation;
 
 public class BinaryComparisonExpression implements IExpression{
+
+
 
     public enum BinaryComparisonOperation{
         SMALLER("<"),
@@ -43,5 +44,14 @@ public class BinaryComparisonExpression implements IExpression{
 
     public BinaryComparisonOperation getOperation(){
         return op;
+    }
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        sb.append("(");
+        left.toTextRepresentation(sb);
+        sb.append(" ").append(op.getTextRepresentation()).append(" ");
+        right.toTextRepresentation(sb);
+        sb.append(")");
     }
 }

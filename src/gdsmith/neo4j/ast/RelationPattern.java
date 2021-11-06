@@ -10,6 +10,14 @@ public class RelationPattern implements IRelationPattern {
     private IType relationType;
     private List<IProperty> properties;
     private Direction direction;
+    private IRelationPattern formerDef;
+
+    public RelationPattern(String name, IType relationType, Direction direction, List<IProperty> properties){
+        this.name = name;
+        this.relationType = relationType;
+        this.direction = direction;
+        this.properties = properties;
+    }
 
     @Override
     public String getName() {
@@ -41,5 +49,79 @@ public class RelationPattern implements IRelationPattern {
     @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    void setFormerDef(IRelationPattern formerDef){
+        this.formerDef = formerDef;
+    }
+
+    @Override
+    public IRelationPattern getFormerDef() {
+        return formerDef;
+    }
+
+    @Override
+    public IRelationPattern createRef() {
+        return new RelationPattern(name, null, direction, null);
+    }
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        switch (direction){
+            case RIGHT:
+            case BOTH:
+                sb.append("-[");
+                break;
+            case LEFT:
+                sb.append("<-[");
+                break;
+        }
+        if(name != null){
+            sb.append(name);
+        }
+       if(relationType != null){
+           sb.append(" :").append(relationType.getName());
+       }
+       if(properties != null && properties.size()!=0){
+           sb.append("{");
+           for(int i = 0; i < properties.size(); i++){
+               properties.get(i).toTextRepresentation(sb);
+               if(i != properties.size() - 1){
+                   sb.append(", ");
+               }
+           }
+           sb.append("}");
+       }
+        switch (direction){
+            case LEFT:
+            case BOTH:
+                sb.append("]-");
+                break;
+            case RIGHT:
+                sb.append("]->");
+                break;
+        }
+
+    }
+
+    @Override
+    public boolean isAnonymous() {
+        return getName() == null || getName().length() == 0;
+    }
+
+    @Override
+    public int hashCode(){
+        return getName().hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof RelationPattern)){
+            return false;
+        }
+        if(getName().equals(((RelationPattern)o).getName())){
+            return true;
+        }
+        return false;
     }
 }

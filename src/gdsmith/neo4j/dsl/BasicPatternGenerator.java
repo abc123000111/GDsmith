@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class BasicPatternGenerator implements IPatternGenerator{
 
-    private final Neo4jSchema schema;
+    protected final Neo4jSchema schema;
     private final IIdentifierBuilder identifierBuilder;
 
     public BasicPatternGenerator(Neo4jSchema schema, IIdentifierBuilder identifierBuilder){
@@ -18,8 +18,8 @@ public abstract class BasicPatternGenerator implements IPatternGenerator{
 
     @Override
     public void fillMatchPattern(IMatch matchClause) {
-        matchClause.setPatternTuple(generatePattern(matchClause, identifierBuilder));
+        matchClause.setPatternTuple(generatePattern(matchClause, identifierBuilder, schema));
     }
 
-    public abstract IPatternTuple generatePattern(IMatch matchClause, IIdentifierBuilder identifierBuilder);
+    public abstract List<IPattern> generatePattern(IMatch matchClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema);
 }

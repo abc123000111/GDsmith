@@ -79,10 +79,10 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
 
     @Override
     public void generateDatabase(Neo4jGlobalState globalState) throws Exception {
-        for(int i = 0; i < 10; i++){
+        /*for(int i = 0; i < 10; i++){
             CypherQueryAdapter createNode = Neo4jNodeGenerator.createNode(globalState);
             globalState.executeStatement(createNode);
-        }
+        }*/
         /*while (globalState.getSchema().getDatabaseTables().size() < Randomly.smallNumber() + 1) { //创建tables
             String tableName = DBMSCommon.createTableName(globalState.getSchema().getDatabaseTables().size());//只是负责命名的final类
             SQLQueryAdapter createTable = MySQLTableGenerator.generate(globalState, tableName);

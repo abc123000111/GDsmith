@@ -16,7 +16,19 @@ public class ClauseSequence implements IClauseSequence {
     }
 
     public void addClause(ICypherClause clause){
-        clauses.get(clauses.size()-1).setNextClause(clause);
+        if(clauses.size() != 0 ) {
+            clauses.get(clauses.size() - 1).setNextClause(clause);
+        }
         clauses.add(clause);
+    }
+
+    @Override
+    public void toTextRepresentation(StringBuilder sb) {
+        for(int i = 0; i < clauses.size(); i ++){
+            clauses.get(i).toTextRepresentation(sb);
+            if(i != clauses.size() - 1){
+                sb.append(" ");
+            }
+        }
     }
 }

@@ -14,4 +14,17 @@ public class RelationType implements IType {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof RelationType)){
+            return false;
+        }
+        return ((RelationType) o).name.equals(name);
+    }
+
+    @Override
+    public int hashCode(){
+        return name.hashCode();
+    }
 }

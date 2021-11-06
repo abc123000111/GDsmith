@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class BasicAliasGenerator implements IAliasGenerator{
 
-    private final Neo4jSchema schema;
+    protected final Neo4jSchema schema;
     private final IIdentifierBuilder identifierBuilder;
 
     public BasicAliasGenerator(Neo4jSchema schema, IIdentifierBuilder identifierBuilder){
@@ -19,14 +19,14 @@ public abstract class BasicAliasGenerator implements IAliasGenerator{
 
     @Override
     public void fillReturnAlias(IReturn returnClause) {
-        returnClause.setReturnList(generateReturnAlias(returnClause, identifierBuilder));
+        returnClause.setReturnList(generateReturnAlias(returnClause, identifierBuilder, schema));
     }
 
     @Override
     public void fillWithAlias(IWith withClause) {
-        withClause.setReturnList(generateWithAlias(withClause, identifierBuilder));
+        withClause.setReturnList(generateWithAlias(withClause, identifierBuilder, schema));
     }
 
-    public abstract List<IRet> generateReturnAlias(IReturn returnClause, IIdentifierBuilder identifierBuilder);
-    public abstract List<IRet> generateWithAlias(IWith withClause, IIdentifierBuilder identifierBuilder);
+    public abstract List<IRet> generateReturnAlias(IReturn returnClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema);
+    public abstract List<IRet> generateWithAlias(IWith withClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema);
 }

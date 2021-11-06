@@ -7,4 +7,6 @@ public interface IRelationPattern extends IPatternElement{
     List<IType> getTypes();
     Direction getDirection();
     void setDirection(Direction direction);
+    IRelationPattern getFormerDef();
+    IRelationPattern createRef();
 }

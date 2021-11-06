@@ -13,4 +13,18 @@ public class Label implements ILabel {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Label)){
+            return false;
+        }
+        return ((Label) o).name.equals(name);
+    }
+
+    @Override
+    public int hashCode(){
+        return name.hashCode();
+    }
+
 }
