@@ -42,13 +42,13 @@ public class Symtab implements ICypherSymtab {
 
 
     @Override
-    public List<INodePattern> getLocalNodePatterns() {
-        List<INodePattern> nodes = new ArrayList<>();
+    public List<INodeIdentifier> getLocalNodePatterns() {
+        List<INodeIdentifier> nodes = new ArrayList<>();
 
         for(IPattern pattern : patterns){
             for(IPatternElement patternElement : pattern.getPatternElements()){
-                if(patternElement instanceof INodePattern && !patternElement.isAnonymous()){
-                    nodes.add((INodePattern) patternElement);
+                if(patternElement instanceof INodeIdentifier && !patternElement.isAnonymous()){
+                    nodes.add((INodeIdentifier) patternElement);
                 }
             }
         }
@@ -57,13 +57,13 @@ public class Symtab implements ICypherSymtab {
     }
 
     @Override
-    public List<IRelationPattern> getLocalRelationPatterns() {
-        List<IRelationPattern> relations = new ArrayList<>();
+    public List<IRelationIdentifier> getLocalRelationPatterns() {
+        List<IRelationIdentifier> relations = new ArrayList<>();
 
         for(IPattern pattern : patterns){
             for(IPatternElement patternElement : pattern.getPatternElements()){
-                if(patternElement instanceof IRelationPattern && !patternElement.isAnonymous()){
-                    relations.add((IRelationPattern) patternElement);
+                if(patternElement instanceof IRelationIdentifier && !patternElement.isAnonymous()){
+                    relations.add((IRelationIdentifier) patternElement);
                 }
             }
         }
@@ -72,48 +72,48 @@ public class Symtab implements ICypherSymtab {
     }
 
     @Override
-    public List<INodePattern> getAvailableNodePatterns() {
+    public List<INodeIdentifier> getAvailableNodePatterns() {
         if(!extendParent || parentClause.getPrevClause() == null){
             return getLocalNodePatterns();
         }
-        List<INodePattern> nodes = getLocalNodePatterns();
-        for(INodePattern node : nodes){
-            if(node instanceof NodePattern){
-                ((NodePattern) node).setFormerDef(null);
+        List<INodeIdentifier> nodes = getLocalNodePatterns();
+        for(INodeIdentifier node : nodes){
+            if(node instanceof NodeIdentifier){
+                ((NodeIdentifier) node).setFormerDef(null);
             }
         }
-        List<INodePattern> extendedNodes = parentClause.getPrevClause().getAvailableNodeIdentifiers();
-        for(INodePattern extendedNode : extendedNodes){
+        List<INodeIdentifier> extendedNodes = parentClause.getPrevClause().getAvailableNodeIdentifiers();
+        for(INodeIdentifier extendedNode : extendedNodes){
             if(!nodes.contains(extendedNode)){
                 nodes.add(extendedNode);
             }
             else {
-                INodePattern node = nodes.get(nodes.indexOf(extendedNode));
-                ((NodePattern)node).setFormerDef(extendedNode);
+                INodeIdentifier node = nodes.get(nodes.indexOf(extendedNode));
+                ((NodeIdentifier)node).setFormerDef(extendedNode);
             }
         }
         return nodes;
     }
 
     @Override
-    public List<IRelationPattern> getAvailableRelationPatterns() {
+    public List<IRelationIdentifier> getAvailableRelationPatterns() {
         if(!extendParent || parentClause.getPrevClause() == null){
             return getLocalRelationPatterns();
         }
-        List<IRelationPattern> relations = getLocalRelationPatterns();
-        for(IRelationPattern relation : relations){
-            if(relation instanceof RelationPattern){
-                ((RelationPattern) relation).setFormerDef(null);
+        List<IRelationIdentifier> relations = getLocalRelationPatterns();
+        for(IRelationIdentifier relation : relations){
+            if(relation instanceof RelationIdentifier){
+                ((RelationIdentifier) relation).setFormerDef(null);
             }
         }
-        List<IRelationPattern> extendedRelations = parentClause.getPrevClause().getAvailableRelationIdentifiers();
-        for(IRelationPattern extendedRelation : extendedRelations){
+        List<IRelationIdentifier> extendedRelations = parentClause.getPrevClause().getAvailableRelationIdentifiers();
+        for(IRelationIdentifier extendedRelation : extendedRelations){
             if(!relations.contains(extendedRelation)){
                 relations.add(extendedRelation);
             }
             else {
-                IRelationPattern relationPattern = relations.get(relations.indexOf(extendedRelation));
-                ((RelationPattern)relationPattern).setFormerDef(extendedRelation);
+                IRelationIdentifier relationPattern = relations.get(relations.indexOf(extendedRelation));
+                ((RelationIdentifier)relationPattern).setFormerDef(extendedRelation);
             }
         }
         return relations;

@@ -1,14 +1,10 @@
 package gdsmith.neo4j.dsl;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.neo4j.ast.NodePattern;
 import gdsmith.neo4j.ast.Pattern;
-import gdsmith.neo4j.ast.RelationPattern;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PatternBuilder {
     private final IIdentifierBuilder identifierBuilder;
@@ -19,124 +15,133 @@ public class PatternBuilder {
         this.patternElements = new ArrayList<>();
     }
 
-    public static class NodeBuilder {
+    public static class OngoingNode {
         private PatternBuilder patternBuilder;
-        private String curNodeName = "";
-        private List<ILabel> curNodeLabels;
-        private List<IProperty> curNodeProperties;
+        private NodeBuilder nodeBuilder;
 
-        private NodeBuilder(PatternBuilder patternBuilder){
+        private OngoingNode(PatternBuilder patternBuilder, String name){
             this.patternBuilder = patternBuilder;
-            curNodeLabels = new ArrayList<>();
-            curNodeProperties = new ArrayList<>();
+            nodeBuilder = NodeBuilder.newNodeBuilder(name);
         }
 
-        public NodeBuilder withLabels(ILabel ...labels){
-            curNodeLabels.addAll(Arrays.asList(labels));
-            curNodeLabels = curNodeLabels.stream().distinct().collect(Collectors.toList());
+        public OngoingNode withLabels(ILabel ...labels){
+            nodeBuilder.withLabels(labels);
             return this;
         }
 
-        public NodeBuilder withProperties(IProperty ...properties){
-            curNodeProperties.addAll(Arrays.asList(properties));
-            curNodeProperties = curNodeProperties.stream().distinct().collect(Collectors.toList());
+        public OngoingNode withProperties(IProperty ...properties){
+            nodeBuilder.withProperties(properties);
             return this;
         }
 
-        public RelationBuilder newNamedRelation(){
-            NodePattern node = new NodePattern(curNodeName, curNodeLabels, curNodeProperties);
+        public OngoingRelation newNamedRelation(){
+            INodeIdentifier node = nodeBuilder.build();
             patternBuilder.patternElements.add(node);
-            RelationBuilder relationBuilder = new RelationBuilder(patternBuilder);
-            relationBuilder.curRelationName = patternBuilder.identifierBuilder.getNewRelationName();
-            return relationBuilder;
+            OngoingRelation ongoingRelation = new OngoingRelation(patternBuilder, patternBuilder.identifierBuilder.getNewRelationName());
+            return ongoingRelation;
         }
 
-        public RelationBuilder newAnonymousRelation(){
-            NodePattern node = new NodePattern(curNodeName, curNodeLabels, curNodeProperties);
+        public OngoingRelation newNamedRelation(IRelationIdentifier relationIdentifier){
+            INodeIdentifier node = nodeBuilder.build();
             patternBuilder.patternElements.add(node);
-            RelationBuilder relationBuilder = new RelationBuilder(patternBuilder);
-            relationBuilder.curRelationName = "";
-            return relationBuilder;
+            OngoingRelation ongoingRelation = new OngoingRelation(patternBuilder, relationIdentifier.getName());
+            ongoingRelation.withDirection(relationIdentifier.getDirection());
+            ongoingRelation.withProperties(relationIdentifier.getProperties().
+                    toArray(new IProperty[relationIdentifier.getProperties().size()]));
+            ongoingRelation.withType(relationIdentifier.getTypes().get(0));
+            return ongoingRelation;
         }
 
-        public RelationBuilder newRefDefinedRelation(IRelationPattern relation){
-            NodePattern node = new NodePattern(curNodeName, curNodeLabels, curNodeProperties);
+        public OngoingRelation newAnonymousRelation(){
+            INodeIdentifier node = nodeBuilder.build();
             patternBuilder.patternElements.add(node);
-            RelationBuilder relationBuilder = new RelationBuilder(patternBuilder);
-            relationBuilder.curRelationName = relation.getName();
-            return relationBuilder;
+            OngoingRelation ongoingRelation = new OngoingRelation(patternBuilder, "");
+            return ongoingRelation;
+        }
+
+
+        public OngoingRelation newRelationRef(IRelationIdentifier relation){
+            INodeIdentifier node = nodeBuilder.build();
+            patternBuilder.patternElements.add(node);
+            OngoingRelation ongoingRelation = new OngoingRelation(patternBuilder, relation.getName());
+            return ongoingRelation;
         }
 
         public IPattern build(){
-            NodePattern node = new NodePattern(curNodeName, curNodeLabels, curNodeProperties);
+            INodeIdentifier node = nodeBuilder.build();
             patternBuilder.patternElements.add(node);
-            RelationBuilder relationBuilder = new RelationBuilder(patternBuilder);
             return new Pattern(patternBuilder.patternElements);
         }
     }
 
-    public static class RelationBuilder {
+    public static class OngoingRelation {
         private PatternBuilder patternBuilder;
-        private String curRelationName = "";
-        private IType curRelationType = null;
-        private Direction curDirection = Direction.BOTH;
-        private List<IProperty> curRelationProperties;
+        private RelationBuilder relationBuilder;
 
-        private RelationBuilder(PatternBuilder patternBuilder){
+        private OngoingRelation(PatternBuilder patternBuilder, String name){
             this.patternBuilder = patternBuilder;
-            curRelationProperties = new ArrayList<>();
+            relationBuilder = RelationBuilder.newRelationBuilder(name);
         }
 
-        public RelationBuilder withType(IType relationType){
-            curRelationType = relationType;
+        public OngoingRelation withType(IType relationType){
+            relationBuilder.withType(relationType);
             return this;
         }
 
-        public RelationBuilder withDirection(Direction direction){
-            curDirection =direction;
+        public OngoingRelation withDirection(Direction direction){
+            relationBuilder.withDirection(direction);
             return this;
         }
 
-        public RelationBuilder withProperties(IProperty ...properties){
-            curRelationProperties.addAll(Arrays.asList(properties));
-            curRelationProperties = curRelationProperties.stream().distinct().collect(Collectors.toList());
+        public OngoingRelation withProperties(IProperty ...properties){
+            relationBuilder.withProperties(properties);
             return this;
         }
 
-        public NodeBuilder newNamedNode(){
-            RelationPattern relation = new RelationPattern(curRelationName, curRelationType, curDirection, curRelationProperties);
+        public OngoingNode newNamedNode(){
+            IRelationIdentifier relation = relationBuilder.build();
             patternBuilder.patternElements.add(relation);
             return patternBuilder.newNamedNode();
         }
 
-        public NodeBuilder newAnonymousNode(){
-            RelationPattern relation = new RelationPattern(curRelationName, curRelationType, curDirection, curRelationProperties);
+        public OngoingNode newNamedNode(INodeIdentifier nodeIdentifier){
+            IRelationIdentifier relation = relationBuilder.build();
+            patternBuilder.patternElements.add(relation);
+            return patternBuilder.newNamedNode(nodeIdentifier);
+        }
+
+        public OngoingNode newAnonymousNode(){
+            IRelationIdentifier relation = relationBuilder.build();
             patternBuilder.patternElements.add(relation);
             return patternBuilder.newAnonymousNode();
         }
 
-        public NodeBuilder newRefDefinedNode(INodePattern node){
-            RelationPattern relation = new RelationPattern(curRelationName, curRelationType, curDirection, curRelationProperties);
+        public OngoingNode newNodeRef(INodeIdentifier node){
+            IRelationIdentifier relation = relationBuilder.build();
             patternBuilder.patternElements.add(relation);
             return patternBuilder.newRefDefinedNode(node);
         }
     }
 
-    public NodeBuilder newNamedNode(){
-        NodeBuilder builder = new NodeBuilder(this);
-        builder.curNodeName = identifierBuilder.getNewNodeName();
+    public OngoingNode newNamedNode(){
+        OngoingNode builder = new OngoingNode(this, identifierBuilder.getNewNodeName());
         return builder;
     }
 
-    public NodeBuilder newAnonymousNode(){
-        NodeBuilder builder = new NodeBuilder(this);
-        builder.curNodeName = "";
+    public OngoingNode newNamedNode(INodeIdentifier nodeIdentifier){
+        OngoingNode builder = new OngoingNode(this, identifierBuilder.getNewNodeName());
+        builder.withProperties(nodeIdentifier.getProperties().toArray(new IProperty[nodeIdentifier.getProperties().size()]));
+        builder.withLabels(nodeIdentifier.getLabels().toArray(new ILabel[nodeIdentifier.getProperties().size()]));
         return builder;
     }
 
-    public NodeBuilder newRefDefinedNode(INodePattern node){
-        NodeBuilder builder = new NodeBuilder(this);
-        builder.curNodeName = node.getName();
+    public OngoingNode newAnonymousNode(){
+        OngoingNode builder = new OngoingNode(this, "");
+        return builder;
+    }
+
+    public OngoingNode newRefDefinedNode(INodeIdentifier node){
+        OngoingNode builder = new OngoingNode(this, node.getName());
         return builder;
     }
 }

@@ -76,12 +76,12 @@ public class Match implements IMatch {
     }
 
     @Override
-    public List<INodePattern> getLocalNodeIdentifiers() {
+    public List<INodeIdentifier> getLocalNodeIdentifiers() {
         return symtab.getLocalNodePatterns();
     }
 
     @Override
-    public List<IRelationPattern> getLocalRelationIdentifiers() {
+    public List<IRelationIdentifier> getLocalRelationIdentifiers() {
         return symtab.getLocalRelationPatterns();
     }
 
@@ -91,12 +91,12 @@ public class Match implements IMatch {
     }
 
     @Override
-    public List<INodePattern> getAvailableNodeIdentifiers() {
+    public List<INodeIdentifier> getAvailableNodeIdentifiers() {
         return symtab.getAvailableNodePatterns();
     }
 
     @Override
-    public List<IRelationPattern> getAvailableRelationIdentifiers() {
+    public List<IRelationIdentifier> getAvailableRelationIdentifiers() {
         return symtab.getAvailableRelationPatterns();
     }
 
@@ -108,14 +108,14 @@ public class Match implements IMatch {
     }
 
     @Override
-    public List<INodePattern> getExtendableNodeIdentifiers() {
+    public List<INodeIdentifier> getExtendableNodeIdentifiers() {
         if(prevClause == null)
             return new ArrayList<>();
         return prevClause.getAvailableNodeIdentifiers();
     }
 
     @Override
-    public List<IRelationPattern> getExtendablePatternIdentifiers() {
+    public List<IRelationIdentifier> getExtendablePatternIdentifiers() {
         if(prevClause == null)
             return new ArrayList<>();
         return prevClause.getAvailableRelationIdentifiers();
@@ -128,8 +128,8 @@ public class Match implements IMatch {
         }
         sb.append("MATCH ");
         List<IPattern> patterns = getPatternTuple();
-        List<INodePattern> nodePatterns = new ArrayList<>();
-        List<IRelationPattern> relationPatterns = new ArrayList<>();
+        List<INodeIdentifier> nodePatterns = new ArrayList<>();
+        List<IRelationIdentifier> relationPatterns = new ArrayList<>();
 
         for(int i = 0; i < patterns.size(); i++){
             IPattern pattern = patterns.get(i);

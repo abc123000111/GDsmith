@@ -3,11 +3,8 @@ package gdsmith.neo4j.gen;
 import gdsmith.cypher.ast.*;
 import gdsmith.neo4j.Neo4jSchema;
 import gdsmith.neo4j.ast.Label;
-import gdsmith.neo4j.ast.NodePattern;
-import gdsmith.neo4j.ast.Pattern;
 import gdsmith.neo4j.dsl.BasicPatternGenerator;
 import gdsmith.neo4j.dsl.IIdentifierBuilder;
-import gdsmith.neo4j.dsl.IPatternGenerator;
 import gdsmith.neo4j.dsl.PatternBuilder;
 
 import java.util.ArrayList;
@@ -28,8 +25,8 @@ public class NaivePatternGenerator extends BasicPatternGenerator {
         ILabel label = new Label(labelInfo.getName());
 
         //示例：获取一个clause的上下文信息
-        List<INodePattern> id1s = matchClause.getAvailableNodeIdentifiers();
-        List<IRelationPattern> id2s = matchClause.getAvailableRelationIdentifiers();
+        List<INodeIdentifier> id1s = matchClause.getAvailableNodeIdentifiers();
+        List<IRelationIdentifier> id2s = matchClause.getAvailableRelationIdentifiers();
 
         //示例：使用pattern builder流式地生成pattern，生成的结果是(nx: labelx)-[rx]->()
         patternTuple.add(new PatternBuilder(identifierBuilder).newNamedNode().withLabels(label).newNamedRelation()

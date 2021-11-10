@@ -5,14 +5,14 @@ import gdsmith.cypher.ast.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RelationPattern implements IRelationPattern {
+public class RelationIdentifier implements IRelationIdentifier {
     private String name;
     private IType relationType;
     private List<IProperty> properties;
     private Direction direction;
-    private IRelationPattern formerDef;
+    private IRelationIdentifier formerDef;
 
-    public RelationPattern(String name, IType relationType, Direction direction, List<IProperty> properties){
+    public RelationIdentifier(String name, IType relationType, Direction direction, List<IProperty> properties){
         this.name = name;
         this.relationType = relationType;
         this.direction = direction;
@@ -51,18 +51,18 @@ public class RelationPattern implements IRelationPattern {
         this.direction = direction;
     }
 
-    void setFormerDef(IRelationPattern formerDef){
+    void setFormerDef(IRelationIdentifier formerDef){
         this.formerDef = formerDef;
     }
 
     @Override
-    public IRelationPattern getFormerDef() {
+    public IRelationIdentifier getFormerDef() {
         return formerDef;
     }
 
     @Override
-    public IRelationPattern createRef() {
-        return new RelationPattern(name, null, direction, null);
+    public IRelationIdentifier createRef() {
+        return new RelationIdentifier(name, null, direction, null);
     }
 
     @Override
@@ -116,10 +116,10 @@ public class RelationPattern implements IRelationPattern {
     
     @Override
     public boolean equals(Object o){
-        if(!(o instanceof RelationPattern)){
+        if(!(o instanceof RelationIdentifier)){
             return false;
         }
-        if(getName().equals(((RelationPattern)o).getName())){
+        if(getName().equals(((RelationIdentifier)o).getName())){
             return true;
         }
         return false;

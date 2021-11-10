@@ -4,14 +4,14 @@ import gdsmith.cypher.ast.*;
 
 import java.util.List;
 
-public class NodePattern implements INodePattern {
+public class NodeIdentifier implements INodeIdentifier {
     private String name;
     private List<ILabel> labels;
     private List<IProperty> properties;
-    private INodePattern formerDef;
+    private INodeIdentifier formerDef;
 
 
-    public NodePattern(String name, List<ILabel> labels, List<IProperty> properties){
+    public NodeIdentifier(String name, List<ILabel> labels, List<IProperty> properties){
         this.name = name;
         this.labels = labels;
         this.properties = properties;
@@ -38,18 +38,18 @@ public class NodePattern implements INodePattern {
         return labels;
     }
 
-    void setFormerDef(INodePattern formerDef){
+    void setFormerDef(INodeIdentifier formerDef){
         this.formerDef = formerDef;
     }
 
     @Override
-    public INodePattern getFormerDef() {
+    public INodeIdentifier getFormerDef() {
         return formerDef;
     }
 
     @Override
-    public INodePattern createRef() {
-        return new NodePattern(this.name, null, null);
+    public INodeIdentifier createRef() {
+        return new NodeIdentifier(this.name, null, null);
     }
 
     @Override
@@ -88,10 +88,10 @@ public class NodePattern implements INodePattern {
 
     @Override
     public boolean equals(Object o){
-        if(!(o instanceof NodePattern)){
+        if(!(o instanceof NodeIdentifier)){
             return false;
         }
-        if(getName().equals(((NodePattern)o).getName())){
+        if(getName().equals(((NodeIdentifier)o).getName())){
             return true;
         }
         return false;

@@ -1,13 +1,11 @@
 package gdsmith.neo4j.ast;
 
-import gdsmith.cypher.ast.IExpression;
-import gdsmith.cypher.ast.IIdentifier;
-import gdsmith.cypher.ast.IRet;
+import gdsmith.cypher.ast.*;
 
 public class Ret implements IRet {
     private boolean isAll;
-    private IExpression expression;
-    private IIdentifier identifier;
+    private IExpression expression = null;
+    private IIdentifier identifier = null;
 
     public Ret(IIdentifier identifier){
         this.identifier = identifier;
@@ -15,8 +13,7 @@ public class Ret implements IRet {
     }
 
     public Ret(IExpression expression, String name){
-        this.expression = expression;
-        this.identifier = new Alias(name);
+        this.identifier = new Alias(name, expression);
         isAll = false;
     }
 
@@ -41,8 +38,32 @@ public class Ret implements IRet {
     }
 
     @Override
+    public boolean isNodeIdentifier() {
+        return identifier instanceof INodeIdentifier;
+    }
+
+    @Override
+    public boolean isRelationIdentifier() {
+        return identifier instanceof IRelationIdentifier;
+    }
+
+    @Override
+    public boolean isAnonymousExpression() {
+        return expression != null;
+    }
+
+    @Override
+    public boolean isAlias() {
+        return identifier instanceof IAlias;
+    }
+
+    @Override
     public IExpression getExpression() {
-        return expression;
+        if(identifier == null)
+            return expression;
+        if(identifier instanceof IAlias)
+            return ((IAlias) identifier).getExpression();
+        return null;
     }
 
     @Override

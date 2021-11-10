@@ -1,10 +1,13 @@
 package gdsmith.neo4j.dsl;
 
+import gdsmith.cypher.ast.*;
 import gdsmith.neo4j.Neo4jSchema;
 import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.ast.Match;
 import gdsmith.neo4j.ast.Return;
 import gdsmith.neo4j.ast.With;
+
+import java.util.Arrays;
 
 public class ClauseSequenceBuilder {
 
@@ -60,12 +63,28 @@ public class ClauseSequenceBuilder {
 
 
     public ClauseSequenceBuilder createMatch(){
-        clauseSequence.addClause(new Match());
+        createMatch(null);
+        return this;
+    }
+
+    public ClauseSequenceBuilder createMatch(IExpression condition, IPattern ...patternTuple){
+        IMatch match = new Match();
+        match.setPatternTuple(Arrays.asList(patternTuple));
+        match.setCondition(condition);
+        clauseSequence.addClause(match);
         return this;
     }
 
     public ClauseSequenceBuilder createWith(){
-        clauseSequence.addClause(new With());
+        createWith(null);
+        return this;
+    }
+
+    public ClauseSequenceBuilder createWith(IExpression condition, IRet ...aliasTuple){
+        IWith with = new With();
+        with.setCondition(condition);
+        with.setReturnList(Arrays.asList(aliasTuple));
+        clauseSequence.addClause(with);
         return this;
     }
 
