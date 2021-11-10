@@ -3,7 +3,7 @@ package gdsmith.neo4j.dsl;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.IMatch;
 import gdsmith.cypher.ast.IWith;
-import gdsmith.neo4j.Neo4jSchema;
+import gdsmith.neo4j.schema.Neo4jSchema;
 
 public abstract class BasicConditionGenerator implements IConditionGenerator{
 

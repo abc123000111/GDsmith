@@ -1,11 +1,11 @@
 package gdsmith.neo4j.gen;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.neo4j.Neo4jSchema;
+import gdsmith.neo4j.schema.Neo4jSchema;
 import gdsmith.neo4j.ast.Label;
+import gdsmith.neo4j.ast.Pattern;
 import gdsmith.neo4j.dsl.BasicPatternGenerator;
 import gdsmith.neo4j.dsl.IIdentifierBuilder;
-import gdsmith.neo4j.dsl.PatternBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class NaivePatternGenerator extends BasicPatternGenerator {
         List<IRelationIdentifier> id2s = matchClause.getAvailableRelationIdentifiers();
 
         //示例：使用pattern builder流式地生成pattern，生成的结果是(nx: labelx)-[rx]->()
-        patternTuple.add(new PatternBuilder(identifierBuilder).newNamedNode().withLabels(label).newNamedRelation()
+        patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode().withLabels(label).newNamedRelation()
             .withDirection(Direction.RIGHT).newAnonymousNode().build());
 
         return patternTuple;

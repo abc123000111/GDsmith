@@ -1,4 +1,4 @@
-package gdsmith.neo4j;
+package gdsmith.neo4j.schema;
 
 import gdsmith.common.schema.*;
 
@@ -6,24 +6,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gdsmith.cypher.ast.ICypherType;
-import gdsmith.cypher.ast.ILabel;
-import gdsmith.neo4j.Neo4jSchema.Neo4jTable;
+import gdsmith.neo4j.Neo4jGlobalState;
+import gdsmith.neo4j.schema.Neo4jSchema.Neo4jTable;
 import gdsmith.neo4j.ast.Neo4jType;
 
 public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
 
-    private List<Neo4jLabelInfo> labels;
-    private List<Neo4jRelationTypeInfo> relationTypes;
+    private List<Neo4jLabelInfo> labels; //所有的Label信息
+    private List<Neo4jRelationTypeInfo> relationTypes; //所有的relationship type信息
+    private List<Neo4jPatternInfo> patternInfos; //存在的pattern结构
 
+
+    private static Neo4jSchema schema;
 
     public static Neo4jSchema createEmptyNewSchema(){
-        return new Neo4jSchema(new ArrayList<Neo4jTable>());
+        return new Neo4jSchema(new ArrayList<Neo4jTable>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     //todo complete
-    public Neo4jSchema(List<Neo4jTable> databaseTables) {
+    public Neo4jSchema(List<Neo4jTable> databaseTables, List<Neo4jLabelInfo> labels,
+                       List<Neo4jRelationTypeInfo> relationTypes, List<Neo4jPatternInfo> patternInfos) {
         super(databaseTables);
-        labels = new ArrayList<>();
+        /**
+         * 这里面是乱写的，应该让SchemaGenerator来生成
+         */
+        /*labels = new ArrayList<>();
         relationTypes = new ArrayList<>();
 
         Neo4jLabelInfo tl1 = new Neo4jLabelInfo(), tl2 = new Neo4jLabelInfo();
@@ -58,6 +65,10 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         labels.add(tl2);
         relationTypes.add(r1);
         relationTypes.add(r2);
+         */
+        this.labels = labels;
+        this.relationTypes = relationTypes;
+        this.patternInfos = patternInfos;
     }
 
     public List<Neo4jLabelInfo> getLabels(){
@@ -68,7 +79,17 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         return relationTypes;
     }
 
-    public static class Neo4jRelationTypeInfo implements IRelationTypeInfo{
+    public static class Neo4jPatternInfo implements IPatternInfo{
+
+        private List<IPatternElementInfo> patternElementInfos = new ArrayList<>();
+
+        @Override
+        public List<IPatternElementInfo> getPattern() {
+            return patternElementInfos;
+        }
+    }
+
+    public static class Neo4jRelationTypeInfo implements IRelationTypeInfo {
         private String name;
         private List<IPropertyInfo> properties = new ArrayList<>();
 
@@ -83,7 +104,7 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         }
     }
 
-    public static class Neo4jLabelInfo implements ILabelInfo{
+    public static class Neo4jLabelInfo implements ILabelInfo {
         private String name;
         private List<IPropertyInfo> properties = new ArrayList<>();
 
@@ -100,7 +121,8 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
 
     public static class Neo4jPropertyInfo implements IPropertyInfo{
         private String key;
-        private ICypherType type;
+        private Neo4jType type;
+        private boolean isOptional;
 
         @Override
         public String getKey() {
@@ -108,8 +130,13 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         }
 
         @Override
-        public ICypherType getType() {
+        public Neo4jType getType() {
             return type;
+        }
+
+        @Override
+        public boolean isOptional() {
+            return isOptional;
         }
     }
 

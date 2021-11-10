@@ -1,11 +1,8 @@
 package gdsmith.neo4j.dsl;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.neo4j.Neo4jSchema;
-import gdsmith.neo4j.ast.ClauseSequence;
-import gdsmith.neo4j.ast.Match;
-import gdsmith.neo4j.ast.Return;
-import gdsmith.neo4j.ast.With;
+import gdsmith.neo4j.ast.*;
+import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.Arrays;
 
@@ -49,6 +46,34 @@ public class ClauseSequenceBuilder {
                     schema, builder.identifierBuilder).startVisit();
             return builder.clauseSequence;
         }
+
+        public ClauseSequence build(){
+            return builder.clauseSequence;
+        }
+    }
+
+    public static class OngoingSequenceCreate{
+        private ClauseSequenceBuilder builder;
+
+        private OngoingSequenceCreate(ClauseSequenceBuilder builder){
+            this.builder = builder;
+        }
+
+        public ClauseSequenceBuilder WithClause(){
+            return builder.WithClause();
+        }
+
+        public ClauseSequenceBuilder WithClause(IExpression condition, IRet ...aliasTuple){
+            return builder.WithClause(condition, aliasTuple);
+        }
+
+        public FinishedBuilder ReturnClause(IRet ...returnList){
+            return builder.ReturnClause(returnList);
+        }
+
+        public ClauseSequence build(){
+            return builder.clauseSequence;
+        }
     }
 
     public ClauseSequenceBuilder(){
@@ -62,12 +87,11 @@ public class ClauseSequenceBuilder {
 
 
 
-    public ClauseSequenceBuilder createMatch(){
-        createMatch(null);
-        return this;
+    public ClauseSequenceBuilder MatchClause(){
+        return MatchClause(null);
     }
 
-    public ClauseSequenceBuilder createMatch(IExpression condition, IPattern ...patternTuple){
+    public ClauseSequenceBuilder MatchClause(IExpression condition, IPattern ...patternTuple){
         IMatch match = new Match();
         match.setPatternTuple(Arrays.asList(patternTuple));
         match.setCondition(condition);
@@ -75,12 +99,12 @@ public class ClauseSequenceBuilder {
         return this;
     }
 
-    public ClauseSequenceBuilder createWith(){
-        createWith(null);
-        return this;
+    public ClauseSequenceBuilder WithClause(){
+        return WithClause(null);
     }
 
-    public ClauseSequenceBuilder createWith(IExpression condition, IRet ...aliasTuple){
+
+    public ClauseSequenceBuilder WithClause(IExpression condition, IRet ...aliasTuple){
         IWith with = new With();
         with.setCondition(condition);
         with.setReturnList(Arrays.asList(aliasTuple));
@@ -88,9 +112,23 @@ public class ClauseSequenceBuilder {
         return this;
     }
 
-    public FinishedBuilder createReturn(){
-        clauseSequence.addClause(new Return());
+
+    public FinishedBuilder ReturnClause(IRet ...returnList){
+        IReturn returnClause = new Return();
+        returnClause.setReturnList(Arrays.asList(returnList));
+        clauseSequence.addClause(returnClause);
         return new FinishedBuilder(this);
+    }
+
+    public ClauseSequenceBuilder CreateClause(IPattern pattern){
+        ICreate create = new Create();
+        create.setPattern(pattern);
+        clauseSequence.addClause(create);
+        return this;
+    }
+
+    public ClauseSequenceBuilder CreateClause(){
+        return CreateClause(null);
     }
 
 }

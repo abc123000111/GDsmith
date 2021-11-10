@@ -9,10 +9,10 @@ public interface ICypherClause extends ITextRepresentation{
     ICypherClause getPrevClause();
 
     /**
-     * 本clause定义的identifier
+     * 本clause定义的别名
      * @return
      */
-    List<IIdentifier> getLocalIdentifiers();
+    List<IAlias> getLocalAliases();
 
     /**
      * 本clause定义的node identifier
@@ -27,10 +27,10 @@ public interface ICypherClause extends ITextRepresentation{
     List<IRelationIdentifier> getLocalRelationIdentifiers();
 
     /**
-     * 本clause的作用域中可以使用的identifier，即where中可以使用的，包括了本地定义的和继承自之前clause的
+     * 本clause的作用域中可以使用的别名，即where中可以使用的，包括了本地定义的和继承自之前clause的
      * @return
      */
-    List<IIdentifier> getAvailableIdentifiers();
+    List<IAlias> getAvailableAliases();
 
     /**
      * 本clause的作用域中可以使用的node identifier，即where中可以使用的，包括了本地定义的和继承自之前clause的
@@ -45,10 +45,10 @@ public interface ICypherClause extends ITextRepresentation{
     List<IRelationIdentifier> getAvailableRelationIdentifiers();
 
     /**
-     * 本clause继承自上一clause的identifier，可以在定义pattern和alias时使用
+     * 本clause继承自上一clause的别名，可以在定义pattern和alias时使用
      * @return
      */
-    List<IIdentifier> getExtendableIdentifiers();
+    List<IAlias> getExtendableAliases();
 
     /**
      * 本clause继承自上一clause的node identifier，可以在定义pattern和alias时使用

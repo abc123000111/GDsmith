@@ -1,5 +1,5 @@
 package gdsmith.cypher.ast;
 
 public enum Direction {
-    LEFT, RIGHT, BOTH
+    LEFT, RIGHT, BOTH, NONE
 }

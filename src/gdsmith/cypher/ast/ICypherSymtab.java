@@ -8,6 +8,8 @@ public interface ICypherSymtab {
     List<IRet> getAliasDefinitions();
     void setAliasDefinition(List<IRet> aliasDefinitions);
 
+    List<IAlias> getLocalAliasDefs();
+    List<IAlias> getAvailableAliasDefs();
     List<INodeIdentifier> getLocalNodePatterns();
     List<IRelationIdentifier> getLocalRelationPatterns();
     List<INodeIdentifier> getAvailableNodePatterns();

@@ -1,28 +1,53 @@
 package gdsmith.neo4j.ast;
 
 import gdsmith.cypher.ast.*;
+import gdsmith.neo4j.dsl.IIdentifierBuilder;
 
 public class Ret implements IRet {
     private boolean isAll;
     private IExpression expression = null;
     private IIdentifier identifier = null;
 
-    public Ret(IIdentifier identifier){
+    public static Ret createAliasRef(IAlias alias){
+        return new Ret(new Alias(alias.getName(), null));
+    }
+
+    public static Ret createNodeRef(INodeIdentifier node){
+        return new Ret(NodeIdentifier.createNodeRef(node));
+    }
+
+    public static Ret createRelationRef(IRelationIdentifier relation){
+        return new Ret(RelationIdentifier.createRelationRef(relation, Direction.NONE));
+    }
+
+    public static Ret createNewExpressionAlias(IIdentifierBuilder identifierBuilder, IExpression expression){
+        return new Ret(expression, identifierBuilder.getNewAliasName());
+    }
+
+    public static Ret createNewExpressionReturnVal(IExpression expression){
+        return new Ret(expression);
+    }
+
+    public static Ret createStar(){
+        return new Ret();
+    }
+
+    Ret(IIdentifier identifier){
         this.identifier = identifier;
         isAll = false;
     }
 
-    public Ret(IExpression expression, String name){
+    Ret(IExpression expression, String name){
         this.identifier = new Alias(name, expression);
         isAll = false;
     }
 
-    public Ret(IExpression expression){
+    Ret(IExpression expression){
         this.expression = expression;
         isAll = false;
     }
 
-    public Ret(){
+    Ret(){
         isAll = true;
     }
 
