@@ -1,9 +1,6 @@
 package gdsmith.neo4j.dsl;
 
-import gdsmith.cypher.ast.ICypherClause;
-import gdsmith.cypher.ast.IMatch;
-import gdsmith.cypher.ast.IReturn;
-import gdsmith.cypher.ast.IWith;
+import gdsmith.cypher.ast.*;
 import gdsmith.neo4j.ast.ClauseSequence;
 
 public abstract class ClauseVisitor<C extends IContext> {
@@ -35,6 +32,12 @@ public abstract class ClauseVisitor<C extends IContext> {
                 visitClause(clause.getNextClause());
             }
         }
+        else if(clause instanceof ICreate){
+            visitCreate((ICreate) clause, context);
+            if(clause.getNextClause() != null){
+                visitClause(clause.getNextClause());
+            }
+        }
         else if(clause instanceof IReturn){
             visitReturn((IReturn) clause, context);
         }
@@ -43,5 +46,6 @@ public abstract class ClauseVisitor<C extends IContext> {
     public abstract void visitMatch(IMatch matchClause, C context);
     public abstract void visitWith(IWith withClause, C context);
     public abstract void visitReturn(IReturn returnClause, C context);
+    public abstract void visitCreate(ICreate createClause, C context);
 
 }

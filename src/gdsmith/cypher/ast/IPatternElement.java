@@ -1,5 +1,5 @@
 package gdsmith.cypher.ast;
 
-public interface IPatternElement extends IIdentifier, ITextRepresentation{
+public interface IPatternElement extends IIdentifier{
     boolean isAnonymous();
 }

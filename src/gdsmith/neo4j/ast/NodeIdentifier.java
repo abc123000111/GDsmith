@@ -1,8 +1,12 @@
 package gdsmith.neo4j.ast;
 
 import gdsmith.cypher.ast.*;
+import gdsmith.neo4j.dsl.IIdentifierBuilder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NodeIdentifier implements INodeIdentifier {
     private String name;
@@ -11,7 +15,19 @@ public class NodeIdentifier implements INodeIdentifier {
     private INodeIdentifier formerDef;
 
 
-    public NodeIdentifier(String name, List<ILabel> labels, List<IProperty> properties){
+    public static NodeIdentifier createNodeRef(INodeIdentifier nodeIdentifier){
+        return new NodeIdentifier(nodeIdentifier.getName(), new ArrayList<>(), new ArrayList<>());
+    }
+
+    public static NodeIdentifier createNewNamedNode(IIdentifierBuilder identifierBuilder, List<ILabel> labels, List<IProperty> properties){
+        return new NodeIdentifier(identifierBuilder.getNewNodeName(), labels, properties);
+    }
+
+    public static NodeIdentifier createNewAnonymousNode(List<ILabel> labels, List<IProperty> properties){
+        return new NodeIdentifier("", labels, properties);
+    }
+
+    NodeIdentifier(String name, List<ILabel> labels, List<IProperty> properties){
         this.name = name;
         this.labels = labels;
         this.properties = properties;
@@ -95,5 +111,43 @@ public class NodeIdentifier implements INodeIdentifier {
             return true;
         }
         return false;
+    }
+
+    public static class NodeBuilder {
+        private String curNodeName = "";
+        private List<ILabel> curNodeLabels;
+        private List<IProperty> curNodeProperties;
+
+        static NodeBuilder newNodeBuilder(String name){
+            return new NodeBuilder(name);
+        }
+
+        public static NodeBuilder newNodeBuilder(IIdentifierBuilder identifierBuilder){
+            return new NodeBuilder(identifierBuilder.getNewNodeName());
+        }
+
+        private NodeBuilder(String name){
+            curNodeLabels = new ArrayList<>();
+            curNodeProperties = new ArrayList<>();
+            this.curNodeName = name;
+        }
+
+
+        public NodeBuilder withLabels(ILabel ...labels){
+            curNodeLabels.addAll(Arrays.asList(labels));
+            curNodeLabels = curNodeLabels.stream().distinct().collect(Collectors.toList());
+            return this;
+        }
+
+        public NodeBuilder withProperties(IProperty ...properties){
+            curNodeProperties.addAll(Arrays.asList(properties));
+            curNodeProperties = curNodeProperties.stream().distinct().collect(Collectors.toList());
+            return this;
+        }
+
+
+        public INodeIdentifier build(){
+            return new NodeIdentifier(curNodeName, curNodeLabels, curNodeProperties);
+        }
     }
 }

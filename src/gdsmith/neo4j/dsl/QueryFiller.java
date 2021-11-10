@@ -1,9 +1,10 @@
 package gdsmith.neo4j.dsl;
 
+import gdsmith.cypher.ast.ICreate;
 import gdsmith.cypher.ast.IMatch;
 import gdsmith.cypher.ast.IReturn;
 import gdsmith.cypher.ast.IWith;
-import gdsmith.neo4j.Neo4jSchema;
+import gdsmith.neo4j.schema.Neo4jSchema;
 import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.dsl.QueryFiller.QueryFillerContext;
 
@@ -48,5 +49,10 @@ public class QueryFiller extends ClauseVisitor<QueryFillerContext>{
     @Override
     public void visitReturn(IReturn returnClause, QueryFillerContext context) {
         aliasGenerator.fillReturnAlias(returnClause);
+    }
+
+    @Override
+    public void visitCreate(ICreate createClause, QueryFillerContext context) {
+
     }
 }

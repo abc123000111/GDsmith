@@ -4,8 +4,11 @@ import gdsmith.*;
 import gdsmith.common.log.LoggableFactory;
 
 import gdsmith.cypher.*;
+import gdsmith.neo4j.gen.Neo4jGraphGenerator;
 import org.neo4j.driver.Driver;
 import gdsmith.neo4j.gen.Neo4jNodeGenerator;
+
+import java.util.List;
 
 public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4jOptions> {
     public Neo4jProvider() {
@@ -42,6 +45,7 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
         }
 
         String url = String.format("bolt://%s:%d", host, port);
+
         /*String databaseName = globalState.getDatabaseName();
         globalState.getState().logStatement("DROP DATABASE IF EXISTS " + databaseName);
         globalState.getState().logStatement("CREATE DATABASE " + databaseName);
@@ -59,6 +63,7 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
             s.execute("USE " + databaseName);
         }*/
         Driver driver = Neo4jDriverManager.getDriver(url, username, password);
+        //todo 根据名字创建新的空数据库
         return new Neo4jConnection(driver);
     }
 
@@ -79,6 +84,11 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
 
     @Override
     public void generateDatabase(Neo4jGlobalState globalState) throws Exception {
+        List<CypherQueryAdapter> queries = Neo4jGraphGenerator.createGraph(globalState);
+        for(CypherQueryAdapter query : queries){
+            globalState.executeStatement(query);
+        }
+
         /*for(int i = 0; i < 10; i++){
             CypherQueryAdapter createNode = Neo4jNodeGenerator.createNode(globalState);
             globalState.executeStatement(createNode);

@@ -89,8 +89,8 @@ public class With implements IWith {
     }
 
     @Override
-    public List<IIdentifier> getLocalIdentifiers() {
-        return null;
+    public List<IAlias> getLocalAliases() {
+        return symtab.getLocalAliasDefs();
     }
 
     @Override
@@ -104,8 +104,8 @@ public class With implements IWith {
     }
 
     @Override
-    public List<IIdentifier> getAvailableIdentifiers() {
-        return null;
+    public List<IAlias> getAvailableAliases() {
+        return symtab.getAvailableAliasDefs();
     }
 
     @Override
@@ -119,10 +119,10 @@ public class With implements IWith {
     }
 
     @Override
-    public List<IIdentifier> getExtendableIdentifiers() {
+    public List<IAlias> getExtendableAliases() {
         if(prevClause == null)
             return new ArrayList<>();
-        return prevClause.getAvailableIdentifiers();
+        return prevClause.getAvailableAliases();
     }
 
     @Override
