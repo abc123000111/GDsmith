@@ -45,26 +45,10 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
         }
 
         String url = String.format("bolt://%s:%d", host, port);
-
-        /*String databaseName = globalState.getDatabaseName();
-        globalState.getState().logStatement("DROP DATABASE IF EXISTS " + databaseName);
-        globalState.getState().logStatement("CREATE DATABASE " + databaseName);
-        globalState.getState().logStatement("USE " + databaseName);
-        String url = String.format("jdbc:mysql://%s:%d?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true",
-                host, port);
-        Connection con = DriverManager.getConnection(url, username, password);*/ //这里是从globalstate那里获取到option信息然后建立连接，进而建立数据库
-        /*try (Statement s = con.createStatement()) {
-            s.execute("DROP DATABASE IF EXISTS " + databaseName);
-        }
-        try (Statement s = con.createStatement()) {
-            s.execute("CREATE DATABASE " + databaseName);
-        }
-        try (Statement s = con.createStatement()) {
-            s.execute("USE " + databaseName);
-        }*/
         Driver driver = Neo4jDriverManager.getDriver(url, username, password);
-        //todo 根据名字创建新的空数据库
-        return new Neo4jConnection(driver);
+        Neo4jConnection con = new Neo4jConnection(driver);
+        con.executeStatement("MATCH (n) DETACH DELETE n");
+        return con;
     }
 
     @Override
