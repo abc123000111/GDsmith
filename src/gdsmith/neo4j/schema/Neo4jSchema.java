@@ -83,6 +83,10 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
 
         private List<IPatternElementInfo> patternElementInfos = new ArrayList<>();
 
+        public Neo4jPatternInfo(List<IPatternElementInfo> patternElementInfos) {
+            this.patternElementInfos = patternElementInfos;
+        }
+
         @Override
         public List<IPatternElementInfo> getPattern() {
             return patternElementInfos;
@@ -92,6 +96,11 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
     public static class Neo4jRelationTypeInfo implements IRelationTypeInfo {
         private String name;
         private List<IPropertyInfo> properties = new ArrayList<>();
+
+        public Neo4jRelationTypeInfo(String name, List<IPropertyInfo> properties) {
+            this.name = name;
+            this.properties = properties;
+        }
 
         @Override
         public String getName() {
@@ -108,6 +117,11 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         private String name;
         private List<IPropertyInfo> properties = new ArrayList<>();
 
+        public Neo4jLabelInfo(String name, List<IPropertyInfo> properties) {
+            this.name = name;
+            this.properties = properties;
+        }
+
         @Override
         public String getName() {
             return name;
@@ -123,6 +137,12 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         private String key;
         private Neo4jType type;
         private boolean isOptional;
+
+        public Neo4jPropertyInfo(String key, Neo4jType type, boolean isOptional) {
+            this.key = key;
+            this.type = type;
+            this.isOptional = isOptional;
+        }
 
         @Override
         public String getKey() {

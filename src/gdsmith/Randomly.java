@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public final class Randomly {
 
-    private static StringGenerationStrategy stringGenerationStrategy = StringGenerationStrategy.SOPHISTICATED;
+    private static StringGenerationStrategy stringGenerationStrategy = StringGenerationStrategy.ALPHANUMERIC;
     private static int maxStringLength = 10;
     private static boolean useCaching = true;
     private static int cacheSize = 100;
