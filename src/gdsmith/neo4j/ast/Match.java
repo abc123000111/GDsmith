@@ -2,11 +2,12 @@ package gdsmith.neo4j.ast;
 
 
 import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.analyzer.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Match implements IMatch {
+public class Match implements IMatchAnalyzer {
     private final Symtab symtab;
     private boolean isOptional = false;
     private IExpression conditon = null;
@@ -71,54 +72,59 @@ public class Match implements IMatch {
     }
 
     @Override
-    public List<IAlias> getLocalAliases() {
+    public IMatchAnalyzer toAnalyzer() {
+        return this;
+    }
+
+    @Override
+    public List<IAliasAnalyzer> getLocalAliases() {
         return getLocalAliases();
     }
 
     @Override
-    public List<INodeIdentifier> getLocalNodeIdentifiers() {
+    public List<INodeAnalyzer> getLocalNodeIdentifiers() {
         return symtab.getLocalNodePatterns();
     }
 
     @Override
-    public List<IRelationIdentifier> getLocalRelationIdentifiers() {
+    public List<IRelationAnalyzer> getLocalRelationIdentifiers() {
         return symtab.getLocalRelationPatterns();
     }
 
     @Override
-    public List<IAlias> getAvailableAliases() {
+    public List<IAliasAnalyzer> getAvailableAliases() {
         return getAvailableAliases();
     }
 
     @Override
-    public List<INodeIdentifier> getAvailableNodeIdentifiers() {
+    public List<INodeAnalyzer> getAvailableNodeIdentifiers() {
         return symtab.getAvailableNodePatterns();
     }
 
     @Override
-    public List<IRelationIdentifier> getAvailableRelationIdentifiers() {
+    public List<IRelationAnalyzer> getAvailableRelationIdentifiers() {
         return symtab.getAvailableRelationPatterns();
     }
 
     @Override
-    public List<IAlias> getExtendableAliases() {
+    public List<IAliasAnalyzer> getExtendableAliases() {
         if(prevClause == null)
             return new ArrayList<>();
-        return prevClause.getAvailableAliases();
+        return prevClause.toAnalyzer().getAvailableAliases();
     }
 
     @Override
-    public List<INodeIdentifier> getExtendableNodeIdentifiers() {
+    public List<INodeAnalyzer> getExtendableNodeIdentifiers() {
         if(prevClause == null)
             return new ArrayList<>();
-        return prevClause.getAvailableNodeIdentifiers();
+        return prevClause.toAnalyzer().getAvailableNodeIdentifiers();
     }
 
     @Override
-    public List<IRelationIdentifier> getExtendablePatternIdentifiers() {
+    public List<IRelationAnalyzer> getExtendablePatternIdentifiers() {
         if(prevClause == null)
             return new ArrayList<>();
-        return prevClause.getAvailableRelationIdentifiers();
+        return prevClause.toAnalyzer().getAvailableRelationIdentifiers();
     }
 
     @Override

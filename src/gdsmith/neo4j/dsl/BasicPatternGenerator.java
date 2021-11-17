@@ -1,6 +1,7 @@
 package gdsmith.neo4j.dsl;
 
 import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.List;
@@ -17,9 +18,9 @@ public abstract class BasicPatternGenerator implements IPatternGenerator{
 
 
     @Override
-    public void fillMatchPattern(IMatch matchClause) {
+    public void fillMatchPattern(IMatchAnalyzer matchClause) {
         matchClause.setPatternTuple(generatePattern(matchClause, identifierBuilder, schema));
     }
 
-    public abstract List<IPattern> generatePattern(IMatch matchClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema);
+    public abstract List<IPattern> generatePattern(IMatchAnalyzer matchClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema);
 }

@@ -1,5 +1,8 @@
 package gdsmith.cypher.ast;
 
+import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
+import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
+
 import java.util.List;
 
 public interface IMatch extends ICypherClause{
@@ -9,4 +12,7 @@ public interface IMatch extends ICypherClause{
     void setOptional(boolean optional);
     IExpression getCondition();
     void setCondition(IExpression condition);
+
+    @Override
+    IMatchAnalyzer toAnalyzer();
 }

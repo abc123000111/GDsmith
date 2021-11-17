@@ -1,11 +1,12 @@
 package gdsmith.neo4j.ast;
 
 import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.analyzer.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class With implements IWith {
+public class With implements IWithAnalyzer {
 
     private boolean distinct = false;
     private IExpression condition = null;
@@ -72,6 +73,11 @@ public class With implements IWith {
     }
 
     @Override
+    public IWithAnalyzer toAnalyzer() {
+        return this;
+    }
+
+    @Override
     public void toTextRepresentation(StringBuilder sb) {
         //todo distinct
         sb.append("WITH ");
@@ -89,53 +95,53 @@ public class With implements IWith {
     }
 
     @Override
-    public List<IAlias> getLocalAliases() {
+    public List<IAliasAnalyzer> getLocalAliases() {
         return symtab.getLocalAliasDefs();
     }
 
     @Override
-    public List<INodeIdentifier> getLocalNodeIdentifiers() {
+    public List<INodeAnalyzer> getLocalNodeIdentifiers() {
         return symtab.getLocalNodePatterns();
     }
 
     @Override
-    public List<IRelationIdentifier> getLocalRelationIdentifiers() {
+    public List<IRelationAnalyzer> getLocalRelationIdentifiers() {
         return symtab.getLocalRelationPatterns();
     }
 
     @Override
-    public List<IAlias> getAvailableAliases() {
+    public List<IAliasAnalyzer> getAvailableAliases() {
         return symtab.getAvailableAliasDefs();
     }
 
     @Override
-    public List<INodeIdentifier> getAvailableNodeIdentifiers() {
+    public List<INodeAnalyzer> getAvailableNodeIdentifiers() {
         return symtab.getAvailableNodePatterns();
     }
 
     @Override
-    public List<IRelationIdentifier> getAvailableRelationIdentifiers() {
+    public List<IRelationAnalyzer> getAvailableRelationIdentifiers() {
         return symtab.getAvailableRelationPatterns();
     }
 
     @Override
-    public List<IAlias> getExtendableAliases() {
+    public List<IAliasAnalyzer> getExtendableAliases() {
         if(prevClause == null)
             return new ArrayList<>();
-        return prevClause.getAvailableAliases();
+        return prevClause.toAnalyzer().getAvailableAliases();
     }
 
     @Override
-    public List<INodeIdentifier> getExtendableNodeIdentifiers() {
+    public List<INodeAnalyzer> getExtendableNodeIdentifiers() {
         if(prevClause == null)
             return new ArrayList<>();
-        return prevClause.getAvailableNodeIdentifiers();
+        return prevClause.toAnalyzer().getAvailableNodeIdentifiers();
     }
 
     @Override
-    public List<IRelationIdentifier> getExtendablePatternIdentifiers() {
+    public List<IRelationAnalyzer> getExtendablePatternIdentifiers() {
         if(prevClause == null)
             return new ArrayList<>();
-        return prevClause.getAvailableRelationIdentifiers();
+        return prevClause.toAnalyzer().getAvailableRelationIdentifiers();
     }
 }

@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RelationIdentifier implements IRelationIdentifier {
-    private String name;
-    private IType relationType;
-    private List<IProperty> properties;
-    private Direction direction;
-    private IRelationIdentifier formerDef;
+    protected String name;
+    protected IType relationType;
+    protected List<IProperty> properties;
+    protected Direction direction;
 
     public static RelationIdentifier createRelationRef(IRelationIdentifier relationIdentifier, Direction direction){
         return new RelationIdentifier(relationIdentifier.getName(), null,
@@ -67,15 +66,6 @@ public class RelationIdentifier implements IRelationIdentifier {
     @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
-    }
-
-    void setFormerDef(IRelationIdentifier formerDef){
-        this.formerDef = formerDef;
-    }
-
-    @Override
-    public IRelationIdentifier getFormerDef() {
-        return formerDef;
     }
 
     @Override

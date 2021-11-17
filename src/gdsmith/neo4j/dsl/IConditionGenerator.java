@@ -2,8 +2,10 @@ package gdsmith.neo4j.dsl;
 
 import gdsmith.cypher.ast.IMatch;
 import gdsmith.cypher.ast.IWith;
+import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
+import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
 
 public interface IConditionGenerator {
-    void fillMatchCondtion(IMatch matchClause);
-    void fillWithCondition(IWith withClause);
+    void fillMatchCondtion(IMatchAnalyzer matchClause);
+    void fillWithCondition(IWithAnalyzer withClause);
 }

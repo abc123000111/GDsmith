@@ -1,5 +1,8 @@
 package gdsmith.cypher.ast;
 
+import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
+import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
+
 import java.util.List;
 
 public interface IWith extends ICypherClause{
@@ -9,4 +12,7 @@ public interface IWith extends ICypherClause{
     void setReturnList(List<IRet> returnList);
     IExpression getCondtion();
     void setCondition(IExpression condtion);
+
+    @Override
+    IWithAnalyzer toAnalyzer();
 }

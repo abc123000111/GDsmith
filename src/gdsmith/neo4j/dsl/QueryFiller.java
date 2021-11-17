@@ -36,19 +36,19 @@ public class QueryFiller extends ClauseVisitor<QueryFillerContext>{
 
     @Override
     public void visitMatch(IMatch matchClause, QueryFillerContext context) {
-        patternGenerator.fillMatchPattern(matchClause);
-        conditionGenerator.fillMatchCondtion(matchClause);
+        patternGenerator.fillMatchPattern(matchClause.toAnalyzer());
+        conditionGenerator.fillMatchCondtion(matchClause.toAnalyzer());
     }
 
     @Override
     public void visitWith(IWith withClause, QueryFillerContext context) {
-        aliasGenerator.fillWithAlias(withClause);
-        conditionGenerator.fillWithCondition(withClause);
+        aliasGenerator.fillWithAlias(withClause.toAnalyzer());
+        conditionGenerator.fillWithCondition(withClause.toAnalyzer());
     }
 
     @Override
     public void visitReturn(IReturn returnClause, QueryFillerContext context) {
-        aliasGenerator.fillReturnAlias(returnClause);
+        aliasGenerator.fillReturnAlias(returnClause.toAnalyzer());
     }
 
     @Override

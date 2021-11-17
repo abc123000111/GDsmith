@@ -1,6 +1,10 @@
 package gdsmith.neo4j.ast;
 
 import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.analyzer.IAliasAnalyzer;
+import gdsmith.cypher.ast.analyzer.ICypherSymtab;
+import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
+import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,45 +45,45 @@ public class Symtab implements ICypherSymtab {
     }
 
     @Override
-    public List<IAlias> getLocalAliasDefs() {
+    public List<IAliasAnalyzer> getLocalAliasDefs() {
         if(parentClause == null){
-            return null;
+            return new ArrayList<>();
         }
-        List<IAlias> aliases = new ArrayList<>();
+        List<IAliasAnalyzer> aliases = new ArrayList<>();
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isAlias()){
-                    aliases.add((IAlias) aliasDef.getIdentifier());
+                    aliases.add(new AliasAnalyzer((IAlias) aliasDef.getIdentifier()));
                 }
                 if(aliasDef.isAll()){
-                    return parentClause.getPrevClause().getAvailableAliases();
+                    return parentClause.getPrevClause().toAnalyzer().getAvailableAliases();
                 }
             }
             linkAliasDefinitions(aliases);
         }
-        return aliases;
+        List<IAliasAnalyzer> result = new ArrayList<>();
+        result.addAll(aliases);
+        return result;
     }
 
     @Override
-    public List<IAlias> getAvailableAliasDefs() {
+    public List<IAliasAnalyzer> getAvailableAliasDefs() {
         if(!extendParent || parentClause.getPrevClause() == null){
             return getLocalAliasDefs();
         }
-        List<IAlias> aliases = getLocalAliasDefs();
-        for(IAlias alias : aliases){
-            if(alias instanceof Alias){
-                ((NodeIdentifier) alias).setFormerDef(null);
-            }
+        List<IAliasAnalyzer> aliases = getLocalAliasDefs();
+        for(IAliasAnalyzer alias : aliases){
+            alias.setFormerDef(null);
         }
-        List<IAlias> extendedAliases = parentClause.getPrevClause().getAvailableAliases();
-        for(IAlias extendedAlias : extendedAliases){
+        List<IAliasAnalyzer> extendedAliases = parentClause.getPrevClause().toAnalyzer().getAvailableAliases();
+        for(IAliasAnalyzer extendedAlias : extendedAliases){
             if(!aliases.contains(extendedAlias)){
                 aliases.add(extendedAlias);
             }
             else{
-                IAlias alias = aliases.get(aliases.indexOf(extendedAlias));
+                IAliasAnalyzer alias = aliases.get(aliases.indexOf(extendedAlias));
                 if(alias.getExpression() == null){
-                    ((Alias)alias).setFormerDef(extendedAlias);
+                    alias.setFormerDef(extendedAlias);
                 }
             }
         }
@@ -87,94 +91,84 @@ public class Symtab implements ICypherSymtab {
     }
 
 
-    private void linkNodeDefinitions(List<INodeIdentifier> curNodes){
+    private void linkNodeDefinitions(List<INodeAnalyzer> curNodes){
         if(parentClause == null){
             return;
         }
 
-        List<INodeIdentifier> prevDefs = new ArrayList<>();
+        List<INodeAnalyzer> prevDefs = new ArrayList<>();
         if(parentClause.getPrevClause() != null){
-            prevDefs = parentClause.getPrevClause().getAvailableNodeIdentifiers();
+            prevDefs = parentClause.getPrevClause().toAnalyzer().getAvailableNodeIdentifiers();
         }
 
-        for(INodeIdentifier node : curNodes){
-            if(node instanceof NodeIdentifier){
-                ((NodeIdentifier) node).setFormerDef(null);
-            }
+        for(INodeAnalyzer node : curNodes){
+            node.setFormerDef(null);
         }
-        for(INodeIdentifier prevDef : prevDefs){
+        for(INodeAnalyzer prevDef : prevDefs){
             if(curNodes.contains(prevDef)){
-                INodeIdentifier node = curNodes.get(curNodes.indexOf(prevDef));
-                if(node instanceof NodeIdentifier){
-                    ((NodeIdentifier)node).setFormerDef(prevDef);
-                }
+                INodeAnalyzer node = curNodes.get(curNodes.indexOf(prevDef));
+                node.setFormerDef(prevDef);
             }
         }
     }
 
-    private void linkRelationDefinitions(List<IRelationIdentifier> curRelations){
+    private void linkRelationDefinitions(List<IRelationAnalyzer> curRelations){
         if(parentClause == null){
             return;
         }
 
-        List<IRelationIdentifier> prevDefs = new ArrayList<>();
+        List<IRelationAnalyzer> prevDefs = new ArrayList<>();
         if(parentClause.getPrevClause() != null){
-            prevDefs = parentClause.getPrevClause().getAvailableRelationIdentifiers();
+            prevDefs = parentClause.getPrevClause().toAnalyzer().getAvailableRelationIdentifiers();
         }
 
-        for(IRelationIdentifier relation : curRelations){
-            if(relation instanceof RelationIdentifier){
-                ((RelationIdentifier) relation).setFormerDef(null);
-            }
+        for(IRelationAnalyzer relation : curRelations){
+            relation.setFormerDef(null);
         }
-        for(IRelationIdentifier prevDef : prevDefs){
+        for(IRelationAnalyzer prevDef : prevDefs){
             if(curRelations.contains(prevDef)){
-                IRelationIdentifier relation = curRelations.get(curRelations.indexOf(prevDef));
-                if(relation instanceof RelationIdentifier){
-                    ((RelationIdentifier)relation).setFormerDef(prevDef);
-                }
+                IRelationAnalyzer relation = curRelations.get(curRelations.indexOf(prevDef));
+                relation.setFormerDef(prevDef);
             }
         }
     }
 
-    private void linkAliasDefinitions(List<IAlias> curAlias){
+    private void linkAliasDefinitions(List<IAliasAnalyzer> curAlias){
         if(parentClause == null){
             return;
         }
 
-        List<IAlias> prevDefs = new ArrayList<>();
+        List<IAliasAnalyzer> prevDefs = new ArrayList<>();
         if(parentClause.getPrevClause() != null){
-            prevDefs = parentClause.getPrevClause().getAvailableAliases();
+            prevDefs = parentClause.getPrevClause().toAnalyzer().getAvailableAliases();
         }
 
-        for(IAlias alias : curAlias){
-            if(alias instanceof Alias){
-                ((Alias) alias).setFormerDef(null);
-            }
+        for(IAliasAnalyzer alias : curAlias){
+            alias.setFormerDef(null);
         }
-        for(IAlias prevDef : prevDefs){
+        for(IAliasAnalyzer prevDef : prevDefs){
             if(curAlias.contains(prevDef)){
-                IAlias alias = curAlias.get(curAlias.indexOf(prevDef));
-                if(alias instanceof Alias && alias.getExpression() == null){
-                    ((Alias)alias).setFormerDef(prevDef);
+                IAliasAnalyzer alias = curAlias.get(curAlias.indexOf(prevDef));
+                if(alias.getExpression() == null){
+                    alias.setFormerDef(prevDef);
                 }
             }
         }
     }
 
     @Override
-    public List<INodeIdentifier> getLocalNodePatterns() {
+    public List<INodeAnalyzer> getLocalNodePatterns() {
         if(parentClause == null)
             return null;
 
-        List<INodeIdentifier> nodes = new ArrayList<>();
+        List<INodeAnalyzer> nodes = new ArrayList<>();
 
 
         if(parentClause instanceof IMatch){
             for(IPattern pattern : patterns){
                 for(IPatternElement patternElement : pattern.getPatternElements()){
                     if(patternElement instanceof INodeIdentifier && !patternElement.isAnonymous()){
-                        nodes.add((INodeIdentifier) patternElement);
+                        nodes.add(new NodeAnalyzer((INodeIdentifier) patternElement));
                     }
                 }
             }
@@ -186,10 +180,10 @@ public class Symtab implements ICypherSymtab {
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isNodeIdentifier()){
-                    nodes.add((INodeIdentifier) aliasDef.getIdentifier());
+                    nodes.add(new NodeAnalyzer((INodeIdentifier) aliasDef.getIdentifier()));
                 }
                 if(aliasDef.isAll() && parentClause.getPrevClause() != null){
-                    return parentClause.getPrevClause().getAvailableNodeIdentifiers();
+                    return parentClause.getPrevClause().toAnalyzer().getAvailableNodeIdentifiers();
                 }
             }
             linkNodeDefinitions(nodes);
@@ -199,22 +193,22 @@ public class Symtab implements ICypherSymtab {
     }
 
     @Override
-    public List<IRelationIdentifier> getLocalRelationPatterns() {
+    public List<IRelationAnalyzer> getLocalRelationPatterns() {
         if(parentClause == null)
             return null;
 
-        List<IRelationIdentifier> relations = new ArrayList<>();
+        List<IRelationAnalyzer> relations = new ArrayList<>();
 
-        List<IRelationIdentifier> extendedRelations = new ArrayList<>();
+        List<IRelationAnalyzer> extendedRelations = new ArrayList<>();
         if(parentClause.getPrevClause() != null){
-            extendedRelations = parentClause.getPrevClause().getAvailableRelationIdentifiers();
+            extendedRelations = parentClause.getPrevClause().toAnalyzer().getAvailableRelationIdentifiers();
         }
 
         if(parentClause instanceof IMatch){
             for(IPattern pattern : patterns){
                 for(IPatternElement patternElement : pattern.getPatternElements()){
                     if(patternElement instanceof IRelationIdentifier && !patternElement.isAnonymous()){
-                        relations.add((IRelationIdentifier) patternElement);
+                        relations.add(new RelationAnalyzer((IRelationIdentifier) patternElement));
                     }
                 }
             }
@@ -225,10 +219,10 @@ public class Symtab implements ICypherSymtab {
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isRelationIdentifier()){
-                    relations.add((IRelationIdentifier) aliasDef.getIdentifier());
+                    relations.add(new RelationAnalyzer((IRelationIdentifier) aliasDef.getIdentifier()));
                 }
                 if(aliasDef.isAll() && parentClause.getPrevClause() != null){
-                    return parentClause.getPrevClause().getAvailableRelationIdentifiers();
+                    return parentClause.getPrevClause().toAnalyzer().getAvailableRelationIdentifiers();
                 }
             }
             linkRelationDefinitions(relations);
@@ -240,48 +234,44 @@ public class Symtab implements ICypherSymtab {
     }
 
     @Override
-    public List<INodeIdentifier> getAvailableNodePatterns() {
+    public List<INodeAnalyzer> getAvailableNodePatterns() {
         if(!extendParent || parentClause.getPrevClause() == null){
             return getLocalNodePatterns();
         }
-        List<INodeIdentifier> nodes = getLocalNodePatterns();
-        for(INodeIdentifier node : nodes){
-            if(node instanceof NodeIdentifier){
-                ((NodeIdentifier) node).setFormerDef(null);
-            }
+        List<INodeAnalyzer> nodes = getLocalNodePatterns();
+        for(INodeAnalyzer node : nodes){
+            node.setFormerDef(null);
         }
-        List<INodeIdentifier> extendedNodes = parentClause.getPrevClause().getAvailableNodeIdentifiers();
-        for(INodeIdentifier extendedNode : extendedNodes){
+        List<INodeAnalyzer> extendedNodes = parentClause.getPrevClause().toAnalyzer().getAvailableNodeIdentifiers();
+        for(INodeAnalyzer extendedNode : extendedNodes){
             if(!nodes.contains(extendedNode)){
                 nodes.add(extendedNode);
             }
             else {
-                INodeIdentifier node = nodes.get(nodes.indexOf(extendedNode));
-                ((NodeIdentifier)node).setFormerDef(extendedNode);
+                INodeAnalyzer node = nodes.get(nodes.indexOf(extendedNode));
+                node.setFormerDef(extendedNode);
             }
         }
         return nodes;
     }
 
     @Override
-    public List<IRelationIdentifier> getAvailableRelationPatterns() {
+    public List<IRelationAnalyzer> getAvailableRelationPatterns() {
         if(!extendParent || parentClause.getPrevClause() == null){
             return getLocalRelationPatterns();
         }
-        List<IRelationIdentifier> relations = getLocalRelationPatterns();
-        for(IRelationIdentifier relation : relations){
-            if(relation instanceof RelationIdentifier){
-                ((RelationIdentifier) relation).setFormerDef(null);
-            }
+        List<IRelationAnalyzer> relations = getLocalRelationPatterns();
+        for(IRelationAnalyzer relation : relations){
+            relation.setFormerDef(null);
         }
-        List<IRelationIdentifier> extendedRelations = parentClause.getPrevClause().getAvailableRelationIdentifiers();
-        for(IRelationIdentifier extendedRelation : extendedRelations){
+        List<IRelationAnalyzer> extendedRelations = parentClause.getPrevClause().toAnalyzer().getAvailableRelationIdentifiers();
+        for(IRelationAnalyzer extendedRelation : extendedRelations){
             if(!relations.contains(extendedRelation)){
                 relations.add(extendedRelation);
             }
             else {
-                IRelationIdentifier relationPattern = relations.get(relations.indexOf(extendedRelation));
-                ((RelationIdentifier)relationPattern).setFormerDef(extendedRelation);
+                IRelationAnalyzer relationPattern = relations.get(relations.indexOf(extendedRelation));
+                relationPattern.setFormerDef(extendedRelation);
             }
         }
         return relations;

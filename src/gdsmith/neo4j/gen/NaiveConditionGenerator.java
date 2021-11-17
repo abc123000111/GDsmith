@@ -3,6 +3,8 @@ package gdsmith.neo4j.gen;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.IMatch;
 import gdsmith.cypher.ast.IWith;
+import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
+import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
 import gdsmith.neo4j.schema.Neo4jSchema;
 import gdsmith.neo4j.dsl.BasicConditionGenerator;
 
@@ -13,12 +15,12 @@ public class NaiveConditionGenerator extends BasicConditionGenerator {
     }
 
     @Override
-    public IExpression generateMatchCondition(IMatch matchClause, Neo4jSchema schema) {
+    public IExpression generateMatchCondition(IMatchAnalyzer matchClause, Neo4jSchema schema) {
         return null;
     }
 
     @Override
-    public IExpression generateWithCondition(IWith withClause, Neo4jSchema schema) {
+    public IExpression generateWithCondition(IWithAnalyzer withClause, Neo4jSchema schema) {
         return null;
     }
 }

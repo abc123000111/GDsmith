@@ -1,6 +1,7 @@
 package gdsmith.neo4j.ast;
 
 import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 import gdsmith.neo4j.dsl.IIdentifierBuilder;
 
 import java.util.ArrayList;
@@ -9,10 +10,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NodeIdentifier implements INodeIdentifier {
-    private String name;
-    private List<ILabel> labels;
-    private List<IProperty> properties;
-    private INodeIdentifier formerDef;
+    protected String name;
+    protected List<ILabel> labels;
+    protected List<IProperty> properties;
 
 
     public static NodeIdentifier createNodeRef(INodeIdentifier nodeIdentifier){
@@ -54,14 +54,6 @@ public class NodeIdentifier implements INodeIdentifier {
         return labels;
     }
 
-    void setFormerDef(INodeIdentifier formerDef){
-        this.formerDef = formerDef;
-    }
-
-    @Override
-    public INodeIdentifier getFormerDef() {
-        return formerDef;
-    }
 
     @Override
     public INodeIdentifier createRef() {

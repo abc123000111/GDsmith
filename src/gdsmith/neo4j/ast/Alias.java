@@ -7,9 +7,8 @@ import gdsmith.cypher.ast.IRelationIdentifier;
 import gdsmith.neo4j.dsl.IIdentifierBuilder;
 
 public class Alias implements IAlias {
-    private String name;
-    private IExpression expression;
-    private IAlias formerDef;
+    protected String name;
+    protected IExpression expression;
 
     public static Alias createAliasRef(IAlias alias){
         return new Alias(alias.getName(), null);
@@ -40,11 +39,6 @@ public class Alias implements IAlias {
     }
 
     @Override
-    public IAlias getFormerDef() {
-        return this.formerDef;
-    }
-
-    @Override
     public void toTextRepresentation(StringBuilder sb) {
         if(expression != null){
             expression.toTextRepresentation(sb);
@@ -53,7 +47,4 @@ public class Alias implements IAlias {
         sb.append(name);
     }
 
-    void setFormerDef(IAlias formerDef){
-        this.formerDef = formerDef;
-    }
 }

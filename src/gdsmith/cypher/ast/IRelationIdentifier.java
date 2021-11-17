@@ -1,5 +1,7 @@
 package gdsmith.cypher.ast;
 
+import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
+
 import java.util.List;
 
 public interface IRelationIdentifier extends IPatternElement{
@@ -7,6 +9,5 @@ public interface IRelationIdentifier extends IPatternElement{
     List<IType> getTypes();
     Direction getDirection();
     void setDirection(Direction direction);
-    IRelationIdentifier getFormerDef();
     IRelationIdentifier createRef();
 }
