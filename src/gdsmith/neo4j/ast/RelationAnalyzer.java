@@ -1,9 +1,7 @@
 package gdsmith.neo4j.ast;
 
-import gdsmith.cypher.ast.Direction;
-import gdsmith.cypher.ast.IProperty;
-import gdsmith.cypher.ast.IRelationIdentifier;
-import gdsmith.cypher.ast.IType;
+import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
 
 import java.util.ArrayList;
@@ -13,10 +11,20 @@ import java.util.stream.Collectors;
 
 public class RelationAnalyzer extends RelationIdentifier implements IRelationAnalyzer {
     IRelationAnalyzer formerDef = null;
+    IRelationIdentifier source;
+    IClauseAnalyzer clauseAnalyzer;
+    IExpression sourceExpression = null;
 
-    RelationAnalyzer(IRelationIdentifier relationIdentifier){
+    RelationAnalyzer(IRelationIdentifier relationIdentifier, IClauseAnalyzer clauseAnalyzer, IExpression sourceExpression){
         this(relationIdentifier.getName(), relationIdentifier.getTypes().get(0), relationIdentifier.getDirection(),
                 relationIdentifier.getProperties());
+        source = relationIdentifier;
+        this.clauseAnalyzer = clauseAnalyzer;
+        this.sourceExpression = sourceExpression;
+    }
+
+    RelationAnalyzer(IRelationIdentifier relationIdentifier, IClauseAnalyzer clauseAnalyzer){
+        this(relationIdentifier, clauseAnalyzer, null);
     }
 
     RelationAnalyzer(String name, IType relationType, Direction direction, List<IProperty> properties) {
@@ -24,8 +32,23 @@ public class RelationAnalyzer extends RelationIdentifier implements IRelationAna
     }
 
     @Override
+    public IRelationIdentifier getSource() {
+        return source;
+    }
+
+    @Override
+    public IExpression getSourceRefExpression() {
+        return sourceExpression;
+    }
+
+    @Override
     public IRelationAnalyzer getFormerDef() {
         return formerDef;
+    }
+
+    @Override
+    public IClauseAnalyzer getClauseAnalyzer() {
+        return clauseAnalyzer;
     }
 
     @Override
@@ -53,4 +76,5 @@ public class RelationAnalyzer extends RelationIdentifier implements IRelationAna
         }
         return properties;
     }
+
 }

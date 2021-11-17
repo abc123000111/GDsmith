@@ -1,10 +1,8 @@
 package gdsmith.neo4j.ast;
 
 
-import gdsmith.cypher.ast.ICypherType;
-import gdsmith.cypher.ast.ILabel;
-import gdsmith.cypher.ast.INodeIdentifier;
-import gdsmith.cypher.ast.IProperty;
+import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 
 import java.util.ArrayList;
@@ -13,14 +11,39 @@ import java.util.stream.Collectors;
 
 public class NodeAnalyzer extends NodeIdentifier implements INodeAnalyzer {
     INodeAnalyzer formerDef = null;
+    IClauseAnalyzer clauseAnalyzer;
+    INodeIdentifier source;
+    IExpression sourceExpression;
 
-    NodeAnalyzer(INodeIdentifier nodeIdentifier) {
+    NodeAnalyzer(INodeIdentifier nodeIdentifier, IClauseAnalyzer clauseAnalyzer){
+        this(nodeIdentifier, clauseAnalyzer, null);
+    }
+
+    NodeAnalyzer(INodeIdentifier nodeIdentifier, IClauseAnalyzer clauseAnalyzer, IExpression sourceExpression) {
         super(nodeIdentifier.getName(), nodeIdentifier.getLabels(), nodeIdentifier.getProperties());
+        source = nodeIdentifier;
+        this.clauseAnalyzer = clauseAnalyzer;
+        this.sourceExpression = sourceExpression;
+    }
+
+    @Override
+    public INodeIdentifier getSource() {
+        return source;
+    }
+
+    @Override
+    public IExpression getSourceRefExpression() {
+        return sourceExpression;
     }
 
     @Override
     public INodeAnalyzer getFormerDef() {
         return formerDef;
+    }
+
+    @Override
+    public IClauseAnalyzer getClauseAnalyzer() {
+        return clauseAnalyzer;
     }
 
     @Override
@@ -43,9 +66,9 @@ public class NodeAnalyzer extends NodeIdentifier implements INodeAnalyzer {
         List<IProperty> properties = new ArrayList<>(this.properties);
         if(formerDef != null){
             properties.addAll(formerDef.getProperties());
-            properties = properties.stream().distinct().collect(Collectors.toList());
         }
         return properties;
     }
+
 
 }

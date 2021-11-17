@@ -47,4 +47,20 @@ public class Alias implements IAlias {
         sb.append(name);
     }
 
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Alias)){
+            return false;
+        }
+        if(getName().equals(((Alias)o).getName())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return getName().hashCode();
+    }
+
 }

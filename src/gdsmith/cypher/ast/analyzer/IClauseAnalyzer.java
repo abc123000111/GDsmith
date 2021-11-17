@@ -1,12 +1,10 @@
 package gdsmith.cypher.ast.analyzer;
 
-import gdsmith.cypher.ast.IAlias;
-import gdsmith.cypher.ast.INodeIdentifier;
-import gdsmith.cypher.ast.IRelationIdentifier;
+import gdsmith.cypher.ast.*;
 
 import java.util.List;
 
-public interface IClauseAnalyzer {
+public interface IClauseAnalyzer extends ICypherClause{
 
     /**
      * 本clause定义的别名
@@ -61,4 +59,32 @@ public interface IClauseAnalyzer {
      * @return
      */
     List<IRelationAnalyzer> getExtendablePatternIdentifiers();
+
+    /**
+     * 查找当前作用域的Identifier
+     * @param name Identifier名字
+     * @return IdentifierAnalyzer，带有上下文信息
+     */
+    IIdentifierAnalyzer getIdentifierAnalyzer(String name);
+
+    /**
+     * 查找当前作用域的Identifier
+     * @param identifier 想要查找的同名identifier
+     * @return IdentifierAnalyzer，带有上下文信息
+     */
+    IIdentifierAnalyzer getIdentifierAnalyzer(IIdentifier identifier);
+
+    /**
+     * 查找本地的哪些Pattern包含了特定identifier
+     * @param identifier
+     * @return
+     */
+    List<IPattern> getLocalPatternContainsIdentifier(IIdentifier identifier);
+
+
+    /**
+     * 获取原语法树中的ICypherClause节点实例，可以直接修改
+     * @return 可修改的ICypherClause，修改反映在原AST上
+     */
+    ICypherClause getSource();
 }

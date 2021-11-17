@@ -1,24 +1,21 @@
 package gdsmith.neo4j.ast;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.cypher.ast.analyzer.IAliasAnalyzer;
-import gdsmith.cypher.ast.analyzer.ICypherSymtab;
-import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
-import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
+import gdsmith.cypher.ast.analyzer.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Symtab implements ICypherSymtab {
 
-    private final ICypherClause parentClause;
+    private final IClauseAnalyzer parentClause;
     private boolean extendParent = false;
 
     private List<IPattern> patterns = new ArrayList<>();
     private List<IRet> aliasDefinitions = new ArrayList<>();
 
 
-    public Symtab(ICypherClause parentClause, boolean extendParent){
+    public Symtab(IClauseAnalyzer parentClause, boolean extendParent){
         this.parentClause = parentClause;
         this.extendParent = extendParent;
     }
@@ -53,7 +50,7 @@ public class Symtab implements ICypherSymtab {
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isAlias()){
-                    aliases.add(new AliasAnalyzer((IAlias) aliasDef.getIdentifier()));
+                    aliases.add(new AliasAnalyzer((IAlias) aliasDef.getIdentifier(), parentClause));
                 }
                 if(aliasDef.isAll()){
                     return parentClause.getPrevClause().toAnalyzer().getAvailableAliases();
@@ -168,7 +165,7 @@ public class Symtab implements ICypherSymtab {
             for(IPattern pattern : patterns){
                 for(IPatternElement patternElement : pattern.getPatternElements()){
                     if(patternElement instanceof INodeIdentifier && !patternElement.isAnonymous()){
-                        nodes.add(new NodeAnalyzer((INodeIdentifier) patternElement));
+                        nodes.add(new NodeAnalyzer((INodeIdentifier) patternElement, parentClause));
                     }
                 }
             }
@@ -180,7 +177,7 @@ public class Symtab implements ICypherSymtab {
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isNodeIdentifier()){
-                    nodes.add(new NodeAnalyzer((INodeIdentifier) aliasDef.getIdentifier()));
+                    nodes.add(new NodeAnalyzer((INodeIdentifier) aliasDef.getIdentifier(), parentClause));
                 }
                 if(aliasDef.isAll() && parentClause.getPrevClause() != null){
                     return parentClause.getPrevClause().toAnalyzer().getAvailableNodeIdentifiers();
@@ -208,7 +205,7 @@ public class Symtab implements ICypherSymtab {
             for(IPattern pattern : patterns){
                 for(IPatternElement patternElement : pattern.getPatternElements()){
                     if(patternElement instanceof IRelationIdentifier && !patternElement.isAnonymous()){
-                        relations.add(new RelationAnalyzer((IRelationIdentifier) patternElement));
+                        relations.add(new RelationAnalyzer((IRelationIdentifier) patternElement, parentClause));
                     }
                 }
             }
@@ -219,7 +216,7 @@ public class Symtab implements ICypherSymtab {
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isRelationIdentifier()){
-                    relations.add(new RelationAnalyzer((IRelationIdentifier) aliasDef.getIdentifier()));
+                    relations.add(new RelationAnalyzer((IRelationIdentifier) aliasDef.getIdentifier(), parentClause));
                 }
                 if(aliasDef.isAll() && parentClause.getPrevClause() != null){
                     return parentClause.getPrevClause().toAnalyzer().getAvailableRelationIdentifiers();

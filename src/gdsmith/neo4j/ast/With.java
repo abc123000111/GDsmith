@@ -6,16 +6,13 @@ import gdsmith.cypher.ast.analyzer.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class With implements IWithAnalyzer {
+public class With extends Neo4jClause implements IWithAnalyzer {
 
     private boolean distinct = false;
     private IExpression condition = null;
-    private ICypherClause nextClause = null, prevClause = null;
-
-    private Symtab symtab = null;
 
     public With(){
-        symtab = new Symtab(this,  false);
+        super(false);
     }
 
 
@@ -50,29 +47,6 @@ public class With implements IWithAnalyzer {
     }
 
     @Override
-    public void setNextClause(ICypherClause next) {
-        this.nextClause = next;
-        if(next != null) {
-            next.setPrevClause(this);
-        }
-    }
-
-    @Override
-    public ICypherClause getNextClause() {
-        return nextClause;
-    }
-
-    @Override
-    public void setPrevClause(ICypherClause prev) {
-        this.prevClause = prev;
-    }
-
-    @Override
-    public ICypherClause getPrevClause() {
-        return this.prevClause;
-    }
-
-    @Override
     public IWithAnalyzer toAnalyzer() {
         return this;
     }
@@ -95,53 +69,12 @@ public class With implements IWithAnalyzer {
     }
 
     @Override
-    public List<IAliasAnalyzer> getLocalAliases() {
-        return symtab.getLocalAliasDefs();
+    public List<IPattern> getLocalPatternContainsIdentifier(IIdentifier identifier) {
+        return new ArrayList<>();
     }
 
     @Override
-    public List<INodeAnalyzer> getLocalNodeIdentifiers() {
-        return symtab.getLocalNodePatterns();
-    }
-
-    @Override
-    public List<IRelationAnalyzer> getLocalRelationIdentifiers() {
-        return symtab.getLocalRelationPatterns();
-    }
-
-    @Override
-    public List<IAliasAnalyzer> getAvailableAliases() {
-        return symtab.getAvailableAliasDefs();
-    }
-
-    @Override
-    public List<INodeAnalyzer> getAvailableNodeIdentifiers() {
-        return symtab.getAvailableNodePatterns();
-    }
-
-    @Override
-    public List<IRelationAnalyzer> getAvailableRelationIdentifiers() {
-        return symtab.getAvailableRelationPatterns();
-    }
-
-    @Override
-    public List<IAliasAnalyzer> getExtendableAliases() {
-        if(prevClause == null)
-            return new ArrayList<>();
-        return prevClause.toAnalyzer().getAvailableAliases();
-    }
-
-    @Override
-    public List<INodeAnalyzer> getExtendableNodeIdentifiers() {
-        if(prevClause == null)
-            return new ArrayList<>();
-        return prevClause.toAnalyzer().getAvailableNodeIdentifiers();
-    }
-
-    @Override
-    public List<IRelationAnalyzer> getExtendablePatternIdentifiers() {
-        if(prevClause == null)
-            return new ArrayList<>();
-        return prevClause.toAnalyzer().getAvailableRelationIdentifiers();
+    public IWith getSource() {
+        return this;
     }
 }
