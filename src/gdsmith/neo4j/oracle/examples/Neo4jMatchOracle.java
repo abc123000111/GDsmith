@@ -1,9 +1,8 @@
-package gdsmith.neo4j.oracle;
+package gdsmith.neo4j.oracle.examples;
 
-import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.common.oracle.TestOracle;
 import gdsmith.neo4j.Neo4jGlobalState;
-import gdsmith.neo4j.gen.Neo4jNaiveQueryGenerator;
+import gdsmith.neo4j.gen.examples.NaiveQueryGenerator;
 
 public class Neo4jMatchOracle implements TestOracle {
 
@@ -11,7 +10,7 @@ public class Neo4jMatchOracle implements TestOracle {
 
     @Override
     public void check() throws Exception {
-        this.globalState.executeStatement(new Neo4jNaiveQueryGenerator().generateQuery(globalState));
+        this.globalState.executeStatement(new NaiveQueryGenerator().generateQuery(globalState));
     }
 
     public Neo4jMatchOracle(Neo4jGlobalState globalState){

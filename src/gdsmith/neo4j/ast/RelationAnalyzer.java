@@ -17,7 +17,7 @@ public class RelationAnalyzer extends RelationIdentifier implements IRelationAna
 
     RelationAnalyzer(IRelationIdentifier relationIdentifier, IClauseAnalyzer clauseAnalyzer, IExpression sourceExpression){
         this(relationIdentifier.getName(), relationIdentifier.getTypes().get(0), relationIdentifier.getDirection(),
-                relationIdentifier.getProperties());
+                relationIdentifier.getProperties(), relationIdentifier.getLengthLowerBound(), relationIdentifier.getLengthUpperBound());
         source = relationIdentifier;
         this.clauseAnalyzer = clauseAnalyzer;
         this.sourceExpression = sourceExpression;
@@ -27,8 +27,8 @@ public class RelationAnalyzer extends RelationIdentifier implements IRelationAna
         this(relationIdentifier, clauseAnalyzer, null);
     }
 
-    RelationAnalyzer(String name, IType relationType, Direction direction, List<IProperty> properties) {
-        super(name, relationType, direction, properties);
+    RelationAnalyzer(String name, IType relationType, Direction direction, List<IProperty> properties, int lengthLowerBound, int lengthUpperBound) {
+        super(name, relationType, direction, properties, lengthLowerBound, lengthUpperBound);
     }
 
     @Override

@@ -9,31 +9,37 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RelationIdentifier implements IRelationIdentifier {
+
+    public static final int NO_BOUND = -1;
+
     protected String name;
     protected IType relationType;
     protected List<IProperty> properties;
     protected Direction direction;
+    protected int lengthLowerBound, lengthUpperBound;
 
-    public static RelationIdentifier createRelationRef(IRelationIdentifier relationIdentifier, Direction direction){
+    public static RelationIdentifier createRelationRef(IRelationIdentifier relationIdentifier, Direction direction,
+        int lengthLowerBound, int lengthUpperBound){
         return new RelationIdentifier(relationIdentifier.getName(), null,
-                direction, new ArrayList<>());
+                direction, new ArrayList<>(), lengthLowerBound, lengthUpperBound);
     }
 
-    public static RelationIdentifier createNewNamedRelation(IIdentifierBuilder identifierBuilder,
-                                                            IType relationType, Direction direction, List<IProperty> properties){
+    public static RelationIdentifier createNewNamedRelation(IIdentifierBuilder identifierBuilder, IType relationType, Direction direction, List<IProperty> properties, int lengthLowerBound, int lengthUpperBound){
         return new RelationIdentifier(identifierBuilder.getNewRelationName(), relationType,
-                direction, properties);
+                direction, properties, lengthLowerBound, lengthUpperBound);
     }
 
-    public static RelationIdentifier createNewAnonymousRelation(IType relationType, Direction direction, List<IProperty> properties){
-        return new RelationIdentifier("", relationType, direction, properties);
+    public static RelationIdentifier createNewAnonymousRelation(IType relationType, Direction direction, List<IProperty> properties, int lengthLowerBound, int lengthUpperBound){
+        return new RelationIdentifier("", relationType, direction, properties, lengthLowerBound, lengthUpperBound);
     }
 
-    RelationIdentifier(String name, IType relationType, Direction direction, List<IProperty> properties){
+    RelationIdentifier(String name, IType relationType, Direction direction, List<IProperty> properties, int lengthLowerBound, int lengthUpperBound){
         this.name = name;
         this.relationType = relationType;
         this.direction = direction;
         this.properties = properties;
+        this.lengthLowerBound = lengthLowerBound;
+        this.lengthUpperBound = lengthUpperBound;
     }
 
     @Override
@@ -70,7 +76,17 @@ public class RelationIdentifier implements IRelationIdentifier {
 
     @Override
     public IRelationIdentifier createRef() {
-        return new RelationIdentifier(name, null, direction, null);
+        return new RelationIdentifier(name, null, direction, null, 1, 1);
+    }
+
+    @Override
+    public int getLengthLowerBound() {
+        return lengthLowerBound;
+    }
+
+    @Override
+    public int getLengthUpperBound() {
+        return lengthUpperBound;
     }
 
     @Override
@@ -89,6 +105,21 @@ public class RelationIdentifier implements IRelationIdentifier {
         }
        if(relationType != null){
            sb.append(" :").append(relationType.getName());
+       }
+       if(!(lengthLowerBound == 1 && lengthUpperBound == 1)){
+           sb.append(" *");
+           if(lengthUpperBound == lengthLowerBound && lengthUpperBound != NO_BOUND){
+               sb.append(lengthLowerBound);
+           }
+           else if(lengthLowerBound == NO_BOUND && lengthUpperBound != NO_BOUND){
+               sb.append("..").append(lengthUpperBound);
+           }
+           else{
+               sb.append(lengthLowerBound).append("..");
+               if(lengthUpperBound != NO_BOUND){
+                   sb.append(lengthUpperBound);
+               }
+           }
        }
        if(properties != null && properties.size()!=0){
            sb.append("{");
@@ -137,6 +168,7 @@ public class RelationIdentifier implements IRelationIdentifier {
         private String curRelationName = "";
         private IType curRelationType = null;
         private Direction curDirection = Direction.BOTH;
+        private int lengthLowerBound = 1, lengthUpperBound = 1;
         private List<IProperty> curRelationProperties;
 
         static RelationBuilder newRelationBuilder(String name){
@@ -168,8 +200,33 @@ public class RelationIdentifier implements IRelationIdentifier {
             return this;
         }
 
+        public RelationBuilder withOnlyLengthUpperBound(int lengthUpperBound){
+            this.lengthUpperBound = lengthUpperBound;
+            this.lengthLowerBound = NO_BOUND;
+            return this;
+        }
+
+        public RelationBuilder withOnlyLengthLowerBound(int lengthLowerBound){
+            this.lengthLowerBound = lengthLowerBound;
+            this.lengthUpperBound = NO_BOUND;
+            return this;
+        }
+
+        public RelationBuilder withLength(int length){
+            this.lengthUpperBound = length;
+            this.lengthLowerBound = length;
+            return this;
+        }
+
+        public RelationBuilder withLengthUnbounded(){
+            this.lengthLowerBound = NO_BOUND;
+            this.lengthLowerBound = NO_BOUND;
+            return this;
+        }
+
         public IRelationIdentifier build(){
-            return new RelationIdentifier(curRelationName, curRelationType, curDirection, curRelationProperties);
+            return new RelationIdentifier(curRelationName, curRelationType, curDirection,
+                    curRelationProperties, lengthLowerBound, lengthUpperBound);
         }
     }
 }

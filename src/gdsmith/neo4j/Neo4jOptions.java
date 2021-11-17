@@ -6,7 +6,7 @@ import gdsmith.DBMSSpecificOptions;
 import gdsmith.OracleFactory;
 import gdsmith.common.oracle.TestOracle;
 import gdsmith.neo4j.Neo4jOptions.Neo4jOracleFactory;
-import gdsmith.neo4j.oracle.Neo4jMatchOracle;
+import gdsmith.neo4j.oracle.Neo4jSmithCrashOracle;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ public class Neo4jOptions implements DBMSSpecificOptions<Neo4jOracleFactory> {
     public static final int DEFAULT_PORT = 7687; //todo 改
 
     @Parameter(names = "--oracle")
-    public List<Neo4jOracleFactory> oracles = Arrays.asList(Neo4jOptions.Neo4jOracleFactory.TLP_WHERE);
+    public List<Neo4jOracleFactory> oracles = Arrays.asList(Neo4jOracleFactory.RANDOM_CRASH);
 
     @Override
     public List<Neo4jOracleFactory> getTestOracleFactory() {
@@ -29,23 +29,12 @@ public class Neo4jOptions implements DBMSSpecificOptions<Neo4jOracleFactory> {
 
     public enum Neo4jOracleFactory implements OracleFactory<Neo4jGlobalState> {
 
-        TLP_WHERE {
+        RANDOM_CRASH {
 
             @Override
             public TestOracle create(Neo4jGlobalState globalState) throws SQLException {
-                //return new MySQLTLPWhereOracle(globalState);
-                return new Neo4jMatchOracle(globalState); //todo 改
+                return new Neo4jSmithCrashOracle(globalState);
             }
-
-        },
-        PQS {
-
-            @Override
-            public TestOracle create(Neo4jGlobalState globalState) throws SQLException {
-                //return new MySQLPivotedQuerySynthesisOracle(globalState);
-                return new Neo4jMatchOracle(globalState); //todo 改
-            }
-
         }
     }
 }

@@ -10,4 +10,6 @@ public interface IRelationIdentifier extends IPatternElement{
     Direction getDirection();
     void setDirection(Direction direction);
     IRelationIdentifier createRef();
+    int getLengthLowerBound();
+    int getLengthUpperBound();
 }

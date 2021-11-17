@@ -17,7 +17,7 @@ public class Ret implements IRet {
     }
 
     public static Ret createRelationRef(IRelationIdentifier relation){
-        return new Ret(RelationIdentifier.createRelationRef(relation, Direction.NONE));
+        return new Ret(RelationIdentifier.createRelationRef(relation, Direction.NONE, 1, 1));
     }
 
     public static Ret createNewExpressionAlias(IIdentifierBuilder identifierBuilder, IExpression expression){

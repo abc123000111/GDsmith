@@ -1,12 +1,15 @@
-package gdsmith.neo4j.gen;
+package gdsmith.neo4j.gen.examples;
 
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.neo4j.Neo4jGlobalState;
+import gdsmith.neo4j.gen.examples.NaiveAliasGenerator;
+import gdsmith.neo4j.gen.examples.NaiveConditionGenerator;
+import gdsmith.neo4j.gen.examples.NaivePatternGenerator;
 import gdsmith.neo4j.schema.Neo4jSchema;
 import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.dsl.*;
 
-public class Neo4jNaiveQueryGenerator {
+public class NaiveQueryGenerator {
 
     public CypherQueryAdapter generateQuery(Neo4jGlobalState globalState){
         ClauseSequenceBuilder builder = new ClauseSequenceBuilder();

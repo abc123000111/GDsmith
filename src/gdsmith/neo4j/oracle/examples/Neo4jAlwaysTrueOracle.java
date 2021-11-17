@@ -1,4 +1,4 @@
-package gdsmith.neo4j.oracle;
+package gdsmith.neo4j.oracle.examples;
 
 import gdsmith.common.oracle.TestOracle;
 

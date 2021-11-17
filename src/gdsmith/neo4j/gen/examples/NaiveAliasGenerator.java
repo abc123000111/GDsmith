@@ -1,4 +1,4 @@
-package gdsmith.neo4j.gen;
+package gdsmith.neo4j.gen.examples;
 
 import gdsmith.cypher.ast.IRet;
 import gdsmith.cypher.ast.IReturn;

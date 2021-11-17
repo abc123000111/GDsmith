@@ -1,4 +1,4 @@
-package gdsmith.neo4j.gen;
+package gdsmith.neo4j.gen.examples;
 
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
@@ -30,6 +30,7 @@ public class NaivePatternGenerator extends BasicPatternGenerator {
         //示例：获取一个clause的上下文信息
         List<INodeAnalyzer> id1s = matchClause.getAvailableNodeIdentifiers();
         List<IRelationAnalyzer> id2s = matchClause.getAvailableRelationIdentifiers();
+
 
         //示例：使用pattern builder流式地生成pattern，生成的结果是(nx: labelx)-[rx]->()
         patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode().withLabels(label).newNamedRelation()
