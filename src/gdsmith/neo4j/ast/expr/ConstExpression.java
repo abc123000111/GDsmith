@@ -4,7 +4,7 @@ import gdsmith.cypher.ast.ICypherType;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.neo4j.ast.Neo4jType;
 
-public class ConstExpression implements IExpression {
+public class ConstExpression extends Neo4jExpression{
     Object value;
     ICypherType type;
 

@@ -2,9 +2,7 @@ package gdsmith.neo4j.ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
 
-public class BinaryComparisonExpression implements IExpression{
-
-
+public class BinaryComparisonExpression extends Neo4jExpression{
 
     public enum BinaryComparisonOperation{
         SMALLER("<"),

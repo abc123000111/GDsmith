@@ -2,7 +2,7 @@ package gdsmith.neo4j.ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
 
-public class SingleLogicalExpression implements IExpression{
+public class SingleLogicalExpression extends Neo4jExpression{
 
     public enum SingleLogicalOperation{
         SMALLER("IS NULL"),

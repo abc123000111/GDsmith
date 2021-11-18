@@ -2,7 +2,7 @@ package gdsmith.neo4j.ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
 
-public class BinaryLogicalExpression implements IExpression{
+public class BinaryLogicalExpression extends Neo4jExpression{
 
     public enum BinaryLogicalOperation{
         SMALLER("OR"),

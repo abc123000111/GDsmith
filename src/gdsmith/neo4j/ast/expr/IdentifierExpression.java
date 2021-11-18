@@ -3,7 +3,7 @@ package gdsmith.neo4j.ast.expr;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.IIdentifier;
 
-public class IdentifierExpression implements IExpression {
+public class IdentifierExpression extends Neo4jExpression{
 
     private final IIdentifier identifier;
 
