@@ -21,12 +21,10 @@ public class Neo4jSchemaGenerator {
         int numOfRelationTypes = r.getInteger(2, 5);
         int numOfPatternInfos = r.getInteger(2, 5);
 
-        for (int i = 0; i < numOfLabels; i++)
-        {
+        for (int i = 0; i < numOfLabels; i++) {
             int numOfProperties = r.getInteger(2, 5);
             List<IPropertyInfo> properties = new ArrayList<>();
-            for (int j = 0; j < numOfProperties; j++)
-            {
+            for (int j = 0; j < numOfProperties; j++) {
                 String key = r.getString();
                 Neo4jType type = Randomly.fromOptions(Neo4jType.INT, Neo4jType.STRING);
                 boolean isOptional = Randomly.getBoolean();
@@ -38,12 +36,10 @@ public class Neo4jSchemaGenerator {
             labels.add(t);
         }
 
-        for (int i = 0; i < numOfRelationTypes; i++)
-        {
+        for (int i = 0; i < numOfRelationTypes; i++) {
             int numOfProperties = r.getInteger(2, 5);
             List<IPropertyInfo> properties = new ArrayList<>();
-            for (int j = 0; j < numOfProperties; j++)
-            {
+            for (int j = 0; j < numOfProperties; j++) {
                 String key = r.getString();
                 Neo4jType type = Randomly.fromOptions(Neo4jType.INT, Neo4jType.STRING);
                 boolean isOptional = Randomly.getBoolean();
@@ -55,8 +51,7 @@ public class Neo4jSchemaGenerator {
             relationTypes.add(re);
         }
 
-        for (int i = 0; i < numOfPatternInfos; i++)
-        {
+        for (int i = 0; i < numOfPatternInfos; i++) {
             List<IPatternElementInfo> patternElementInfos = new ArrayList<>();
 
             int index = r.getInteger(0, numOfLabels - 1);
