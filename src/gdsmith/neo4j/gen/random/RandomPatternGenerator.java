@@ -63,7 +63,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                         patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode().build());
                     } else {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                        patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node).build());
+                        patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node).build());
                     }
                 }
             } else {
@@ -93,7 +93,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                         leftNode = new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode();
                     } else {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                        leftNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node);
+                        leftNode = new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node);
                     }
                 }
 
@@ -124,7 +124,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                         relation = leftNode.newAnonymousRelation();
                     } else {
                         IRelationAnalyzer rel = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                        relation = leftNode.newNamedRelation(rel);
+                        relation = leftNode.newRelationRef(rel);
                     }
                 }
 
@@ -154,7 +154,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                         rightNode = new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode();
                     } else {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                        rightNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node);
+                        rightNode = new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node);
                     }
                 }
                 patternTuple.add(rightNode.build());
