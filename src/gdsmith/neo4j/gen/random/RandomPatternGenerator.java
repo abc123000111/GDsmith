@@ -32,7 +32,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
         int sizeOfTypes = schema.getRelationTypes().size();
 
         int numOfPatterns = Randomly.smallNumber();
-        if (numOfPatterns <= 0 || numOfPatterns >= 3) {
+        if (numOfPatterns == 0 || numOfPatterns >= 3) {
             numOfPatterns = 1;
         }
         for (int i = 0; i < numOfPatterns; i++) {
@@ -59,8 +59,12 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                     }
                 } else {
                     List<INodeAnalyzer> idNode = matchClause.getExtendableNodeIdentifiers();
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node).build());
+                    if (idNode.size() == 0) {
+                        patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode().build());
+                    } else {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
+                        patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node).build());
+                    }
                 }
             } else {
                 Pattern.PatternBuilder.OngoingNode leftNode;
@@ -85,8 +89,12 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                     }
                 } else {
                     List<INodeAnalyzer> idNode = matchClause.getExtendableNodeIdentifiers();
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    leftNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node);
+                    if (idNode.size() == 0) {
+                        leftNode = new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode();
+                    } else {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
+                        leftNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node);
+                    }
                 }
 
                 Pattern.PatternBuilder.OngoingRelation relation;
@@ -112,8 +120,12 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                     }
                 } else {
                     List<IRelationAnalyzer> idRelation = matchClause.getExtendablePatternIdentifiers();
-                    IRelationAnalyzer rel = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    relation = leftNode.newNamedRelation(rel);
+                    if (idRelation.size() == 0) {
+                        relation = leftNode.newAnonymousRelation();
+                    } else {
+                        IRelationAnalyzer rel = idRelation.get(r.getInteger(0, idRelation.size() - 1));
+                        relation = leftNode.newNamedRelation(rel);
+                    }
                 }
 
                 Pattern.PatternBuilder.OngoingNode rightNode;
@@ -138,13 +150,16 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                     }
                 } else {
                     List<INodeAnalyzer> idNode = matchClause.getExtendableNodeIdentifiers();
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    rightNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node);
+                    if (idNode.size() == 0) {
+                        rightNode = new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode();
+                    } else {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
+                        rightNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode(node);
+                    }
                 }
                 patternTuple.add(rightNode.build());
             }
         }
-
         return patternTuple;
     }
 }
