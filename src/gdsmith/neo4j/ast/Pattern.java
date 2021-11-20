@@ -119,6 +119,26 @@ public class Pattern implements IPattern {
                 return this;
             }
 
+            public OngoingRelation withOnlyLengthUpperBound(int lengthUpperBound){
+                relationBuilder.withOnlyLengthUpperBound(lengthUpperBound);
+                return this;
+            }
+
+            public OngoingRelation withOnlyLengthLowerBound(int lengthLowerBound){
+                relationBuilder.withOnlyLengthLowerBound(lengthLowerBound);
+                return this;
+            }
+
+            public OngoingRelation withLength(int length){
+                relationBuilder.withLength(length);
+                return this;
+            }
+
+            public OngoingRelation withLengthUnbounded(){
+                relationBuilder.withLengthUnbounded();
+                return this;
+            }
+
             public OngoingNode newNamedNode(){
                 IRelationIdentifier relation = relationBuilder.build();
                 patternBuilder.patternElements.add(relation);

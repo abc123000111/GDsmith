@@ -18,14 +18,13 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
     @Override
     public List<IRet> generateReturnAlias(IReturnAnalyzer returnClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
         List<IRet> results = new ArrayList<>();
-
-        return null;
+        return results;
     }
 
     @Override
     public List<IRet> generateWithAlias(IWithAnalyzer withClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
         List<IRet> results = new ArrayList<>();
 
-        return null;
+        return results;
     }
 }

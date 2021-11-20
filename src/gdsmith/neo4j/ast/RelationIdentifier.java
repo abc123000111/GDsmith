@@ -220,7 +220,7 @@ public class RelationIdentifier implements IRelationIdentifier {
 
         public RelationBuilder withLengthUnbounded(){
             this.lengthLowerBound = NO_BOUND;
-            this.lengthLowerBound = NO_BOUND;
+            this.lengthUpperBound = NO_BOUND;
             return this;
         }
 

@@ -103,19 +103,52 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                     boolean withType = Randomly.getBoolean();
                     boolean isNamed = Randomly.getBoolean();
                     Direction direction = Randomly.fromOptions(Direction.LEFT, Direction.RIGHT, Direction.BOTH);
+                    int typeOfLength = r.getInteger(0, 3);
                     if (withType) {
                         Neo4jSchema.Neo4jRelationTypeInfo typeInfo = schema.getRelationTypes().get(r.getInteger(0, sizeOfTypes - 1));
                         IType type = new RelationType(typeInfo.getName());
                         if (isNamed) {
-                            relation = leftNode.newNamedRelation().withType(type).withDirection(direction);
+                            if (typeOfLength == 0) {
+                                relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withLengthUnbounded();
+                            } else if (typeOfLength == 1) {
+                                relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withOnlyLengthLowerBound(1);
+                            } else if (typeOfLength == 2) {
+                                relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withOnlyLengthUpperBound(2);
+                            } else {
+                                relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withLength(1);
+                            }
                         } else {
-                            relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction);
+                            if (typeOfLength == 0) {
+                                relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withLengthUnbounded();
+                            } else if (typeOfLength == 1) {
+                                relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withOnlyLengthLowerBound(1);
+                            } else if (typeOfLength == 2) {
+                                relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withOnlyLengthUpperBound(2);
+                            } else {
+                                relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withLength(1);
+                            }
                         }
                     } else {
                         if (isNamed) {
-                            relation = leftNode.newNamedRelation().withDirection(direction);
+                            if (typeOfLength == 0) {
+                                relation = leftNode.newNamedRelation().withDirection(direction).withLengthUnbounded();
+                            } else if (typeOfLength == 1) {
+                                relation = leftNode.newNamedRelation().withDirection(direction).withOnlyLengthLowerBound(1);
+                            } else if (typeOfLength == 2) {
+                                relation = leftNode.newNamedRelation().withDirection(direction).withOnlyLengthUpperBound(2);
+                            } else {
+                                relation = leftNode.newNamedRelation().withDirection(direction).withLength(1);
+                            }
                         } else {
-                            relation = leftNode.newAnonymousRelation().withDirection(direction);
+                            if (typeOfLength == 0) {
+                                relation = leftNode.newAnonymousRelation().withDirection(direction).withLengthUnbounded();
+                            } else if (typeOfLength == 1) {
+                                relation = leftNode.newAnonymousRelation().withDirection(direction).withOnlyLengthLowerBound(1);
+                            } else if (typeOfLength == 2) {
+                                relation = leftNode.newAnonymousRelation().withDirection(direction).withOnlyLengthUpperBound(2);
+                            } else {
+                                relation = leftNode.newAnonymousRelation().withDirection(direction).withLength(1);
+                            }
                         }
                     }
                 } else {
