@@ -36,6 +36,15 @@ public class Property implements IProperty {
     }
 
     @Override
+    public IProperty getCopy() {
+        if(value != null){
+            return new Property(key, type, value.getCopy());
+        }
+        return new Property(key, type, null);
+
+    }
+
+    @Override
     public void toTextRepresentation(StringBuilder sb) {
         sb.append(key).append(":");
         value.toTextRepresentation(sb);

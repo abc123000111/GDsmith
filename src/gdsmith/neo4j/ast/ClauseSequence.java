@@ -5,6 +5,7 @@ import gdsmith.cypher.ast.ICypherClause;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClauseSequence implements IClauseSequence {
 
@@ -13,6 +14,13 @@ public class ClauseSequence implements IClauseSequence {
     @Override
     public List<ICypherClause> getClauseList() {
         return clauses;
+    }
+
+    @Override
+    public IClauseSequence getCopy() {
+        ClauseSequence clauseSequence = new ClauseSequence();
+        clauses.stream().forEach(c->{clauseSequence.addClause(c.getCopy());});
+        return clauseSequence;
     }
 
     public void addClause(ICypherClause clause){

@@ -6,6 +6,7 @@ import gdsmith.cypher.ast.analyzer.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Create extends Neo4jClause implements ICreateAnalyzer {
 
@@ -27,6 +28,16 @@ public class Create extends Neo4jClause implements ICreateAnalyzer {
     @Override
     public ICreateAnalyzer toAnalyzer() {
         return this;
+    }
+
+    @Override
+    public ICypherClause getCopy() {
+        Create create = new Create();
+        if(symtab != null){
+            create.symtab.setPatterns(symtab.getPatterns().stream().map(p->p.getCopy()).collect(Collectors.toList()));
+            create.symtab.setAliasDefinition(symtab.getAliasDefinitions().stream().map(a->a.getCopy()).collect(Collectors.toList()));
+        }
+        return create;
     }
 
     @Override

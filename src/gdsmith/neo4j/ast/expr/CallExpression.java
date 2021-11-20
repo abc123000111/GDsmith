@@ -7,4 +7,9 @@ public class CallExpression extends Neo4jExpression{
     public void toTextRepresentation(StringBuilder sb) {
         sb.append("call not supported yet");
     }
+
+    @Override
+    public IExpression getCopy() {
+        return new CallExpression();
+    }
 }

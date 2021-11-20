@@ -17,4 +17,9 @@ public class GetPropertyExpression extends Neo4jExpression{
         fromExpression.toTextRepresentation(sb);
         sb.append(".").append(propertyName).append(")");
     }
+
+    @Override
+    public IExpression getCopy() {
+        return null;
+    }
 }

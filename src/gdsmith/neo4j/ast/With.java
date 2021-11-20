@@ -5,6 +5,7 @@ import gdsmith.cypher.ast.analyzer.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class With extends Neo4jClause implements IWithAnalyzer {
 
@@ -49,6 +50,23 @@ public class With extends Neo4jClause implements IWithAnalyzer {
     @Override
     public IWithAnalyzer toAnalyzer() {
         return this;
+    }
+
+    @Override
+    public ICypherClause getCopy() {
+        With with = new With();
+        with.distinct = distinct;
+        if(condition != null){
+            with.condition = condition.getCopy();
+        }
+        else {
+            with.condition = null;
+        }
+        if(symtab != null){
+            with.symtab.setPatterns(symtab.getPatterns().stream().map(p->p.getCopy()).collect(Collectors.toList()));
+            with.symtab.setAliasDefinition(symtab.getAliasDefinitions().stream().map(a->a.getCopy()).collect(Collectors.toList()));
+        }
+        return with;
     }
 
     @Override

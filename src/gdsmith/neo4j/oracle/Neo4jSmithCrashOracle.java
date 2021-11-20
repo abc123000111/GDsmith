@@ -1,7 +1,9 @@
 package gdsmith.neo4j.oracle;
 
 import gdsmith.common.oracle.TestOracle;
+import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.neo4j.Neo4jGlobalState;
+import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.gen.random.RandomQueryGenerator;
 
 public class Neo4jSmithCrashOracle implements TestOracle {
@@ -16,7 +18,10 @@ public class Neo4jSmithCrashOracle implements TestOracle {
     @Override
     public void check() throws Exception {
         //todo oracle 的检测逻辑，会被调用多次
-        new RandomQueryGenerator().generateQuery(globalState);
+        ClauseSequence sequence = new RandomQueryGenerator().generateQuery(globalState);
+        StringBuilder sb = new StringBuilder();
+        sequence.toTextRepresentation(sb);
+        globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
 
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
     }

@@ -20,4 +20,13 @@ public class IdentifierExpression extends Neo4jExpression{
     public void toTextRepresentation(StringBuilder sb) {
         sb.append(identifier.getName());
     }
+
+    @Override
+    public IExpression getCopy() {
+        IIdentifier identifier = null;
+        if(this.identifier != null){
+            identifier = this.identifier.getCopy();
+        }
+        return new IdentifierExpression(identifier);
+    }
 }

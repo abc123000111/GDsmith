@@ -4,6 +4,18 @@ import gdsmith.cypher.ast.IExpression;
 
 public class BinaryComparisonExpression extends Neo4jExpression{
 
+    @Override
+    public IExpression getCopy() {
+        IExpression left = null, right = null;
+        if(this.left != null){
+            left = this.left.getCopy();
+        }
+        if(this.right != null){
+            right = this.right.getCopy();
+        }
+        return new BinaryComparisonExpression(left, right, this.op);
+    }
+
     public enum BinaryComparisonOperation{
         SMALLER("<"),
         EQUAL("="),

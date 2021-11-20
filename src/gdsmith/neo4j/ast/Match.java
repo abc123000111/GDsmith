@@ -6,6 +6,7 @@ import gdsmith.cypher.ast.analyzer.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Match extends Neo4jClause implements IMatchAnalyzer {
     private boolean isOptional = false;
@@ -49,6 +50,23 @@ public class Match extends Neo4jClause implements IMatchAnalyzer {
     @Override
     public IMatchAnalyzer toAnalyzer() {
         return this;
+    }
+
+    @Override
+    public ICypherClause getCopy() {
+        Match match = new Match();
+        match.isOptional = isOptional;
+        if(symtab != null){
+            match.symtab.setPatterns(symtab.getPatterns().stream().map(p->p.getCopy()).collect(Collectors.toList()));
+            match.symtab.setAliasDefinition(symtab.getAliasDefinitions().stream().map(a->a.getCopy()).collect(Collectors.toList()));
+        }
+        if(conditon != null){
+            match.conditon = conditon.getCopy();
+        }
+        else {
+            match.conditon = null;
+        }
+        return match;
     }
 
     @Override

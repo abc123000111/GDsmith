@@ -19,7 +19,7 @@ public class RelationIdentifier implements IRelationIdentifier {
     protected int lengthLowerBound, lengthUpperBound;
 
     public static RelationIdentifier createRelationRef(IRelationIdentifier relationIdentifier, Direction direction,
-        int lengthLowerBound, int lengthUpperBound){
+                                                       int lengthLowerBound, int lengthUpperBound){
         return new RelationIdentifier(relationIdentifier.getName(), null,
                 direction, new ArrayList<>(), lengthLowerBound, lengthUpperBound);
     }
@@ -50,6 +50,16 @@ public class RelationIdentifier implements IRelationIdentifier {
     @Override
     public ICypherType getType() {
         return Neo4jType.RELATION;
+    }
+
+    @Override
+    public IRelationIdentifier getCopy() {
+        RelationIdentifier relation = new RelationIdentifier(name, relationType, direction, new ArrayList<>(),
+                lengthLowerBound, lengthUpperBound);
+        if(properties != null){
+            relation.properties = properties.stream().map(p->p.getCopy()).collect(Collectors.toList());
+        }
+        return relation;
     }
 
     @Override
@@ -103,34 +113,34 @@ public class RelationIdentifier implements IRelationIdentifier {
         if(name != null){
             sb.append(name);
         }
-       if(relationType != null){
-           sb.append(" :").append(relationType.getName());
-       }
-       if(!(lengthLowerBound == 1 && lengthUpperBound == 1)){
-           sb.append(" *");
-           if(lengthUpperBound == lengthLowerBound && lengthUpperBound != NO_BOUND){
-               sb.append(lengthLowerBound);
-           }
-           else if(lengthLowerBound == NO_BOUND && lengthUpperBound != NO_BOUND){
-               sb.append("..").append(lengthUpperBound);
-           }
-           else{
-               sb.append(lengthLowerBound).append("..");
-               if(lengthUpperBound != NO_BOUND){
-                   sb.append(lengthUpperBound);
-               }
-           }
-       }
-       if(properties != null && properties.size()!=0){
-           sb.append("{");
-           for(int i = 0; i < properties.size(); i++){
-               properties.get(i).toTextRepresentation(sb);
-               if(i != properties.size() - 1){
-                   sb.append(", ");
-               }
-           }
-           sb.append("}");
-       }
+        if(relationType != null){
+            sb.append(" :").append(relationType.getName());
+        }
+        if(!(lengthLowerBound == 1 && lengthUpperBound == 1)){
+            sb.append(" *");
+            if(lengthUpperBound == lengthLowerBound && lengthUpperBound != NO_BOUND){
+                sb.append(lengthLowerBound);
+            }
+            else if(lengthLowerBound == NO_BOUND && lengthUpperBound != NO_BOUND){
+                sb.append("..").append(lengthUpperBound);
+            }
+            else{
+                sb.append(lengthLowerBound).append("..");
+                if(lengthUpperBound != NO_BOUND){
+                    sb.append(lengthUpperBound);
+                }
+            }
+        }
+        if(properties != null && properties.size()!=0){
+            sb.append("{");
+            for(int i = 0; i < properties.size(); i++){
+                properties.get(i).toTextRepresentation(sb);
+                if(i != properties.size() - 1){
+                    sb.append(", ");
+                }
+            }
+            sb.append("}");
+        }
         switch (direction){
             case LEFT:
             case BOTH:
@@ -152,7 +162,7 @@ public class RelationIdentifier implements IRelationIdentifier {
     public int hashCode(){
         return getName().hashCode();
     }
-    
+
     @Override
     public boolean equals(Object o){
         if(!(o instanceof RelationIdentifier)){

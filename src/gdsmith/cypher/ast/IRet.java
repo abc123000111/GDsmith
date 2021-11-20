@@ -1,6 +1,6 @@
 package gdsmith.cypher.ast;
 
-public interface IRet extends ITextRepresentation {
+public interface IRet extends ITextRepresentation, ICopyable {
     boolean isAll();
     void setAll(boolean isAll);
     boolean isNodeIdentifier();
@@ -11,4 +11,7 @@ public interface IRet extends ITextRepresentation {
 
     IExpression getExpression();
     IIdentifier getIdentifier();
+
+    @Override
+    IRet getCopy();
 }

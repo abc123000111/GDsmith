@@ -5,6 +5,7 @@ import gdsmith.neo4j.dsl.IIdentifierBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Pattern implements IPattern {
     private final List<IPatternElement> patternElements;
@@ -16,6 +17,15 @@ public class Pattern implements IPattern {
     @Override
     public List<IPatternElement> getPatternElements() {
         return patternElements;
+    }
+
+    @Override
+    public IPattern getCopy() {
+        if(patternElements != null){
+            return new Pattern(patternElements.stream().map(p->p.getCopy()).collect(Collectors.toList()));
+        }
+        return new Pattern(new ArrayList<>());
+
     }
 
     @Override

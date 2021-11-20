@@ -1,9 +1,6 @@
 package gdsmith.neo4j.ast;
 
-import gdsmith.cypher.ast.IAlias;
-import gdsmith.cypher.ast.ICypherType;
-import gdsmith.cypher.ast.IExpression;
-import gdsmith.cypher.ast.IRelationIdentifier;
+import gdsmith.cypher.ast.*;
 import gdsmith.neo4j.dsl.IIdentifierBuilder;
 
 public class Alias implements IAlias {
@@ -31,6 +28,18 @@ public class Alias implements IAlias {
     @Override
     public ICypherType getType() {
         return Neo4jType.UNKNOWN;
+    }
+
+    @Override
+    public IIdentifier getCopy() {
+        Alias alias;
+        if(expression != null){
+            alias = new Alias(name, expression.getCopy());
+        }
+        else {
+            alias = new Alias(name, null);
+        }
+        return alias;
     }
 
     @Override

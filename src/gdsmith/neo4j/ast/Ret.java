@@ -97,6 +97,21 @@ public class Ret implements IRet {
     }
 
     @Override
+    public IRet getCopy() {
+        Ret returnVal = new Ret();
+        returnVal.isAll = isAll;
+        returnVal.expression = null;
+        returnVal.identifier = null;
+        if(expression != null){
+            returnVal.expression = expression.getCopy();
+        }
+        if(identifier != null){
+            returnVal.identifier = identifier.getCopy();
+        }
+        return returnVal;
+    }
+
+    @Override
     public void toTextRepresentation(StringBuilder sb) {
         if(isAll()){
             sb.append("*");

@@ -45,6 +45,18 @@ public class NodeIdentifier implements INodeIdentifier {
     }
 
     @Override
+    public INodeIdentifier getCopy() {
+        NodeIdentifier node = new NodeIdentifier(name, new ArrayList<>(), new ArrayList<>());
+        if(labels != null){
+            node.labels.addAll(labels);
+        }
+        if(properties != null){
+            node.properties = properties.stream().map(p->p.getCopy()).collect(Collectors.toList());
+        }
+        return node;
+    }
+
+    @Override
     public List<IProperty> getProperties() {
         return properties;
     }

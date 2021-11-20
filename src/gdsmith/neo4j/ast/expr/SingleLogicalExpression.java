@@ -4,6 +4,15 @@ import gdsmith.cypher.ast.IExpression;
 
 public class SingleLogicalExpression extends Neo4jExpression{
 
+    @Override
+    public IExpression getCopy() {
+        IExpression child = null;
+        if(this.child != null){
+            child = this.child.getCopy();
+        }
+        return new SingleLogicalExpression(child, this.op);
+    }
+
     public enum SingleLogicalOperation{
         SMALLER("IS NULL"),
         EQUAL("IS NOT NULL"),

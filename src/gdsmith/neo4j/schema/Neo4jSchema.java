@@ -3,9 +3,10 @@ package gdsmith.neo4j.schema;
 import gdsmith.common.schema.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import gdsmith.cypher.ast.ICypherType;
+import gdsmith.cypher.ast.IExpression;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.schema.Neo4jSchema.Neo4jTable;
 import gdsmith.neo4j.ast.Neo4jType;
@@ -27,45 +28,7 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
     public Neo4jSchema(List<Neo4jTable> databaseTables, List<Neo4jLabelInfo> labels,
                        List<Neo4jRelationTypeInfo> relationTypes, List<Neo4jPatternInfo> patternInfos) {
         super(databaseTables);
-        /**
-         * 这里面是乱写的，应该让SchemaGenerator来生成
-         */
-        /*labels = new ArrayList<>();
-        relationTypes = new ArrayList<>();
 
-        Neo4jLabelInfo tl1 = new Neo4jLabelInfo(), tl2 = new Neo4jLabelInfo();
-        Neo4jRelationTypeInfo r1 = new Neo4jRelationTypeInfo(), r2 = new Neo4jRelationTypeInfo();
-        Neo4jPropertyInfo p1 = new Neo4jPropertyInfo(), p2 = new Neo4jPropertyInfo(), p3 = new Neo4jPropertyInfo();
-
-        p1.key = "name";
-        p2.key = "integer";
-        p3.key = "string";
-        p1.type = Neo4jType.STRING;
-        p2.type = Neo4jType.INT;
-        p3.type = Neo4jType.STRING;
-
-        tl1.name = "L1";
-        tl1.properties.add(p1);
-        tl1.properties.add(p2);
-        tl1.properties.add(p3);
-        tl2.name = "L2";
-        tl2.properties.add(p1);
-        tl2.properties.add(p2);
-        tl2.properties.add(p3);
-        r1.name = "R1";
-        r1.properties.add(p1);
-        r1.properties.add(p2);
-        r1.properties.add(p3);
-        r2.name = "R2";
-        r1.properties.add(p1);
-        r1.properties.add(p2);
-        r1.properties.add(p3);
-
-        labels.add(tl1);
-        labels.add(tl2);
-        relationTypes.add(r1);
-        relationTypes.add(r2);
-         */
         this.labels = labels;
         this.relationTypes = relationTypes;
         this.patternInfos = patternInfos;
@@ -157,6 +120,87 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         @Override
         public boolean isOptional() {
             return isOptional;
+        }
+    }
+
+    public static abstract class Neo4jFunctionInfo implements IFunctionInfo{
+        private String name;
+        private List<IParamInfo> params;
+        private Neo4jType expectedReturnType;
+
+        public Neo4jFunctionInfo(String name, Neo4jType expectedReturnType, IParamInfo ...params){
+            this.name = name;
+            this.params = Arrays.asList(params);
+            this.expectedReturnType = expectedReturnType;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public List<IParamInfo> getParams() {
+            return params;
+        }
+
+        @Override
+        public Neo4jType getExpectedReturnType() {
+            return expectedReturnType;
+        }
+    }
+
+    public enum Neo4jBuiltInFunctions implements IFunctionInfo{
+        MAX("MAX", Neo4jType.UNKNOWN, new Neo4jParamInfo(Neo4jType.UNKNOWN, true)){
+            @Override
+            public Neo4jType calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        };
+
+        Neo4jBuiltInFunctions(String name, Neo4jType expectedReturnType, IParamInfo... params){
+            this.name = name;
+            this.params = Arrays.asList(params);
+            this.expectedReturnType = expectedReturnType;
+        }
+
+        private String name;
+        private List<IParamInfo> params;
+        private Neo4jType expectedReturnType;
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public List<IParamInfo> getParams() {
+            return null;
+        }
+
+        @Override
+        public Neo4jType getExpectedReturnType() {
+            return null;
+        }
+    }
+
+    public static class Neo4jParamInfo implements IParamInfo{
+        private boolean isOptionalLength;
+        private Neo4jType paramType;
+
+        public Neo4jParamInfo(Neo4jType type, boolean isOptionalLength){
+                paramType = type;
+                this.isOptionalLength = isOptionalLength;
+        }
+
+        @Override
+        public boolean isOptionalLength() {
+            return isOptionalLength;
+        }
+
+        @Override
+        public Neo4jType getParamType() {
+            return paramType;
         }
     }
 

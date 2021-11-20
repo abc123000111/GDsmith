@@ -1,5 +1,6 @@
 package gdsmith.neo4j.ast.expr;
 
+import gdsmith.cypher.ast.ICopyable;
 import gdsmith.cypher.ast.ICypherType;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.neo4j.ast.Neo4jType;
@@ -36,5 +37,13 @@ public class ConstExpression extends Neo4jExpression{
             case STRING: sb.append("\""+(String) value + "\"");break;
             case UNKNOWN: sb.append("null");break; //todo not supported
         }
+    }
+
+    @Override
+    public IExpression getCopy() { //todo 这是个隐患
+        if(value instanceof ICopyable){
+            return new ConstExpression(((ICopyable) value).getCopy());
+        }
+        return new ConstExpression(value);
     }
 }

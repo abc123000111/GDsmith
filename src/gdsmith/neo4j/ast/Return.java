@@ -5,6 +5,7 @@ import gdsmith.cypher.ast.analyzer.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Return extends Neo4jClause implements IReturnAnalyzer {
 
@@ -28,6 +29,19 @@ public class Return extends Neo4jClause implements IReturnAnalyzer {
     @Override
     public IReturnAnalyzer toAnalyzer() {
         return this;
+    }
+
+    @Override
+    public ICypherClause getCopy() {
+        Return returnClause = new Return();
+        returnClause.returnList = returnList.stream().map(ret -> ret.getCopy()).collect(Collectors.toList());
+        if(symtab != null){
+            if(symtab != null){
+                returnClause.symtab.setPatterns(symtab.getPatterns().stream().map(p->p.getCopy()).collect(Collectors.toList()));
+                returnClause.symtab.setAliasDefinition(symtab.getAliasDefinitions().stream().map(a->a.getCopy()).collect(Collectors.toList()));
+            }
+        }
+        return returnClause;
     }
 
     @Override

@@ -11,7 +11,7 @@ import gdsmith.neo4j.schema.Neo4jSchema;
 
 public class RandomQueryGenerator {
 
-    public CypherQueryAdapter generateQuery(Neo4jGlobalState globalState){
+    public ClauseSequence generateQuery(Neo4jGlobalState globalState){
         ClauseSequenceBuilder builder = new ClauseSequenceBuilder();
 
         Neo4jSchema schema = globalState.getSchema();
@@ -22,12 +22,7 @@ public class RandomQueryGenerator {
                 new NaiveAliasGenerator(schema, builder.getIdentifierBuilder()),
                 new NaivePatternGenerator(schema, builder.getIdentifierBuilder()), schema);
 
-        StringBuilder sb = new StringBuilder();
 
-        //转化为字符串
-        sequence.toTextRepresentation(sb);
-        String query = sb.toString();
-
-        return new CypherQueryAdapter(query);
+        return sequence;
     }
 }
