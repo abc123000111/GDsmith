@@ -30,6 +30,9 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         List<IRelationAnalyzer> idRelation = returnClause.getExtendablePatternIdentifiers();
         List<IAliasAnalyzer> idAlias = returnClause.getExtendableAliases();
         Randomly r = new Randomly();
+        int sizeOfAlias = idAlias.size();
+        int sizeOfNode = idAlias.size();
+        int sizeOfRelation = idAlias.size();
 
         int numOfExpressions = Randomly.smallNumber();
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
@@ -37,63 +40,88 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         }
 
         for (int i = 0; i < numOfExpressions; i++) {
-            Ret result;
+            Ret result = null;
             if (i == 0) {
                 int type = r.getInteger(0, 5);
                 if (type == 0) {
-                    IAliasAnalyzer alias = idAlias.get(r.getInteger(0, idAlias.size() - 1));
-                    result = Ret.createAliasRef(alias);
+                    if (sizeOfAlias > 0) {
+                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
+                        result = Ret.createAliasRef(alias);
+                    }
                 } else if (type == 1) {
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    result = Ret.createNodeRef(node);
+                    if (sizeOfNode > 0) {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        result = Ret.createNodeRef(node);
+                    }
                 } else if (type == 2) {
-                    IRelationAnalyzer relation = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    result = Ret.createRelationRef(relation);
+                    if (sizeOfRelation > 0) {
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        result = Ret.createRelationRef(relation);
+                    }
                 } else if (type == 3) {
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    List<IProperty> props = node.getProperties();
-                    IProperty prop = props.get(r.getInteger(0, props.size() - 1));
-                    IdentifierExpression ie = new IdentifierExpression(node);
-                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                    result = Ret.createNewExpressionReturnVal(exp);
+                    if (sizeOfNode > 0) {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        List<IProperty> props = node.getProperties();
+                        IProperty prop = props.get(r.getInteger(0, props.size() - 1));
+                        IdentifierExpression ie = new IdentifierExpression(node);
+                        GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                        result = Ret.createNewExpressionReturnVal(exp);
+                    }
                 } else if (type == 4) {
-                    IRelationAnalyzer relation = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    List<IProperty> props = relation.getProperties();
-                    IProperty prop = props.get(r.getInteger(0, props.size() - 1));
-                    IdentifierExpression ie = new IdentifierExpression(relation);
-                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                    result = Ret.createNewExpressionReturnVal(exp);
+                    if (sizeOfRelation > 0) {
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        List<IProperty> props = relation.getProperties();
+                        IProperty prop = props.get(r.getInteger(0, props.size() - 1));
+                        IdentifierExpression ie = new IdentifierExpression(relation);
+                        GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                        result = Ret.createNewExpressionReturnVal(exp);
+                    }
                 } else {
                     result = Ret.createStar();
                 }
             } else {
                 int type = r.getInteger(0, 4);
                 if (type == 0) {
-                    IAliasAnalyzer alias = idAlias.get(r.getInteger(0, idAlias.size() - 1));
-                    result = Ret.createAliasRef(alias);
+                    if (sizeOfAlias > 0) {
+                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
+                        result = Ret.createAliasRef(alias);
+                    }
                 } else if (type == 1) {
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    result = Ret.createNodeRef(node);
+                    if (sizeOfNode > 0) {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        result = Ret.createNodeRef(node);
+                    }
                 } else if (type == 2) {
-                    IRelationAnalyzer relation = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    result = Ret.createRelationRef(relation);
+                    if (sizeOfRelation > 0) {
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        result = Ret.createRelationRef(relation);
+                    }
                 } else if (type == 3) {
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    List<IProperty> props = node.getProperties();
-                    IProperty prop = props.get(r.getInteger(0, props.size() - 1));
-                    IdentifierExpression ie = new IdentifierExpression(node);
-                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                    result = Ret.createNewExpressionReturnVal(exp);
+                    if (sizeOfNode > 0) {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        List<IProperty> props = node.getProperties();
+                        IProperty prop = props.get(r.getInteger(0, props.size() - 1));
+                        IdentifierExpression ie = new IdentifierExpression(node);
+                        GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                        result = Ret.createNewExpressionReturnVal(exp);
+                    }
                 } else {
-                    IRelationAnalyzer relation = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    List<IProperty> props = relation.getProperties();
-                    IProperty prop = props.get(r.getInteger(0, props.size() - 1));
-                    IdentifierExpression ie = new IdentifierExpression(relation);
-                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                    result = Ret.createNewExpressionReturnVal(exp);
+                    if (sizeOfRelation > 0) {
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        List<IProperty> props = relation.getProperties();
+                        IProperty prop = props.get(r.getInteger(0, props.size() - 1));
+                        IdentifierExpression ie = new IdentifierExpression(relation);
+                        GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                        result = Ret.createNewExpressionReturnVal(exp);
+                    }
                 }
             }
-            results.add(result);
+            if (result != null) {
+                results.add(result);
+            }
+        }
+        if (results.isEmpty()) {
+            results.add(Ret.createStar());
         }
         return results;
     }
@@ -105,6 +133,9 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         List<IRelationAnalyzer> idRelation = withClause.getExtendablePatternIdentifiers();
         List<IAliasAnalyzer> idAlias = withClause.getExtendableAliases();
         Randomly r = new Randomly();
+        int sizeOfAlias = idAlias.size();
+        int sizeOfNode = idAlias.size();
+        int sizeOfRelation = idAlias.size();
 
         int numOfExpressions = Randomly.smallNumber();
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
@@ -112,63 +143,88 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         }
 
         for (int i = 0; i < numOfExpressions; i++) {
-            Ret result;
+            Ret result = null;
             if (i == 0) {
                 int type = r.getInteger(0, 5);
                 if (type == 0) {
-                    IAliasAnalyzer alias = idAlias.get(r.getInteger(0, idAlias.size() - 1));
-                    result = Ret.createAliasRef(alias);
+                    if (sizeOfAlias > 0) {
+                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
+                        result = Ret.createAliasRef(alias);
+                    }
                 } else if (type == 1) {
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    result = Ret.createNodeRef(node);
+                    if (sizeOfNode > 0) {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        result = Ret.createNodeRef(node);
+                    }
                 } else if (type == 2) {
-                    IRelationAnalyzer relation = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    result = Ret.createRelationRef(relation);
+                    if (sizeOfRelation > 0) {
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        result = Ret.createRelationRef(relation);
+                    }
                 } else if (type == 3) {
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    List<IProperty> props = node.getProperties();
-                    IProperty prop = props.get(r.getInteger(0, props.size() - 1));
-                    IdentifierExpression ie = new IdentifierExpression(node);
-                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                    result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                    if (sizeOfNode > 0) {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        List<IProperty> props = node.getProperties();
+                        IProperty prop = props.get(r.getInteger(0, props.size() - 1));
+                        IdentifierExpression ie = new IdentifierExpression(node);
+                        GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                        result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                    }
                 } else if (type == 4) {
-                    IRelationAnalyzer relation = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    List<IProperty> props = relation.getProperties();
-                    IProperty prop = props.get(r.getInteger(0, props.size() - 1));
-                    IdentifierExpression ie = new IdentifierExpression(relation);
-                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                    result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                    if (sizeOfRelation > 0) {
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        List<IProperty> props = relation.getProperties();
+                        IProperty prop = props.get(r.getInteger(0, props.size() - 1));
+                        IdentifierExpression ie = new IdentifierExpression(relation);
+                        GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                        result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                    }
                 } else {
                     result = Ret.createStar();
                 }
             } else {
                 int type = r.getInteger(0, 4);
                 if (type == 0) {
-                    IAliasAnalyzer alias = idAlias.get(r.getInteger(0, idAlias.size() - 1));
-                    result = Ret.createAliasRef(alias);
+                    if (sizeOfAlias > 0) {
+                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
+                        result = Ret.createAliasRef(alias);
+                    }
                 } else if (type == 1) {
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    result = Ret.createNodeRef(node);
+                    if (sizeOfNode > 0) {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        result = Ret.createNodeRef(node);
+                    }
                 } else if (type == 2) {
-                    IRelationAnalyzer relation = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    result = Ret.createRelationRef(relation);
+                    if (sizeOfRelation > 0) {
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        result = Ret.createRelationRef(relation);
+                    }
                 } else if (type == 3) {
-                    INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
-                    List<IProperty> props = node.getProperties();
-                    IProperty prop = props.get(r.getInteger(0, props.size() - 1));
-                    IdentifierExpression ie = new IdentifierExpression(node);
-                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                    result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                    if (sizeOfNode > 0) {
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        List<IProperty> props = node.getProperties();
+                        IProperty prop = props.get(r.getInteger(0, props.size() - 1));
+                        IdentifierExpression ie = new IdentifierExpression(node);
+                        GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                        result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                    }
                 } else {
-                    IRelationAnalyzer relation = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                    List<IProperty> props = relation.getProperties();
-                    IProperty prop = props.get(r.getInteger(0, props.size() - 1));
-                    IdentifierExpression ie = new IdentifierExpression(relation);
-                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                    result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                    if (sizeOfRelation > 0) {
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        List<IProperty> props = relation.getProperties();
+                        IProperty prop = props.get(r.getInteger(0, props.size() - 1));
+                        IdentifierExpression ie = new IdentifierExpression(relation);
+                        GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                        result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                    }
                 }
             }
-            results.add(result);
+            if (result != null) {
+                results.add(result);
+            }
+        }
+        if (results.isEmpty()) {
+            results.add(Ret.createStar());
         }
         return results;
     }
