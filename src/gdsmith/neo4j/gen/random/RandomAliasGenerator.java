@@ -216,7 +216,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
                             IdentifierExpression ie = new IdentifierExpression(node);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionReturnVal(exp);
+                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                         }
                     }
                 } else if (kind == 4) {
@@ -235,7 +235,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
                             IdentifierExpression ie = new IdentifierExpression(relation);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionReturnVal(exp);
+                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                         }
                     }
                 } else {
@@ -274,7 +274,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
                             IdentifierExpression ie = new IdentifierExpression(node);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionReturnVal(exp);
+                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                         }
                     }
                 } else {
@@ -293,7 +293,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
                             IdentifierExpression ie = new IdentifierExpression(relation);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionReturnVal(exp);
+                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                         }
                     }
                 }
