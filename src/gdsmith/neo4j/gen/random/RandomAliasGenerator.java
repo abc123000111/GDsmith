@@ -67,32 +67,36 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             for (Neo4jSchema.Neo4jLabelInfo l: schema.getLabels()) {
                                 if (label == l.getName()) {
                                     props = l.getProperties();
+                                    IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                    IdentifierExpression ie = new IdentifierExpression(node);
+                                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                                    result = Ret.createNewExpressionReturnVal(exp);
                                     break;
                                 }
                             }
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
-                            IdentifierExpression ie = new IdentifierExpression(node);
-                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionReturnVal(exp);
                         }
                     }
                 } else if (kind == 4) {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
-                        List<IType> types = relation.getTypes();
-                        if (types.size() > 0) {
-                            String type = types.get(r.getInteger(0, types.size() - 1)).getName();
-                            List<IPropertyInfo> props = null;
-                            for (Neo4jSchema.Neo4jRelationTypeInfo t: schema.getRelationTypes()) {
-                                if (type == t.getName()) {
-                                    props = t.getProperties();
-                                    break;
+                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                            List<IType> types = relation.getTypes();
+                            if (types.size() > 0) {
+                                IType type = types.get(r.getInteger(0, types.size() - 1));
+                                if (type != null) {
+                                    List<IPropertyInfo> props = null;
+                                    for (Neo4jSchema.Neo4jRelationTypeInfo t : schema.getRelationTypes()) {
+                                        if (type.getName() == t.getName()) {
+                                            props = t.getProperties();
+                                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                            IdentifierExpression ie = new IdentifierExpression(relation);
+                                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                                            result = Ret.createNewExpressionReturnVal(exp);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
-                            IdentifierExpression ie = new IdentifierExpression(relation);
-                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionReturnVal(exp);
                         }
                     }
                 } else {
@@ -125,38 +129,50 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             for (Neo4jSchema.Neo4jLabelInfo l: schema.getLabels()) {
                                 if (label == l.getName()) {
                                     props = l.getProperties();
+                                    IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                    IdentifierExpression ie = new IdentifierExpression(node);
+                                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                                    result = Ret.createNewExpressionReturnVal(exp);
                                     break;
                                 }
                             }
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
-                            IdentifierExpression ie = new IdentifierExpression(node);
-                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionReturnVal(exp);
                         }
                     }
                 } else {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
-                        List<IType> types = relation.getTypes();
-                        if (types.size() > 0) {
-                            String type = types.get(r.getInteger(0, types.size() - 1)).getName();
-                            List<IPropertyInfo> props = null;
-                            for (Neo4jSchema.Neo4jRelationTypeInfo t: schema.getRelationTypes()) {
-                                if (type == t.getName()) {
-                                    props = t.getProperties();
-                                    break;
+                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                            List<IType> types = relation.getTypes();
+                            if (types.size() > 0) {
+                                IType type = types.get(r.getInteger(0, types.size() - 1));
+                                if (type != null) {
+                                    List<IPropertyInfo> props = null;
+                                    for (Neo4jSchema.Neo4jRelationTypeInfo t : schema.getRelationTypes()) {
+                                        if (type.getName() == t.getName()) {
+                                            props = t.getProperties();
+                                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                            IdentifierExpression ie = new IdentifierExpression(relation);
+                                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                                            result = Ret.createNewExpressionReturnVal(exp);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
-                            IdentifierExpression ie = new IdentifierExpression(relation);
-                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionReturnVal(exp);
                         }
                     }
                 }
             }
             if (result != null) {
-                results.add(result);
+                boolean flag = true;
+                for (IRet res: results) {
+                    if (res.getIdentifier() != null && result.getIdentifier() != null && res.getIdentifier().getName() == result.getIdentifier().getName()) {
+                        flag = false;
+                    }
+                }
+                if (flag) {
+                    results.add(result);
+                }
             }
         }
         if (results.isEmpty()) {
@@ -210,32 +226,36 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             for (Neo4jSchema.Neo4jLabelInfo l: schema.getLabels()) {
                                 if (label == l.getName()) {
                                     props = l.getProperties();
+                                    IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                    IdentifierExpression ie = new IdentifierExpression(node);
+                                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                                    result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                                     break;
                                 }
                             }
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
-                            IdentifierExpression ie = new IdentifierExpression(node);
-                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                         }
                     }
                 } else if (kind == 4) {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
-                        List<IType> types = relation.getTypes();
-                        if (types.size() > 0) {
-                            String type = types.get(r.getInteger(0, types.size() - 1)).getName();
-                            List<IPropertyInfo> props = null;
-                            for (Neo4jSchema.Neo4jRelationTypeInfo t: schema.getRelationTypes()) {
-                                if (type == t.getName()) {
-                                    props = t.getProperties();
-                                    break;
+                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                            List<IType> types = relation.getTypes();
+                            if (types.size() > 0) {
+                                IType type = types.get(r.getInteger(0, types.size() - 1));
+                                if (type != null) {
+                                    List<IPropertyInfo> props = null;
+                                    for (Neo4jSchema.Neo4jRelationTypeInfo t: schema.getRelationTypes()) {
+                                        if (type.getName() == t.getName()) {
+                                            props = t.getProperties();
+                                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                            IdentifierExpression ie = new IdentifierExpression(relation);
+                                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
-                            IdentifierExpression ie = new IdentifierExpression(relation);
-                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                         }
                     }
                 } else {
@@ -268,38 +288,50 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             for (Neo4jSchema.Neo4jLabelInfo l: schema.getLabels()) {
                                 if (label == l.getName()) {
                                     props = l.getProperties();
+                                    IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                    IdentifierExpression ie = new IdentifierExpression(node);
+                                    GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                                    result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                                     break;
                                 }
                             }
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
-                            IdentifierExpression ie = new IdentifierExpression(node);
-                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                         }
                     }
                 } else {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
-                        List<IType> types = relation.getTypes();
-                        if (types.size() > 0) {
-                            String type = types.get(r.getInteger(0, types.size() - 1)).getName();
-                            List<IPropertyInfo> props = null;
-                            for (Neo4jSchema.Neo4jRelationTypeInfo t: schema.getRelationTypes()) {
-                                if (type == t.getName()) {
-                                    props = t.getProperties();
-                                    break;
+                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                            List<IType> types = relation.getTypes();
+                            if (types.size() > 0) {
+                                IType type = types.get(r.getInteger(0, types.size() - 1));
+                                if (type != null) {
+                                    List<IPropertyInfo> props = null;
+                                    for (Neo4jSchema.Neo4jRelationTypeInfo t: schema.getRelationTypes()) {
+                                        if (type.getName() == t.getName()) {
+                                            props = t.getProperties();
+                                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                            IdentifierExpression ie = new IdentifierExpression(relation);
+                                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
+                                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
-                            IdentifierExpression ie = new IdentifierExpression(relation);
-                            GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                         }
                     }
                 }
             }
             if (result != null) {
-                results.add(result);
+                boolean flag = true;
+                for (IRet res: results) {
+                    if (res.getIdentifier() != null && result.getIdentifier() != null && res.getIdentifier().getName() == result.getIdentifier().getName()) {
+                        flag = false;
+                    }
+                }
+                if (flag) {
+                    results.add(result);
+                }
             }
         }
         if (results.isEmpty()) {
