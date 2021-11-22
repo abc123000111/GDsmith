@@ -100,66 +100,55 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 }
 
                 Pattern.PatternBuilder.OngoingRelation relation;
-                boolean isNewRelation = Randomly.getBoolean();
-                if (isNewRelation) {
-                    boolean withType = Randomly.getBoolean();
-                    boolean isNamed = Randomly.getBoolean();
-                    Direction direction = Randomly.fromOptions(Direction.LEFT, Direction.RIGHT, Direction.BOTH);
-                    int typeOfLength = r.getInteger(0, 3);
-                    if (withType) {
-                        Neo4jSchema.Neo4jRelationTypeInfo typeInfo = schema.getRelationTypes().get(r.getInteger(0, sizeOfTypes - 1));
-                        IType type = new RelationType(typeInfo.getName());
-                        if (isNamed) {
-                            if (typeOfLength == 0) {
-                                relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withLengthUnbounded();
-                            } else if (typeOfLength == 1) {
-                                relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withOnlyLengthLowerBound(1);
-                            } else if (typeOfLength == 2) {
-                                relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withOnlyLengthUpperBound(2);
-                            } else {
-                                relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withLength(1);
-                            }
+                boolean withType = Randomly.getBoolean();
+                boolean isNamed = Randomly.getBoolean();
+                Direction direction = Randomly.fromOptions(Direction.LEFT, Direction.RIGHT, Direction.BOTH);
+                int typeOfLength = r.getInteger(0, 3);
+                if (withType) {
+                    Neo4jSchema.Neo4jRelationTypeInfo typeInfo = schema.getRelationTypes().get(r.getInteger(0, sizeOfTypes - 1));
+                    IType type = new RelationType(typeInfo.getName());
+                    if (isNamed) {
+                        if (typeOfLength == 0) {
+                            relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withLengthUnbounded();
+                        } else if (typeOfLength == 1) {
+                            relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withOnlyLengthLowerBound(1);
+                        } else if (typeOfLength == 2) {
+                            relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withOnlyLengthUpperBound(2);
                         } else {
-                            if (typeOfLength == 0) {
-                                relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withLengthUnbounded();
-                            } else if (typeOfLength == 1) {
-                                relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withOnlyLengthLowerBound(1);
-                            } else if (typeOfLength == 2) {
-                                relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withOnlyLengthUpperBound(2);
-                            } else {
-                                relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withLength(1);
-                            }
+                            relation = leftNode.newNamedRelation().withType(type).withDirection(direction).withLength(1);
                         }
                     } else {
-                        if (isNamed) {
-                            if (typeOfLength == 0) {
-                                relation = leftNode.newNamedRelation().withDirection(direction).withLengthUnbounded();
-                            } else if (typeOfLength == 1) {
-                                relation = leftNode.newNamedRelation().withDirection(direction).withOnlyLengthLowerBound(1);
-                            } else if (typeOfLength == 2) {
-                                relation = leftNode.newNamedRelation().withDirection(direction).withOnlyLengthUpperBound(2);
-                            } else {
-                                relation = leftNode.newNamedRelation().withDirection(direction).withLength(1);
-                            }
+                        if (typeOfLength == 0) {
+                            relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withLengthUnbounded();
+                        } else if (typeOfLength == 1) {
+                            relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withOnlyLengthLowerBound(1);
+                        } else if (typeOfLength == 2) {
+                            relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withOnlyLengthUpperBound(2);
                         } else {
-                            if (typeOfLength == 0) {
-                                relation = leftNode.newAnonymousRelation().withDirection(direction).withLengthUnbounded();
-                            } else if (typeOfLength == 1) {
-                                relation = leftNode.newAnonymousRelation().withDirection(direction).withOnlyLengthLowerBound(1);
-                            } else if (typeOfLength == 2) {
-                                relation = leftNode.newAnonymousRelation().withDirection(direction).withOnlyLengthUpperBound(2);
-                            } else {
-                                relation = leftNode.newAnonymousRelation().withDirection(direction).withLength(1);
-                            }
+                            relation = leftNode.newAnonymousRelation().withType(type).withDirection(direction).withLength(1);
                         }
                     }
                 } else {
-                    List<IRelationAnalyzer> idRelation = matchClause.getExtendablePatternIdentifiers();
-                    if (idRelation.size() == 0) {
-                        relation = leftNode.newNamedRelation();
+                    if (isNamed) {
+                        if (typeOfLength == 0) {
+                            relation = leftNode.newNamedRelation().withDirection(direction).withLengthUnbounded();
+                        } else if (typeOfLength == 1) {
+                            relation = leftNode.newNamedRelation().withDirection(direction).withOnlyLengthLowerBound(1);
+                        } else if (typeOfLength == 2) {
+                            relation = leftNode.newNamedRelation().withDirection(direction).withOnlyLengthUpperBound(2);
+                        } else {
+                            relation = leftNode.newNamedRelation().withDirection(direction).withLength(1);
+                        }
                     } else {
-                        IRelationAnalyzer rel = idRelation.get(r.getInteger(0, idRelation.size() - 1));
-                        relation = leftNode.newRelationRef(rel);
+                        if (typeOfLength == 0) {
+                            relation = leftNode.newAnonymousRelation().withDirection(direction).withLengthUnbounded();
+                        } else if (typeOfLength == 1) {
+                            relation = leftNode.newAnonymousRelation().withDirection(direction).withOnlyLengthLowerBound(1);
+                        } else if (typeOfLength == 2) {
+                            relation = leftNode.newAnonymousRelation().withDirection(direction).withOnlyLengthUpperBound(2);
+                        } else {
+                            relation = leftNode.newAnonymousRelation().withDirection(direction).withLength(1);
+                        }
                     }
                 }
 
