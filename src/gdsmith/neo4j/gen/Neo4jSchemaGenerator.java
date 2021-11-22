@@ -31,7 +31,7 @@ public class Neo4jSchemaGenerator {
                 Neo4jSchema.Neo4jPropertyInfo p = new Neo4jSchema.Neo4jPropertyInfo(key, type, isOptional);
                 properties.add(p);
             }
-            String name = "l" + i;
+            String name = "L" + i;
             Neo4jSchema.Neo4jLabelInfo t = new Neo4jSchema.Neo4jLabelInfo(name, properties);
             labels.add(t);
         }
@@ -46,7 +46,7 @@ public class Neo4jSchemaGenerator {
                 Neo4jSchema.Neo4jPropertyInfo p = new Neo4jSchema.Neo4jPropertyInfo(key, type, isOptional);
                 properties.add(p);
             }
-            String name = "t" + i;
+            String name = "T" + i;
             Neo4jSchema.Neo4jRelationTypeInfo re = new Neo4jSchema.Neo4jRelationTypeInfo(name, properties);
             relationTypes.add(re);
         }
