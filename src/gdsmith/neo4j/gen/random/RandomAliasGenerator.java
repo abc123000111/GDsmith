@@ -6,6 +6,7 @@ import gdsmith.cypher.ast.analyzer.*;
 import gdsmith.neo4j.ast.Label;
 import gdsmith.neo4j.ast.Property;
 import gdsmith.neo4j.ast.Ret;
+import gdsmith.neo4j.ast.expr.ConstExpression;
 import gdsmith.neo4j.ast.expr.GetPropertyExpression;
 import gdsmith.neo4j.ast.expr.IdentifierExpression;
 import gdsmith.neo4j.dsl.BasicAliasGenerator;
@@ -176,7 +177,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
             }
         }
         if (results.isEmpty()) {
-            results.add(Ret.createStar());
+            results.add(Ret.createNewExpressionReturnVal(new ConstExpression(Randomly.smallNumber())));
         }
         return results;
     }
