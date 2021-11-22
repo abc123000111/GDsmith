@@ -39,7 +39,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result;
             if (i == 0) {
-                int type = r.getInteger(0, 4);
+                int type = r.getInteger(0, 5);
                 if (type == 0) {
                     IAliasAnalyzer alias = idAlias.get(r.getInteger(0, idAlias.size() - 1));
                     result = Ret.createAliasRef(alias);
