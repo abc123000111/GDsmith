@@ -34,10 +34,11 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         int sizeOfNode = idAlias.size();
         int sizeOfRelation = idAlias.size();
 
-        int numOfExpressions = Randomly.smallNumber();
+        /*int numOfExpressions = Randomly.smallNumber();
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
             numOfExpressions = 1;
-        }
+        }*/
+        int numOfExpressions = r.getInteger(1, 3);
 
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
@@ -137,10 +138,11 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         int sizeOfNode = idAlias.size();
         int sizeOfRelation = idAlias.size();
 
-        int numOfExpressions = Randomly.smallNumber();
+        /*int numOfExpressions = Randomly.smallNumber();
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
             numOfExpressions = 1;
-        }
+        }*/
+        int numOfExpressions = r.getInteger(1, 3);
 
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;

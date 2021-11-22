@@ -31,10 +31,12 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
         int sizeOfLabels = schema.getLabels().size();
         int sizeOfTypes = schema.getRelationTypes().size();
 
-        int numOfPatterns = Randomly.smallNumber();
+        /*int numOfPatterns = Randomly.smallNumber();
         if (numOfPatterns == 0 || numOfPatterns >= 3) {
             numOfPatterns = 1;
-        }
+        }*/
+        int numOfPatterns = Randomly.getBooleanWithRatherLowProbability() ? 2 : 1;
+
         for (int i = 0; i < numOfPatterns; i++) {
             int lenOfPattern = Randomly.fromOptions(1, 3);
             if (lenOfPattern == 1) {
@@ -60,7 +62,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 } else {
                     List<INodeAnalyzer> idNode = matchClause.getExtendableNodeIdentifiers();
                     if (idNode.size() == 0) {
-                        patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode().build());
+                        patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode().build());
                     } else {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
                         patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node).build());
@@ -90,7 +92,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 } else {
                     List<INodeAnalyzer> idNode = matchClause.getExtendableNodeIdentifiers();
                     if (idNode.size() == 0) {
-                        leftNode = new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode();
+                        leftNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode();
                     } else {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
                         leftNode = new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node);
@@ -154,7 +156,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 } else {
                     List<IRelationAnalyzer> idRelation = matchClause.getExtendablePatternIdentifiers();
                     if (idRelation.size() == 0) {
-                        relation = leftNode.newAnonymousRelation();
+                        relation = leftNode.newNamedRelation();
                     } else {
                         IRelationAnalyzer rel = idRelation.get(r.getInteger(0, idRelation.size() - 1));
                         relation = leftNode.newRelationRef(rel);
@@ -184,7 +186,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 } else {
                     List<INodeAnalyzer> idNode = matchClause.getExtendableNodeIdentifiers();
                     if (idNode.size() == 0) {
-                        rightNode = new Pattern.PatternBuilder(identifierBuilder).newAnonymousNode();
+                        rightNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode();
                     } else {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
                         rightNode = new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node);
