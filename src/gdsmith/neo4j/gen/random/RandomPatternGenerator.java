@@ -36,6 +36,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
             numOfPatterns = 1;
         }*/
         int numOfPatterns = Randomly.getBooleanWithRatherLowProbability() ? 2 : 1;
+        matchClause.getSource().setOptional(Randomly.getBooleanWithRatherLowProbability());
 
         for (int i = 0; i < numOfPatterns; i++) {
             int lenOfPattern = Randomly.fromOptions(1, 3);
@@ -43,7 +44,8 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 boolean isNew = Randomly.getBoolean();
                 if (isNew) {
                     boolean withLabel = Randomly.getBoolean();
-                    boolean isNamed = Randomly.getBoolean();
+                    //boolean isNamed = Randomly.getBoolean();
+                    boolean isNamed = !Randomly.getBooleanWithRatherLowProbability();
                     if (withLabel) {
                         Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());
@@ -73,7 +75,8 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 boolean isNewLeft = Randomly.getBoolean();
                 if (isNewLeft) {
                     boolean withLabelLeft = Randomly.getBoolean();
-                    boolean isNamedLeft = Randomly.getBoolean();
+                    //boolean isNamedLeft = Randomly.getBoolean();
+                    boolean isNamedLeft = !Randomly.getBooleanWithRatherLowProbability();
                     if (withLabelLeft) {
                         Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());
@@ -101,7 +104,8 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
 
                 Pattern.PatternBuilder.OngoingRelation relation;
                 boolean withType = Randomly.getBoolean();
-                boolean isNamed = Randomly.getBoolean();
+                //boolean isNamed = Randomly.getBoolean();
+                boolean isNamed = !Randomly.getBooleanWithRatherLowProbability();
                 Direction direction = Randomly.fromOptions(Direction.LEFT, Direction.RIGHT, Direction.BOTH);
                 int typeOfLength = r.getInteger(0, 3);
                 if (withType) {
@@ -156,7 +160,8 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 boolean isNewRight = Randomly.getBoolean();
                 if (isNewRight) {
                     boolean withLabelRight = Randomly.getBoolean();
-                    boolean isNamedRight = Randomly.getBoolean();
+                    //boolean isNamedRight = Randomly.getBoolean();
+                    boolean isNamedRight = !Randomly.getBooleanWithRatherLowProbability();
                     if (withLabelRight) {
                         Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());

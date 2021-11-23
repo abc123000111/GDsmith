@@ -16,8 +16,8 @@ public class RandomQueryGenerator {
         if (len == 0) {
             return seq;
         }
-        //boolean generateWith = Randomly.getBooleanWithRatherLowProbability();
-        boolean generateWith = Randomly.getBoolean();
+        boolean generateWith = Randomly.getBooleanWithRatherLowProbability();
+        //boolean generateWith = Randomly.getBoolean();
         if (generateWith) {
             return generateClauses(seq.WithClause(), len - 1);
         } else {
@@ -30,7 +30,7 @@ public class RandomQueryGenerator {
         Neo4jSchema schema = globalState.getSchema();
         Randomly r = new Randomly();
 
-        int numOfClauses = r.getInteger(0, 8);
+        int numOfClauses = r.getInteger(1, 8);
         /* int numOfClauses = Randomly.smallNumber();
         if (numOfClauses <= 0) {
             numOfClauses = 1;

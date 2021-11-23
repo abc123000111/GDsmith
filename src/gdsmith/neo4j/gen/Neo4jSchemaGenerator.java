@@ -17,12 +17,12 @@ public class Neo4jSchemaGenerator {
         List<Neo4jSchema.Neo4jRelationTypeInfo> relationTypes = new ArrayList<>();
         List<Neo4jSchema.Neo4jPatternInfo> patternInfos = new ArrayList<>();
 
-        int numOfLabels = r.getInteger(2,5);
-        int numOfRelationTypes = r.getInteger(2, 5);
-        int numOfPatternInfos = r.getInteger(2, 5);
+        int numOfLabels = r.getInteger(5,8);
+        int numOfRelationTypes = r.getInteger(5, 8);
+        int numOfPatternInfos = r.getInteger(5, 8);
 
         for (int i = 0; i < numOfLabels; i++) {
-            int numOfProperties = r.getInteger(2, 5);
+            int numOfProperties = r.getInteger(5, 8);
             List<IPropertyInfo> properties = new ArrayList<>();
             for (int j = 0; j < numOfProperties; j++) {
                 String key = "k" + j;
@@ -37,7 +37,7 @@ public class Neo4jSchemaGenerator {
         }
 
         for (int i = 0; i < numOfRelationTypes; i++) {
-            int numOfProperties = r.getInteger(2, 5);
+            int numOfProperties = r.getInteger(5, 8);
             List<IPropertyInfo> properties = new ArrayList<>();
             for (int j = 0; j < numOfProperties; j++) {
                 String key = "k" + j;

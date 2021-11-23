@@ -398,7 +398,7 @@ public final class Randomly {
     }
 
     public static boolean getBooleanWithRatherLowProbability() {
-        return getThreadRandom().get().nextInt(10) == 1;
+        return getThreadRandom().get().nextInt(5) == 1;
     }
 
     public static boolean getBooleanWithSmallProbability() {
