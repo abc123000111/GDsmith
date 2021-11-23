@@ -22,6 +22,7 @@ public class Neo4jSmithCrashOracle implements TestOracle {
         ClauseSequence sequence = new RandomQueryGenerator().generateQuery(globalState);
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
+        System.out.println(sb);
         globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
 
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
