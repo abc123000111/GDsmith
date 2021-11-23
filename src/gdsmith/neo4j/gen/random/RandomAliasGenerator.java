@@ -167,8 +167,9 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
             if (result != null) {
                 boolean flag = true;
                 for (IRet res: results) {
-                    if (res.getIdentifier() != null && result.getIdentifier() != null && res.getIdentifier().getName() == result.getIdentifier().getName()) {
+                    if (res.equals(result)) {
                         flag = false;
+                        break;
                     }
                 }
                 if (flag) {
