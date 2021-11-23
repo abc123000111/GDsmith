@@ -1,8 +1,11 @@
 package gdsmith.neo4j.ast;
 
+import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
+import gdsmith.neo4j.schema.ILabelInfo;
+import gdsmith.neo4j.schema.IPropertyInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +24,8 @@ public class RelationAnalyzer extends RelationIdentifier implements IRelationAna
         source = relationIdentifier;
         this.clauseAnalyzer = clauseAnalyzer;
         this.sourceExpression = sourceExpression;
+        this.lengthLowerBound = source.getLengthLowerBound();
+        this.lengthUpperBound = source.getLengthUpperBound();
     }
 
     RelationAnalyzer(IRelationIdentifier relationIdentifier, IClauseAnalyzer clauseAnalyzer){
@@ -76,5 +81,32 @@ public class RelationAnalyzer extends RelationIdentifier implements IRelationAna
         }
         return properties;
     }
+
+    @Override
+    public List<IPropertyInfo> getAllPropertiesAvailable(ICypherSchema schema) {
+        List<IType> relationTypes = getAllRelationTypesInDefChain();
+        if(relationTypes.size()>0){
+            IType relationType = relationTypes.get(0);
+            if(schema.containsRelationType(relationType)){
+                return schema.getRelationInfo(relationType).getProperties();
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<IPropertyInfo> getAllPropertiesWithType(ICypherSchema schema, ICypherType type) {
+        return getAllPropertiesAvailable(schema).stream().filter(p->p.getType()==type).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isSingleRelation() {
+        if(getFormerDef() != null){
+            return getFormerDef().isSingleRelation();
+        }
+
+        return this.lengthLowerBound == 1 && this.lengthUpperBound == 1;
+    }
+
 
 }

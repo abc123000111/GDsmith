@@ -80,7 +80,9 @@ public class NodeIdentifier implements INodeIdentifier {
         }
         if(labels != null){
             for(ILabel label: labels){
-                sb.append(" :").append(label.getName());
+                if(label.getName() != null && label.getName().length()!=0){
+                    sb.append(" :").append(label.getName());
+                }
             }
         }
         if(properties != null && properties.size()!=0){

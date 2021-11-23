@@ -22,4 +22,13 @@ public class GetPropertyExpression extends Neo4jExpression{
     public IExpression getCopy() {
         return null;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof GetPropertyExpression)){
+            return false;
+        }
+        return fromExpression.equals(((GetPropertyExpression) o).fromExpression) && propertyName.equals(((GetPropertyExpression) o).propertyName);
+    }
+
 }

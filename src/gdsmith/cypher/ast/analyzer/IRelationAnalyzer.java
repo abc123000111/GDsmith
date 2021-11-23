@@ -1,6 +1,8 @@
 package gdsmith.cypher.ast.analyzer;
 
+import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
+import gdsmith.neo4j.schema.IPropertyInfo;
 
 import java.util.List;
 
@@ -22,4 +24,8 @@ public interface IRelationAnalyzer extends IRelationIdentifier, IIdentifierAnaly
      * @return
      */
     List<IProperty> getAllPropertiesInDefChain();
+    List<IPropertyInfo> getAllPropertiesAvailable(ICypherSchema schema);
+    List<IPropertyInfo> getAllPropertiesWithType(ICypherSchema schema, ICypherType type);
+
+    boolean isSingleRelation();
 }

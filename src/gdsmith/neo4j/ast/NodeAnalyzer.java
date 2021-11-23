@@ -1,9 +1,12 @@
 package gdsmith.neo4j.ast;
 
 
+import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
+import gdsmith.neo4j.schema.ILabelInfo;
+import gdsmith.neo4j.schema.IPropertyInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +71,23 @@ public class NodeAnalyzer extends NodeIdentifier implements INodeAnalyzer {
             properties.addAll(formerDef.getProperties());
         }
         return properties;
+    }
+
+    @Override
+    public List<IPropertyInfo> getAllPropertiesAvailable(ICypherSchema schema) {
+        List<IPropertyInfo> propertyInfos = new ArrayList<>();
+        for(ILabel label : getAllLabelsInDefChain()){
+            if(schema.containsLabel(label)){
+                ILabelInfo labelInfo = schema.getLabelInfo(label);
+                propertyInfos.addAll(labelInfo.getProperties());
+            }
+        }
+        return propertyInfos;
+    }
+
+    @Override
+    public List<IPropertyInfo> getAllPropertiesWithType(ICypherSchema schema, ICypherType type) {
+        return getAllPropertiesAvailable(schema).stream().filter(p->p.getType()==type).collect(Collectors.toList());
     }
 
 

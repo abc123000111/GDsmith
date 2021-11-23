@@ -29,4 +29,12 @@ public class IdentifierExpression extends Neo4jExpression{
         }
         return new IdentifierExpression(identifier);
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof IdentifierExpression)){
+            return false;
+        }
+        return identifier.equals(((IdentifierExpression) o).identifier);
+    }
 }

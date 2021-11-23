@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gdsmith.cypher.ast.IExpression;
+import gdsmith.cypher.ICypherSchema;
+import gdsmith.cypher.ast.*;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.schema.Neo4jSchema.Neo4jTable;
 import gdsmith.neo4j.ast.Neo4jType;
 
-public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
+public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> implements ICypherSchema {
 
     private List<Neo4jLabelInfo> labels; //所有的Label信息
     private List<Neo4jRelationTypeInfo> relationTypes; //所有的relationship type信息
@@ -33,6 +34,49 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         this.relationTypes = relationTypes;
         this.patternInfos = patternInfos;
     }
+
+    public boolean containsLabel(ILabel label){
+        for(ILabelInfo labelInfo : labels){
+            if (labelInfo.getName().equals(label.getName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ILabelInfo getLabelInfo(ILabel label){
+        for(ILabelInfo labelInfo : labels){
+            if (labelInfo.getName().equals(label.getName())){
+                return labelInfo;
+            }
+        }
+        return null;
+    }
+
+    public boolean containsRelationType(IType relation){
+        if(relation == null){
+            return false;
+        }
+        for(IRelationTypeInfo relationInfo : relationTypes){
+            if (relationInfo != null && relationInfo.getName().equals(relation.getName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public IRelationTypeInfo getRelationInfo(IType relation){
+        if(relation == null){
+            return null;
+        }
+        for(IRelationTypeInfo relationInfo : relationTypes){
+            if (relationInfo != null && relationInfo.getName().equals(relation.getName())){
+                return relationInfo;
+            }
+        }
+        return null;
+    }
+
 
     public List<Neo4jLabelInfo> getLabels(){
         return labels;
@@ -74,6 +118,27 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         public List<IPropertyInfo> getProperties() {
             return properties;
         }
+
+        @Override
+        public boolean hasPropertyWithType(ICypherType type) {
+            for(IPropertyInfo propertyInfo : properties){
+                if(propertyInfo.getType() == type){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public List<IPropertyInfo> getPropertiesWithType(ICypherType type) {
+            List<IPropertyInfo> returnProperties = new ArrayList<>();
+            for(IPropertyInfo propertyInfo : properties){
+                if(propertyInfo.getType() == type){
+                    returnProperties.add(propertyInfo);
+                }
+            }
+            return returnProperties;
+        }
     }
 
     public static class Neo4jLabelInfo implements ILabelInfo {
@@ -93,6 +158,27 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> {
         @Override
         public List<IPropertyInfo> getProperties() {
             return properties;
+        }
+
+        @Override
+        public boolean hasPropertyWithType(ICypherType type) {
+            for(IPropertyInfo propertyInfo : properties){
+                if(propertyInfo.getType() == type){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public List<IPropertyInfo> getPropertiesWithType(ICypherType type) {
+            List<IPropertyInfo> returnProperties = new ArrayList<>();
+            for(IPropertyInfo propertyInfo : properties){
+                if(propertyInfo.getType() == type){
+                    returnProperties.add(propertyInfo);
+                }
+            }
+            return returnProperties;
         }
     }
 

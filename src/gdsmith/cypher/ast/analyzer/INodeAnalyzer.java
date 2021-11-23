@@ -1,9 +1,8 @@
 package gdsmith.cypher.ast.analyzer;
 
-import gdsmith.cypher.ast.ILabel;
-import gdsmith.cypher.ast.INodeIdentifier;
-import gdsmith.cypher.ast.IPattern;
-import gdsmith.cypher.ast.IProperty;
+import gdsmith.cypher.ICypherSchema;
+import gdsmith.cypher.ast.*;
+import gdsmith.neo4j.schema.IPropertyInfo;
 
 import java.util.List;
 
@@ -25,4 +24,6 @@ public interface INodeAnalyzer extends INodeIdentifier, IIdentifierAnalyzer {
      * @return
      */
     List<IProperty> getAllPropertiesInDefChain();
+    List<IPropertyInfo> getAllPropertiesAvailable(ICypherSchema schema);
+    List<IPropertyInfo> getAllPropertiesWithType(ICypherSchema schema, ICypherType type);
 }

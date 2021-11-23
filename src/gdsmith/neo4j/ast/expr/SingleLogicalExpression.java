@@ -14,9 +14,9 @@ public class SingleLogicalExpression extends Neo4jExpression{
     }
 
     public enum SingleLogicalOperation{
-        SMALLER("IS NULL"),
-        EQUAL("IS NOT NULL"),
-        SMALLER_OR_EQUAL("NOT");
+        IS_NULL("IS NULL"),
+        IS_NOT_NULL("IS NOT NULL"),
+        NOT("NOT");
 
         SingleLogicalOperation(String textRepresentation){
             this.TextRepresentation = textRepresentation;
@@ -48,9 +48,25 @@ public class SingleLogicalExpression extends Neo4jExpression{
     @Override
     public void toTextRepresentation(StringBuilder sb) {
         sb.append("(");
+        if(op == SingleLogicalOperation.NOT){
+            sb.append(op.getTextRepresentation()).append(" ");
+        }
         child.toTextRepresentation(sb);
-        sb.append(" ").append(op.getTextRepresentation());
+        if(op != SingleLogicalOperation.NOT){
+            sb.append(" ").append(op.getTextRepresentation());
+        }
         sb.append(")");
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof SingleLogicalExpression)){
+            return false;
+        }
+        if(child.equals(((SingleLogicalExpression) o).child)){
+            return op == ((SingleLogicalExpression) o).op;
+        }
+        return false;
     }
 
 }

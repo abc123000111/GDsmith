@@ -38,12 +38,14 @@ public class Ret implements IRet {
     }
 
     Ret(IExpression expression, String name){
+        this.expression = expression;
         this.identifier = new Alias(name, expression);
         isAll = false;
     }
 
     Ret(IExpression expression){
         this.expression = expression;
+        this.identifier = null;
         isAll = false;
     }
 
@@ -125,5 +127,28 @@ public class Ret implements IRet {
             sb.append(" AS ");
         }
         sb.append(identifier.getName());
+    }
+
+    private boolean sameExpression(Ret ret){
+        if(expression != null){
+            expression.equals(ret.expression);
+        }
+        return ret.expression == null;
+    }
+
+    private boolean sameIdentifier(Ret ret){
+        if(identifier != null){
+            identifier.equals(ret.identifier);
+        }
+        return ret.identifier == null;
+    }
+
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Ret)){
+            return false;
+        }
+        return sameExpression((Ret)o) && sameIdentifier((Ret)o) && isAll == ((Ret) o).isAll;
     }
 }

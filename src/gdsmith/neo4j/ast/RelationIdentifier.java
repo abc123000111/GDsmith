@@ -113,7 +113,7 @@ public class RelationIdentifier implements IRelationIdentifier {
         if(name != null){
             sb.append(name);
         }
-        if(relationType != null){
+        if(relationType != null && relationType.getName() != null && relationType.getName().length()!=0){
             sb.append(" :").append(relationType.getName());
         }
         if(!(lengthLowerBound == 1 && lengthUpperBound == 1)){
@@ -124,7 +124,7 @@ public class RelationIdentifier implements IRelationIdentifier {
             else if(lengthLowerBound == NO_BOUND && lengthUpperBound != NO_BOUND){
                 sb.append("..").append(lengthUpperBound);
             }
-            else{
+            else if(lengthLowerBound != NO_BOUND){
                 sb.append(lengthLowerBound).append("..");
                 if(lengthUpperBound != NO_BOUND){
                     sb.append(lengthUpperBound);

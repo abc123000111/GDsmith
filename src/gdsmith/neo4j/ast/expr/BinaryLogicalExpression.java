@@ -1,5 +1,6 @@
 package gdsmith.neo4j.ast.expr;
 
+import gdsmith.Randomly;
 import gdsmith.cypher.ast.IExpression;
 
 public class BinaryLogicalExpression extends Neo4jExpression{
@@ -17,9 +18,9 @@ public class BinaryLogicalExpression extends Neo4jExpression{
     }
 
     public enum BinaryLogicalOperation{
-        SMALLER("OR"),
-        EQUAL("AND"),
-        SMALLER_OR_EQUAL("XOR");
+        OR("OR"),
+        AND("AND"),
+        XOR("XOR");
 
         BinaryLogicalOperation(String textRepresentation){
             this.TextRepresentation = textRepresentation;
@@ -30,6 +31,18 @@ public class BinaryLogicalExpression extends Neo4jExpression{
         public String getTextRepresentation(){
             return this.TextRepresentation;
         }
+    }
+
+    public static BinaryLogicalExpression randomLogical(IExpression left, IExpression right){
+        Randomly randomly = new Randomly();
+        int operationNum = randomly.getInteger(0, 90);
+        if(operationNum < 30){
+            return new BinaryLogicalExpression(left, right, BinaryLogicalOperation.AND);
+        }
+        if(operationNum < 60){
+            return new BinaryLogicalExpression(left, right, BinaryLogicalOperation.OR);
+        }
+        return new BinaryLogicalExpression(left, right, BinaryLogicalOperation.XOR);
     }
 
     private final IExpression left, right;
@@ -60,5 +73,14 @@ public class BinaryLogicalExpression extends Neo4jExpression{
         sb.append(" ").append(op.getTextRepresentation()).append(" ");
         right.toTextRepresentation(sb);
         sb.append(")");
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof BinaryLogicalExpression)){
+            return false;
+        }
+        return left.equals(((BinaryLogicalExpression)o).left) && right.equals(((BinaryLogicalExpression)o).right)
+                && op == ((BinaryLogicalExpression)o).op;
     }
 }
