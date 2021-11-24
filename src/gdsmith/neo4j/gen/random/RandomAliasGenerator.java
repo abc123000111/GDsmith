@@ -37,7 +37,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
             numOfExpressions = 1;
         }*/
-        int numOfExpressions = r.getInteger(1, 3);
+        int numOfExpressions = r.getInteger(1, 4);
 
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
@@ -197,7 +197,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
             numOfExpressions = 1;
         }*/
-        int numOfExpressions = r.getInteger(1, 3);
+        int numOfExpressions = r.getInteger(1, 4);
 
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
