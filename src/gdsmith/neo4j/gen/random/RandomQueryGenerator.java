@@ -1,13 +1,8 @@
 package gdsmith.neo4j.gen.random;
 
 import gdsmith.Randomly;
-import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.ast.ClauseSequence;
-import gdsmith.neo4j.dsl.ClauseSequenceBuilder;
-import gdsmith.neo4j.gen.examples.NaiveAliasGenerator;
-import gdsmith.neo4j.gen.examples.NaiveConditionGenerator;
-import gdsmith.neo4j.gen.examples.NaivePatternGenerator;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;
@@ -29,7 +24,7 @@ public class RandomQueryGenerator {
 
     private List<Seed> seeds = new ArrayList<>();
 
-    private ClauseSequenceBuilder generateClauses(ClauseSequenceBuilder seq, int len) {
+    private ClauseSequence.ClauseSequenceBuilder generateClauses(ClauseSequence.ClauseSequenceBuilder seq, int len) {
         if (len == 0) {
             return seq;
         }
@@ -47,7 +42,7 @@ public class RandomQueryGenerator {
     }
 
     public ClauseSequence generateQuery(Neo4jGlobalState globalState){
-        ClauseSequenceBuilder builder = new ClauseSequenceBuilder();
+        ClauseSequence.ClauseSequenceBuilder builder = new ClauseSequence.ClauseSequenceBuilder();
         Neo4jSchema schema = globalState.getSchema();
         Randomly r = new Randomly();
 

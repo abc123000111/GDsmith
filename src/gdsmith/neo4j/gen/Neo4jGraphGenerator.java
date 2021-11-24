@@ -2,12 +2,9 @@ package gdsmith.neo4j.gen;
 
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.cypher.ast.IPattern;
-import gdsmith.cypher.ast.IRet;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.ast.*;
 import gdsmith.neo4j.ast.expr.ConstExpression;
-import gdsmith.neo4j.dsl.ClauseSequenceBuilder;
-import gdsmith.neo4j.schema.IPatternInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;
@@ -29,12 +26,12 @@ public class Neo4jGraphGenerator {
         queries.add(new CypherQueryAdapter("CREATE (m)"));
         queries.add(new CypherQueryAdapter("CREATE (n)"));
 
-        ClauseSequenceBuilder builder = new ClauseSequenceBuilder();
+        ClauseSequence.ClauseSequenceBuilder builder = new ClauseSequence.ClauseSequenceBuilder();
         IPattern pattern = new Pattern.PatternBuilder(builder.getIdentifierBuilder()).newNamedNode()
                 .withLabels(new Label("Person"))
                 .withProperties(new Property("name", Neo4jType.STRING, new ConstExpression("Frank"))).build();
 
-        ClauseSequence sequence = new ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
+        ClauseSequence sequence = new ClauseSequence.ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
 
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
