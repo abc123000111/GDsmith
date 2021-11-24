@@ -8,6 +8,7 @@ import gdsmith.cypher.ast.IType;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
+import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.ast.Label;
 import gdsmith.neo4j.ast.Pattern;
 import gdsmith.neo4j.ast.RelationType;

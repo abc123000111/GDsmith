@@ -10,7 +10,24 @@ import gdsmith.neo4j.gen.examples.NaiveConditionGenerator;
 import gdsmith.neo4j.gen.examples.NaivePatternGenerator;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RandomQueryGenerator {
+
+    public static class Seed{
+        ClauseSequence sequence;
+        boolean bugDetected;
+        int resultLength;
+
+        public Seed(ClauseSequence sequence, boolean bugDetected, int resultLength){
+            this.sequence = sequence;
+            this.bugDetected = bugDetected;
+            this.resultLength = resultLength;
+        }
+    }
+
+    private List<Seed> seeds = new ArrayList<>();
 
     private ClauseSequenceBuilder generateClauses(ClauseSequenceBuilder seq, int len) {
         if (len == 0) {
@@ -23,6 +40,10 @@ public class RandomQueryGenerator {
         } else {
             return generateClauses(seq.MatchClause(), len - 1);
         }
+    }
+
+    public void addSeed(Seed seed){
+        //todo 判断是否需要加到seed中，如果需要，则加入seeds
     }
 
     public ClauseSequence generateQuery(Neo4jGlobalState globalState){
