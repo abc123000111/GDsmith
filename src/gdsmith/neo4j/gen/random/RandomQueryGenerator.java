@@ -51,8 +51,8 @@ public class RandomQueryGenerator {
         Randomly r = new Randomly();
         ClauseSequence sequence;
 
-        boolean isGenerateNew = Randomly.getBooleanWithRatherLowProbability();
-        if (isGenerateNew || seeds.size() == 0) {
+        boolean isNotFromSeeds = Randomly.getBooleanWithRatherLowProbability();
+        if (isNotFromSeeds || seeds.size() == 0) {
             ClauseSequence.ClauseSequenceBuilder builder = new ClauseSequence.ClauseSequenceBuilder();
             int numOfClauses = r.getInteger(1, 8);
             sequence = generateClauses(builder.MatchClause(), numOfClauses).ReturnClause().build(new RandomConditionGenerator(schema),
