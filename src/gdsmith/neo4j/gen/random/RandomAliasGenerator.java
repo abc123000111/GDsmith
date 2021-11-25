@@ -185,6 +185,11 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
 
     @Override
     public List<IRet> generateWithAlias(IWithAnalyzer withClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
+        List<IRet> withAlias = withClause.getReturnList();
+        if (withAlias.size() > 0) {
+            return withAlias;
+        }
+
         List<IRet> results = new ArrayList<>();
         List<INodeAnalyzer> idNode = withClause.getExtendableNodeIdentifiers();
         List<IRelationAnalyzer> idRelation = withClause.getExtendablePatternIdentifiers();

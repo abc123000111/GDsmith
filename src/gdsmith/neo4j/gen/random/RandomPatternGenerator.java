@@ -27,6 +27,11 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
 
     @Override
     public List<IPattern> generatePattern(IMatchAnalyzer matchClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
+        List<IPattern> matchPattern = matchClause.getPatternTuple();
+        if (matchPattern.size() > 0) {
+            return matchPattern;
+        }
+
         List<IPattern> patternTuple = new ArrayList<>();
         Randomly r = new Randomly();
         int sizeOfLabels = schema.getLabels().size();

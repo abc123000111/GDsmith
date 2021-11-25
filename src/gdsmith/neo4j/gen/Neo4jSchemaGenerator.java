@@ -26,7 +26,7 @@ public class Neo4jSchemaGenerator {
             List<IPropertyInfo> properties = new ArrayList<>();
             for (int j = 0; j < numOfProperties; j++) {
                 String key = "k" + j;
-                Neo4jType type = Randomly.fromOptions(Neo4jType.INT, Neo4jType.STRING);
+                Neo4jType type = Randomly.fromOptions(Neo4jType.INT, Neo4jType.STRING, Neo4jType.BOOLEAN);
                 boolean isOptional = Randomly.getBoolean();
                 Neo4jSchema.Neo4jPropertyInfo p = new Neo4jSchema.Neo4jPropertyInfo(key, type, isOptional);
                 properties.add(p);
@@ -41,7 +41,7 @@ public class Neo4jSchemaGenerator {
             List<IPropertyInfo> properties = new ArrayList<>();
             for (int j = 0; j < numOfProperties; j++) {
                 String key = "k" + j;
-                Neo4jType type = Randomly.fromOptions(Neo4jType.INT, Neo4jType.STRING);
+                Neo4jType type = Randomly.fromOptions(Neo4jType.INT, Neo4jType.STRING, Neo4jType.BOOLEAN);
                 boolean isOptional = Randomly.getBoolean();
                 Neo4jSchema.Neo4jPropertyInfo p = new Neo4jSchema.Neo4jPropertyInfo(key, type, isOptional);
                 properties.add(p);

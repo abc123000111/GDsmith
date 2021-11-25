@@ -17,6 +17,11 @@ public class RandomConditionGenerator extends BasicConditionGenerator {
 
     @Override
     public IExpression generateMatchCondition(IMatchAnalyzer matchClause, Neo4jSchema schema) {
+        IExpression matchCondition = matchClause.getCondition();
+        if (matchCondition != null) {
+            return matchCondition;
+        }
+
         Randomly r = new Randomly();
         if(r.getInteger(0, 100)< NO_CONDITION_RATE){
             return null;
@@ -26,6 +31,11 @@ public class RandomConditionGenerator extends BasicConditionGenerator {
 
     @Override
     public IExpression generateWithCondition(IWithAnalyzer withClause, Neo4jSchema schema) {
+        IExpression withCondition = withClause.getCondtion();
+        if (withCondition != null) {
+            return withCondition;
+        }
+
         Randomly r = new Randomly();
         if(r.getInteger(0, 100)< NO_CONDITION_RATE){
             return null;

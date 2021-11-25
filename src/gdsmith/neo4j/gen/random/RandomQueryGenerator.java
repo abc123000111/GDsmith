@@ -62,9 +62,9 @@ public class RandomQueryGenerator {
             ClauseSequence seedSeq = seeds.get(r.getInteger(0, seeds.size() - 1)).sequence;
             ClauseSequence.ClauseSequenceBuilder builder = new ClauseSequence.ClauseSequenceBuilder(seedSeq);
             int numOfClauses = Randomly.smallNumber();
-            sequence = generateClauses(builder, numOfClauses).ReturnClause().build(new NewConditionGenerator(schema),
-                    new NewAliasGenerator(schema, builder.getIdentifierBuilder()),
-                    new NewPatternGenerator(schema, builder.getIdentifierBuilder()), schema);
+            sequence = generateClauses(builder, numOfClauses).ReturnClause().build(new RandomConditionGenerator(schema),
+                    new RandomAliasGenerator(schema, builder.getIdentifierBuilder()),
+                    new RandomPatternGenerator(schema, builder.getIdentifierBuilder()), schema);
         }
 
         return sequence;
