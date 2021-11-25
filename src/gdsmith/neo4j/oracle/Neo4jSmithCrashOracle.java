@@ -27,9 +27,15 @@ public class Neo4jSmithCrashOracle implements TestOracle {
         System.out.println(sb);
         globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
 
+        boolean isCoverageIncreasing = false;
+        boolean isBugDetected = false;
+        int resultLength = 0;
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
-        randomQueryGenerator.addSeed(new RandomQueryGenerator.Seed(
-                sequence, false, 0
-        ));//添加seed
+
+        if (isCoverageIncreasing || isBugDetected || resultLength > 0) {
+            randomQueryGenerator.addSeed(new RandomQueryGenerator.Seed(
+                    sequence, isBugDetected, resultLength
+            ));//添加seed
+        }
     }
 }
