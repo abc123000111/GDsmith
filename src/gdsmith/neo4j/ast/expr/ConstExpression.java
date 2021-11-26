@@ -11,8 +11,8 @@ public class ConstExpression extends Neo4jExpression{
 
     public ConstExpression(Object value){
         this.value = value;
-        if(value instanceof Integer){
-            type = Neo4jType.INT;
+        if(value instanceof Integer || value instanceof Float || value instanceof Long || value instanceof Double){
+            type = Neo4jType.NUMBER;
         }
         else if(value instanceof String){
             type = Neo4jType.STRING;
@@ -36,7 +36,7 @@ public class ConstExpression extends Neo4jExpression{
     @Override
     public void toTextRepresentation(StringBuilder sb) {
         switch ((Neo4jType)type){
-            case INT: sb.append(""+(Integer) value);break;
+            case NUMBER: sb.append(""+(Integer) value);break;
             case STRING: sb.append("\""+(String) value + "\"");break;
             case BOOLEAN: sb.append(""+(Boolean)value);break;
             case UNKNOWN: sb.append("null");break; //todo not supported
