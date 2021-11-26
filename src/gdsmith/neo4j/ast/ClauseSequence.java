@@ -178,5 +178,17 @@ public class ClauseSequence implements IClauseSequence {
             return CreateClause(null);
         }
 
+        public ClauseSequenceBuilder MergeClause(IPattern pattern){
+            IMerge merge = new Merge();
+            merge.setPattern(pattern);
+            clauseSequence.addClause(merge);
+            return this;
+        }
+
+        public ClauseSequenceBuilder MergeClause(){
+            return MergeClause(null);
+        }
+
     }
+
 }
