@@ -17,7 +17,8 @@ import java.util.List;
 public class Neo4jGraphGenerator {
     private static int minNumOfNodes = 10;
     private static int maxNumOfNodes = 100;
-    private static List<INodeIdentifier> INodeIdfs;
+    private static double percentOfEdges = 0.0001;
+    private static List<IPattern> INodesPattern;
 
     private final Neo4jGlobalState globalState;
 
@@ -47,7 +48,7 @@ public class Neo4jGraphGenerator {
         Randomly r = new Randomly();
 
         // create nodes
-        INodeIdfs = new ArrayList<>();
+        INodesPattern = new ArrayList<>();
         int numOfNodes = r.getInteger(maxNumOfNodes, maxNumOfNodes);
         List<Neo4jSchema.Neo4jLabelInfo> labels = schema.getLabels();
         for (int i = 0; i < numOfNodes; ++i) {
@@ -63,8 +64,7 @@ public class Neo4jGraphGenerator {
                 }
             }
             IPattern pattern = n.build();
-            INodeIdentifier INodeIdf = (INodeIdentifier) pattern.getPatternElements().get(0);
-            INodeIdfs.add(INodeIdf);
+            INodesPattern.add(pattern);
             ClauseSequence sequence = new ClauseSequence.ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
             StringBuilder sb = new StringBuilder();
             sequence.toTextRepresentation(sb);
@@ -72,14 +72,20 @@ public class Neo4jGraphGenerator {
         }
 
 
+
         // create relations
         List<Neo4jSchema.Neo4jRelationTypeInfo> relationTypes = schema.getRelationTypes();
         for (int i = 0; i < numOfNodes; ++i) {
             for (int j = 0; j < numOfNodes; ++j) {
                 for (Neo4jSchema.Neo4jRelationTypeInfo relationType : relationTypes) {
-                    if (r.getBooleanWithRatherLowProbability()) { // choose this type
+                    if (r.getInteger(0, 1000000) < percentOfEdges * 1000000) { // choose this type
+                        IPattern patternI = INodesPattern.get(i);
+                        IPattern patternJ = INodesPattern.get(j);
+                        INodeIdentifier nodeI = (INodeIdentifier) patternI.getPatternElements().get(0);
+                        INodeIdentifier nodeJ = (INodeIdentifier) patternJ.getPatternElements().get(0);
+
                         Pattern.PatternBuilder.OngoingRelation rel = new Pattern.PatternBuilder(builder.getIdentifierBuilder())
-                                .newRefDefinedNode(INodeIdfs.get(i))
+                                .newRefDefinedNode(nodeI)
                                 .newNamedRelation().withType(new RelationType(relationType.getName()));
 
                         for (IPropertyInfo p : relationType.getProperties()) {
@@ -88,19 +94,13 @@ public class Neo4jGraphGenerator {
                             }
                         }
 
-                        // generate direction
-                        Direction dir;
-                        int dirChoice = r.getInteger(0, 2); // For CREATE in Neo4j, ALL relationships should be directed.
-                        if (dirChoice == 0) {
-                            dir = Direction.LEFT;
-                        } else {
-                            dir = Direction.RIGHT;
-                        }
-
+                        int dirChoice = r.getInteger(0, 2); // generate direction
+                        Direction dir = (dirChoice == 0) ? Direction.LEFT : Direction.RIGHT; // For generate in Neo4j, ALL relationships should be directed.
                         rel = rel.withDirection(dir);
 
-                        IPattern pattern = rel.newNodeRef(INodeIdfs.get(j)).build();
-                        ClauseSequence sequence = new ClauseSequence.ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
+                        IPattern merge = rel.newNodeRef(nodeJ).build();
+
+                        ClauseSequence sequence = new ClauseSequence.ClauseSequenceBuilder().MatchClause(null, patternI, patternJ).MergeClause(merge).ReturnClause(Ret.createStar()).build();
                         StringBuilder sb = new StringBuilder();
                         sequence.toTextRepresentation(sb);
                         queries.add(new CypherQueryAdapter(sb.toString()));
