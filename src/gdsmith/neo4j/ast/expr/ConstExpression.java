@@ -36,9 +36,9 @@ public class ConstExpression extends Neo4jExpression{
     @Override
     public void toTextRepresentation(StringBuilder sb) {
         switch ((Neo4jType)type){
-            case NUMBER: sb.append(""+(Integer) value);break;
-            case STRING: sb.append("\""+(String) value + "\"");break;
-            case BOOLEAN: sb.append(""+(Boolean)value);break;
+            case NUMBER: sb.append(""+ value);break;
+            case STRING: sb.append("\""+ value + "\"");break;
+            case BOOLEAN: sb.append(""+ value);break;
             case UNKNOWN: sb.append("null");break; //todo not supported
         }
     }
