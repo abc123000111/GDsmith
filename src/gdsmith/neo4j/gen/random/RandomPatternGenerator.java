@@ -8,6 +8,7 @@ import gdsmith.cypher.ast.IType;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
+import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.ast.Label;
 import gdsmith.neo4j.ast.Pattern;
 import gdsmith.neo4j.ast.RelationType;
@@ -26,6 +27,11 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
 
     @Override
     public List<IPattern> generatePattern(IMatchAnalyzer matchClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
+        List<IPattern> matchPattern = matchClause.getPatternTuple();
+        if (matchPattern.size() > 0) {
+            return matchPattern;
+        }
+
         List<IPattern> patternTuple = new ArrayList<>();
         Randomly r = new Randomly();
         int sizeOfLabels = schema.getLabels().size();

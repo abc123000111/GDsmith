@@ -2,12 +2,12 @@ package gdsmith.neo4j.gen;
 
 import gdsmith.Randomly;
 import gdsmith.cypher.CypherQueryAdapter;
-import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.Direction;
+import gdsmith.cypher.ast.INodeIdentifier;
+import gdsmith.cypher.ast.IPattern;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.ast.*;
 import gdsmith.neo4j.ast.expr.ConstExpression;
-import gdsmith.neo4j.dsl.ClauseSequenceBuilder;
-import gdsmith.neo4j.schema.IPatternInfo;
 import gdsmith.neo4j.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
@@ -24,7 +24,7 @@ public class Neo4jGraphGenerator {
     // todo(rly): handle Exception
     private ConstExpression generatePropertyValue(Randomly r, Neo4jType type) throws Exception {
         switch (type){
-            case INT: return new ConstExpression(r.getInteger());
+            case NUMBER: return new ConstExpression(r.getInteger());
             case STRING: return new ConstExpression(r.getString());
             case BOOLEAN: return new ConstExpression(r.getInteger(0, 2) == 0);
             default:
@@ -42,7 +42,7 @@ public class Neo4jGraphGenerator {
 
     public List<CypherQueryAdapter> generateGraph(Neo4jSchema schema) throws Exception {
         List<CypherQueryAdapter> queries = new ArrayList<>();
-        ClauseSequenceBuilder builder = new ClauseSequenceBuilder();
+        ClauseSequence.ClauseSequenceBuilder builder = new ClauseSequence.ClauseSequenceBuilder();
 
         Randomly r = new Randomly();
 
@@ -65,7 +65,7 @@ public class Neo4jGraphGenerator {
             IPattern pattern = n.build();
             INodeIdentifier INodeIdf = (INodeIdentifier) pattern.getPatternElements().get(0);
             INodeIdfs.add(INodeIdf);
-            ClauseSequence sequence = new ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
+            ClauseSequence sequence = new ClauseSequence.ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
             StringBuilder sb = new StringBuilder();
             sequence.toTextRepresentation(sb);
             queries.add(new CypherQueryAdapter(sb.toString()));
@@ -100,7 +100,7 @@ public class Neo4jGraphGenerator {
                         rel = rel.withDirection(dir);
 
                         IPattern pattern = rel.newNodeRef(INodeIdfs.get(j)).build();
-                        ClauseSequence sequence = new ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
+                        ClauseSequence sequence = new ClauseSequence.ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
                         StringBuilder sb = new StringBuilder();
                         sequence.toTextRepresentation(sb);
                         queries.add(new CypherQueryAdapter(sb.toString()));

@@ -37,7 +37,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
             numOfExpressions = 1;
         }*/
-        int numOfExpressions = r.getInteger(1, 3);
+        int numOfExpressions = r.getInteger(1, 4);
 
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
@@ -185,6 +185,11 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
 
     @Override
     public List<IRet> generateWithAlias(IWithAnalyzer withClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
+        List<IRet> withAlias = withClause.getReturnList();
+        if (withAlias.size() > 0) {
+            return withAlias;
+        }
+
         List<IRet> results = new ArrayList<>();
         List<INodeAnalyzer> idNode = withClause.getExtendableNodeIdentifiers();
         List<IRelationAnalyzer> idRelation = withClause.getExtendablePatternIdentifiers();
@@ -197,7 +202,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
             numOfExpressions = 1;
         }*/
-        int numOfExpressions = r.getInteger(1, 3);
+        int numOfExpressions = r.getInteger(1, 4);
 
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;

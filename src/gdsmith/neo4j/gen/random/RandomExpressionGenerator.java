@@ -69,7 +69,7 @@ public class RandomExpressionGenerator
             }
         }
         switch (type){
-            case INT:
+            case NUMBER:
                 return new ConstExpression((int)randomly.getInteger());
             default:
                 //todo 对其他类型random的支持

@@ -131,14 +131,14 @@ public class Ret implements IRet {
 
     private boolean sameExpression(Ret ret){
         if(expression != null){
-            expression.equals(ret.expression);
+            return expression.equals(ret.expression);
         }
         return ret.expression == null;
     }
 
     private boolean sameIdentifier(Ret ret){
         if(identifier != null){
-            identifier.equals(ret.identifier);
+            return identifier.equals(ret.identifier);
         }
         return ret.identifier == null;
     }
