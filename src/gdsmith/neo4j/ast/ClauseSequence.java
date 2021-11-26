@@ -11,6 +11,11 @@ import java.util.List;
 public class ClauseSequence implements IClauseSequence {
 
     List<ICypherClause> clauses = new ArrayList<>();
+    IIdentifierBuilder identifierBuilder;
+
+    public ClauseSequence(IIdentifierBuilder identifierBuilder){
+        this.identifierBuilder = identifierBuilder;
+    }
 
     @Override
     public List<ICypherClause> getClauseList() {
@@ -19,7 +24,7 @@ public class ClauseSequence implements IClauseSequence {
 
     @Override
     public IClauseSequence getCopy() {
-        ClauseSequence clauseSequence = new ClauseSequence();
+        ClauseSequence clauseSequence = new ClauseSequence(identifierBuilder.getCopy());
         clauses.stream().forEach(c->{clauseSequence.addClause(c.getCopy());});
         return clauseSequence;
     }
@@ -67,6 +72,15 @@ public class ClauseSequence implements IClauseSequence {
                 aliasNum++;
                 return "a"+(aliasNum - 1);
             }
+
+            @Override
+            public IIdentifierBuilder getCopy() {
+                IdentifierBuilder identifierBuilder = new IdentifierBuilder();
+                identifierBuilder.nodeNum = this.nodeNum;
+                identifierBuilder.aliasNum = this.aliasNum;
+                identifierBuilder.relationNum = this.relationNum;
+                return identifierBuilder;
+            }
         }
 
         public static class FinishedBuilder{
@@ -113,7 +127,7 @@ public class ClauseSequence implements IClauseSequence {
 
         public ClauseSequenceBuilder(){
             identifierBuilder = new IdentifierBuilder();
-            clauseSequence = new ClauseSequence();
+            clauseSequence = new ClauseSequence(identifierBuilder);
         }
 
         /**
@@ -121,8 +135,8 @@ public class ClauseSequence implements IClauseSequence {
          * @param sequence
          */
         public ClauseSequenceBuilder(ClauseSequence sequence){
-            identifierBuilder = new IdentifierBuilder();
             clauseSequence = (ClauseSequence) sequence.getCopy();
+            identifierBuilder = (IdentifierBuilder) clauseSequence.identifierBuilder;
             if(clauseSequence.clauses.get(clauseSequence.clauses.size()-1) instanceof IReturn){
                 clauseSequence.clauses.remove(clauseSequence.clauses.size()-1);
             }
