@@ -11,7 +11,7 @@ public class ConstExpression extends Neo4jExpression{
 
     public ConstExpression(Object value){
         this.value = value;
-        if(value instanceof Integer){
+        if(value instanceof Integer || value instanceof Long){
             type = Neo4jType.INT;
         }
         else if(value instanceof String){
