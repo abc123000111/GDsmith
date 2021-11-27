@@ -9,6 +9,7 @@ public class GetPropertyExpression extends Neo4jExpression{
     public GetPropertyExpression(IExpression fromExpression, String propertyName){
         this.fromExpression = fromExpression;
         this.propertyName = propertyName;
+        fromExpression.setParentExpression(this);
     }
 
     @Override

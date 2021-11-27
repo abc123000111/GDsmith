@@ -49,6 +49,8 @@ public class BinaryLogicalExpression extends Neo4jExpression{
     private final BinaryLogicalOperation op;
 
     public BinaryLogicalExpression(IExpression left, IExpression right, BinaryLogicalOperation op){
+        left.setParentExpression(this);
+        right.setParentExpression(this);
         this.left = left;
         this.right = right;
         this.op = op;

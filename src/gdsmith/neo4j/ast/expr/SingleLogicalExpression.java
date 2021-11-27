@@ -35,6 +35,7 @@ public class SingleLogicalExpression extends Neo4jExpression{
     public SingleLogicalExpression(IExpression child, SingleLogicalOperation op){
         this.child = child;
         this.op = op;
+        child.setParentExpression(this);
     }
 
     public IExpression getChildExpression(){

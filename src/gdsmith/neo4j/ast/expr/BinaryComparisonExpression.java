@@ -62,6 +62,8 @@ public class BinaryComparisonExpression extends Neo4jExpression{
     private final BinaryComparisonOperation op;
 
     public BinaryComparisonExpression(IExpression left, IExpression right, BinaryComparisonOperation op){
+        left.setParentExpression(this);
+        right.setParentExpression(this);
         this.left = left;
         this.right = right;
         this.op = op;

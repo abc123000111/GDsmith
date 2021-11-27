@@ -8,24 +8,30 @@ import java.util.stream.Collectors;
 
 public class CallExpression extends Neo4jExpression{
     private String functionName;
+    private String functionSignature;
     List<IExpression> params;
 
-    public CallExpression(String functionName, List<IExpression> params){
+    public CallExpression(String functionName, String functionSignature, List<IExpression> params){
         this.functionName = functionName;
+        this.functionSignature = functionSignature;
         this.params = params;
+        params.forEach(e->e.setParentExpression(this));
     }
 
     @Override
     public void toTextRepresentation(StringBuilder sb) {
-        sb.append("call not supported yet");
+        sb.append(functionName).append("(");
+        params.forEach(e->{e.toTextRepresentation(sb); sb.append(", ");});
+        sb.delete(sb.length()-2, sb.length()); //多余的", "
+        sb.append(")");
     }
 
     @Override
     public IExpression getCopy() {
         if(params == null){
-            return new CallExpression(this.functionName, new ArrayList<>());
+            return new CallExpression(this.functionName, this.functionSignature, new ArrayList<>());
         }
-        return new CallExpression(this.functionName,
+        return new CallExpression(this.functionName, this.functionSignature,
                 this.params.stream().map(p->p.getCopy()).collect(Collectors.toList()));
     }
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
+import gdsmith.cypher.ast.analyzer.ICypherTypeAnalyzer;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.schema.Neo4jSchema.Neo4jTable;
 import gdsmith.neo4j.ast.Neo4jType;
@@ -237,36 +238,102 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> im
     }
 
     public enum Neo4jBuiltInFunctions implements IFunctionInfo{
-        MAX("MAX", Neo4jType.UNKNOWN, new Neo4jParamInfo(Neo4jType.UNKNOWN, true)){
+        MAX_NUMBER("max", "max@number", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
             @Override
-            public Neo4jType calculateReturnType(List<IExpression> params) {
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
                 return null;
             }
-        };
+        },
+        MAX_STRING("max", "max@string", Neo4jType.STRING, new Neo4jParamInfo(Neo4jType.STRING, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        MIN_NUMBER("min", "min@number", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        MIN_STRING("min", "min@string", Neo4jType.STRING, new Neo4jParamInfo(Neo4jType.STRING, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        PERCENTILE_COUNT_NUMBER("percentileCount", "percentileCount@number", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        PERCENTILE_COUNT_STRING("percentileCount", "percentileCount@string", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.STRING, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        PERCENTILE_DISC_NUMBER("percentileDisc", "percentileDisc@number", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        PERCENTILE_DISC_STRING("percentileDisc", "percentileDisct@string", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.STRING, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        ST_DEV("stDev", "stDev", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        ST_DEV_P("stDevP", "stDevP", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        SUM("sum", "sum", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
+        ;
 
-        Neo4jBuiltInFunctions(String name, Neo4jType expectedReturnType, IParamInfo... params){
+        Neo4jBuiltInFunctions(String name, String signature, Neo4jType expectedReturnType, IParamInfo... params){
             this.name = name;
             this.params = Arrays.asList(params);
             this.expectedReturnType = expectedReturnType;
         }
 
-        private String name;
+        private String name, signature;
         private List<IParamInfo> params;
         private Neo4jType expectedReturnType;
 
         @Override
         public String getName() {
-            return null;
+            return name;
+        }
+
+        @Override
+        public String getSignature() {
+            return signature;
         }
 
         @Override
         public List<IParamInfo> getParams() {
-            return null;
+            return params;
         }
 
         @Override
         public Neo4jType getExpectedReturnType() {
-            return null;
+            return expectedReturnType;
         }
     }
 
