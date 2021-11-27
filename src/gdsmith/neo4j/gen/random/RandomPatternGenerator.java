@@ -51,7 +51,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 if (isNew) {
                     boolean withLabel = Randomly.getBoolean();
                     //boolean isNamed = Randomly.getBoolean();
-                    boolean isNamed = !Randomly.getBooleanWithRatherLowProbability();
+                    boolean isNamed = !Randomly.getBooleanWithSmallProbability();
                     if (withLabel) {
                         Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());
@@ -82,7 +82,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 if (isNewLeft) {
                     boolean withLabelLeft = Randomly.getBoolean();
                     //boolean isNamedLeft = Randomly.getBoolean();
-                    boolean isNamedLeft = !Randomly.getBooleanWithRatherLowProbability();
+                    boolean isNamedLeft = !Randomly.getBooleanWithSmallProbability();
                     if (withLabelLeft) {
                         Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());
@@ -111,7 +111,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 Pattern.PatternBuilder.OngoingRelation relation;
                 boolean withType = Randomly.getBoolean();
                 //boolean isNamed = Randomly.getBoolean();
-                boolean isNamed = !Randomly.getBooleanWithRatherLowProbability();
+                boolean isNamed = !Randomly.getBooleanWithSmallProbability();
                 Direction direction = Randomly.fromOptions(Direction.LEFT, Direction.RIGHT, Direction.BOTH);
                 int typeOfLength = r.getInteger(0, 3);
                 if (withType) {
@@ -167,7 +167,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 if (isNewRight) {
                     boolean withLabelRight = Randomly.getBoolean();
                     //boolean isNamedRight = Randomly.getBoolean();
-                    boolean isNamedRight = !Randomly.getBooleanWithRatherLowProbability();
+                    boolean isNamedRight = !Randomly.getBooleanWithSmallProbability();
                     if (withLabelRight) {
                         Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());
