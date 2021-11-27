@@ -8,6 +8,9 @@ public enum Neo4jType implements ICypherType {
 
     public static Neo4jType getRandomBasicType(){
         Randomly randomly = new Randomly();
-        return NUMBER;
+        if(randomly.getInteger(0, 100) < 50){
+            return NUMBER;
+        }
+        return STRING;
     }
 }

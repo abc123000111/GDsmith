@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class Match extends Neo4jClause implements IMatchAnalyzer {
     private boolean isOptional = false;
-    private IExpression conditon = null;
+    private IExpression condition = null;
 
     public Match(){
         super(true);
@@ -39,12 +39,12 @@ public class Match extends Neo4jClause implements IMatchAnalyzer {
 
     @Override
     public IExpression getCondition() {
-        return conditon;
+        return condition;
     }
 
     @Override
     public void setCondition(IExpression condition) {
-        this.conditon = conditon;
+        this.condition = condition;
     }
 
     @Override
@@ -60,11 +60,11 @@ public class Match extends Neo4jClause implements IMatchAnalyzer {
             match.symtab.setPatterns(symtab.getPatterns().stream().map(p->p.getCopy()).collect(Collectors.toList()));
             match.symtab.setAliasDefinition(symtab.getAliasDefinitions().stream().map(a->a.getCopy()).collect(Collectors.toList()));
         }
-        if(conditon != null){
-            match.conditon = conditon.getCopy();
+        if(condition != null){
+            match.condition = condition.getCopy();
         }
         else {
-            match.conditon = null;
+            match.condition = null;
         }
         return match;
     }
@@ -86,9 +86,9 @@ public class Match extends Neo4jClause implements IMatchAnalyzer {
                 sb.append(", ");
             }
         }
-        if(conditon != null){
+        if(condition != null){
             sb.append(" WHERE ");
-            conditon.toTextRepresentation(sb);
+            condition.toTextRepresentation(sb);
         }
     }
 

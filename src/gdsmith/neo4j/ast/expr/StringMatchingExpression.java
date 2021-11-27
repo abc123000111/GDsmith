@@ -1,5 +1,6 @@
 package gdsmith.neo4j.ast.expr;
 
+import gdsmith.Randomly;
 import gdsmith.cypher.ast.IExpression;
 
 public class StringMatchingExpression extends Neo4jExpression{
@@ -30,6 +31,18 @@ public class StringMatchingExpression extends Neo4jExpression{
         }
     }
 
+    public static StringMatchingExpression randomMatching(IExpression left, IExpression right){
+        Randomly randomly = new Randomly();
+        int operationNum = randomly.getInteger(0, 90);
+        if(operationNum < 30){
+            return new  StringMatchingExpression(left, right, StringMatchingOperation.CONTAINS);
+        }
+        if(operationNum < 60){
+            return new  StringMatchingExpression(left, right, StringMatchingOperation.ENDS_WITH);
+        }
+        return new  StringMatchingExpression(left, right, StringMatchingOperation.STARTS_WITH);
+    }
+
     @Override
     public IExpression getCopy() {
         return null;
@@ -39,7 +52,7 @@ public class StringMatchingExpression extends Neo4jExpression{
     public void toTextRepresentation(StringBuilder sb) {
         sb.append("(");
         source.toTextRepresentation(sb);
-        sb.append(" ").append(op).append(" ");
+        sb.append(" ").append(op.getTextRepresentation()).append(" ");
         pattern.toTextRepresentation(sb);
         sb.append(")");
     }

@@ -39,22 +39,21 @@ public class RandomExpressionGenerator
         identifierAnalyzers.addAll(relationAnalyzers.stream().
                 filter(r->(r.getAllPropertiesWithType(schema,type).size()>0 && r.isSingleRelation())).collect(Collectors.toList()));
 
-
         if(identifierAnalyzers.size() == 0){
             return generateConstExpression(type);
         }
         IIdentifierAnalyzer identifierAnalyzer = identifierAnalyzers
-                .get(randomly.getInteger(0, identifierAnalyzers.size() - 1));
+                .get(randomly.getInteger(0, identifierAnalyzers.size()));
 
         if(identifierAnalyzer instanceof IRelationAnalyzer){
             List<IPropertyInfo> propertyInfos = ((IRelationAnalyzer) identifierAnalyzer).getAllPropertiesWithType(schema, type);
             return new GetPropertyExpression(new IdentifierExpression(identifierAnalyzer),
-                    propertyInfos.get(randomly.getInteger(0, propertyInfos.size()-1)).getKey());
+                    propertyInfos.get(randomly.getInteger(0, propertyInfos.size())).getKey());
         }
         if(identifierAnalyzer instanceof INodeAnalyzer){
             List<IPropertyInfo> propertyInfos = ((INodeAnalyzer) identifierAnalyzer).getAllPropertiesWithType(schema, type);
             return new GetPropertyExpression(new IdentifierExpression(identifierAnalyzer),
-                    propertyInfos.get(randomly.getInteger(0, propertyInfos.size()-1)).getKey());
+                    propertyInfos.get(randomly.getInteger(0, propertyInfos.size())).getKey());
         }
         return generateConstExpression(type);
     }
@@ -71,6 +70,8 @@ public class RandomExpressionGenerator
         switch (type){
             case NUMBER:
                 return new ConstExpression((int)randomly.getInteger());
+            case STRING:
+                return new ConstExpression(randomly.getString());
             default:
                 //todo 对其他类型random的支持
                 return null;
@@ -80,7 +81,7 @@ public class RandomExpressionGenerator
     public IExpression generateComparison(){
         Randomly randomly = new Randomly();
         int randomNum = randomly.getInteger(0, 100);
-        Neo4jType type = Neo4jType.getRandomBasicType();
+        Neo4jType type = Neo4jType.NUMBER;
         if(randomNum < 60){
             return BinaryComparisonExpression.randomComparison(generateGetProperty(type),
                     generateConstExpression(type));
@@ -88,12 +89,26 @@ public class RandomExpressionGenerator
         return BinaryComparisonExpression.randomComparison(generateGetProperty(type), generateGetProperty(type));
     }
 
+    private IExpression generateStringMatching(){
+        Randomly randomly = new Randomly();
+        //todo more
+        IExpression getProperty = generateGetProperty(Neo4jType.STRING);
+        if(getProperty == null){
+            return StringMatchingExpression.
+                    randomMatching(generateConstExpression(Neo4jType.STRING), generateConstExpression(Neo4jType.STRING));
+        }
+        return StringMatchingExpression.randomMatching(getProperty, generateConstExpression(Neo4jType.STRING));
+    }
+
 
     private IExpression generateBooleanExpression(){
         Randomly randomly = new Randomly();
         int randomNum = randomly.getInteger(0, 100);
         //todo more
-        return generateComparison();
+        if(randomNum < 50){
+            return generateComparison();
+        }
+        return generateStringMatching();
     }
 
     public IExpression generateCondition(int depth){

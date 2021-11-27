@@ -13,7 +13,7 @@ public class RandomConditionGenerator extends BasicConditionGenerator {
         super(schema);
     }
 
-    private static final int NO_CONDITION_RATE = 50, MAX_DEPTH = 3;
+    private static final int NO_CONDITION_RATE = 20, MAX_DEPTH = 3;
 
     @Override
     public IExpression generateMatchCondition(IMatchAnalyzer matchClause, Neo4jSchema schema) {
@@ -23,6 +23,7 @@ public class RandomConditionGenerator extends BasicConditionGenerator {
         }
 
         Randomly r = new Randomly();
+        r.getString();
         if(r.getInteger(0, 100)< NO_CONDITION_RATE){
             return null;
         }
