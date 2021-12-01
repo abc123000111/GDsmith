@@ -1,6 +1,7 @@
 package gdsmith.neo4j.ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
+import gdsmith.neo4j.schema.IFunctionInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,13 @@ public class CallExpression extends Neo4jExpression{
     private String functionName;
     private String functionSignature;
     List<IExpression> params;
+
+    public CallExpression(IFunctionInfo functionInfo, List<IExpression> params){
+        this.functionName = functionInfo.getName();
+        this.functionSignature = functionInfo.getSignature();
+        this.params = params;
+        params.forEach(e->e.setParentExpression(this));
+    }
 
     public CallExpression(String functionName, String functionSignature, List<IExpression> params){
         this.functionName = functionName;

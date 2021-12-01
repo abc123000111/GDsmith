@@ -238,6 +238,12 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> im
     }
 
     public enum Neo4jBuiltInFunctions implements IFunctionInfo{
+        AVG("avg", "avg@number", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+            @Override
+            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        },
         MAX_NUMBER("max", "max@number", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
             @Override
             public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
@@ -262,25 +268,29 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> im
                 return null;
             }
         },
-        PERCENTILE_COUNT_NUMBER("percentileCount", "percentileCount@number", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+        PERCENTILE_COUNT_NUMBER("percentileCount", "percentileCount@number", Neo4jType.NUMBER,
+                new Neo4jParamInfo(Neo4jType.NUMBER, false), new Neo4jParamInfo(Neo4jType.NUMBER, false)){
             @Override
             public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
-        PERCENTILE_COUNT_STRING("percentileCount", "percentileCount@string", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.STRING, false)){
+        PERCENTILE_COUNT_STRING("percentileCount", "percentileCount@string", Neo4jType.NUMBER,
+                new Neo4jParamInfo(Neo4jType.STRING, false), new Neo4jParamInfo(Neo4jType.NUMBER, false)){
             @Override
             public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
-        PERCENTILE_DISC_NUMBER("percentileDisc", "percentileDisc@number", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.NUMBER, false)){
+        PERCENTILE_DISC_NUMBER("percentileDisc", "percentileDisc@number", Neo4jType.NUMBER,
+                new Neo4jParamInfo(Neo4jType.NUMBER, false), new Neo4jParamInfo(Neo4jType.NUMBER, false)){
             @Override
             public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
-        PERCENTILE_DISC_STRING("percentileDisc", "percentileDisct@string", Neo4jType.NUMBER, new Neo4jParamInfo(Neo4jType.STRING, false)){
+        PERCENTILE_DISC_STRING("percentileDisc", "percentileDisct@string", Neo4jType.NUMBER,
+                new Neo4jParamInfo(Neo4jType.STRING, false), new Neo4jParamInfo(Neo4jType.NUMBER, false)){
             @Override
             public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
                 return null;

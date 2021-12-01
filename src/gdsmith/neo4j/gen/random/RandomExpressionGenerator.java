@@ -14,6 +14,7 @@ import gdsmith.neo4j.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,48 @@ public class RandomExpressionGenerator
     public RandomExpressionGenerator(IClauseAnalyzer clauseAnalyzer, Neo4jSchema schema){
         this.clauseAnalyzer = clauseAnalyzer;
         this.schema = schema;
+    }
+
+    public IExpression generateNumberAgg(){
+        Randomly randomly = new Randomly();
+        int randNum = randomly.getInteger(0, 50);
+        IExpression param = generateGetProperty(Neo4jType.NUMBER);
+        if(param == null){
+            param = generateConstExpression(Neo4jType.NUMBER);
+        }
+        if( randNum < 10){
+            return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.MAX_NUMBER, Arrays.asList(param));
+        }
+        if( randNum < 20){
+            return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.MIN_NUMBER, Arrays.asList(param));
+        }
+        if( randNum < 30){
+            return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.ST_DEV, Arrays.asList(param));
+        }
+        if( randNum < 40){
+            return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.ST_DEV_P, Arrays.asList(param));
+        }
+        return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.SUM, Arrays.asList(param));
+    }
+
+    public IExpression generateStringAgg(){
+        Randomly randomly = new Randomly();
+        int randNum = randomly.getInteger(0, 20);
+        IExpression param = generateGetProperty(Neo4jType.NUMBER);
+        if(param == null){
+            param = generateConstExpression(Neo4jType.NUMBER);
+        }
+        if( randNum < 10){
+            return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.MAX_STRING, Arrays.asList(param));
+        }
+        return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.MIN_STRING, Arrays.asList(param));
+    }
+
+    public IExpression generateFunction(Neo4jType type){
+        if(type == Neo4jType.NUMBER){
+            return generateNumberAgg();
+        }
+        return generateStringAgg();
     }
 
     public IExpression generateGetProperty(Neo4jType type){
