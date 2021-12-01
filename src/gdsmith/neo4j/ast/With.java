@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class With extends Neo4jClause implements IWithAnalyzer {
 
     private boolean distinct = false;
-    private IExpression condition = null;
+    private IExpression condition = null, orderBy = null, skip = null, limit = null;
 
     public With(){
         super(false);
@@ -48,6 +48,36 @@ public class With extends Neo4jClause implements IWithAnalyzer {
     }
 
     @Override
+    public void setOrderBy(IExpression expression) {
+        orderBy = expression;
+    }
+
+    @Override
+    public IExpression getOrderBy() {
+        return orderBy;
+    }
+
+    @Override
+    public void setLimit(IExpression expression) {
+        limit = expression;
+    }
+
+    @Override
+    public IExpression getLimit() {
+        return limit;
+    }
+
+    @Override
+    public void setSkip(IExpression expression) {
+        skip = expression;
+    }
+
+    @Override
+    public IExpression getSkip() {
+        return skip;
+    }
+
+    @Override
     public IWithAnalyzer toAnalyzer() {
         return this;
     }
@@ -73,6 +103,9 @@ public class With extends Neo4jClause implements IWithAnalyzer {
     public void toTextRepresentation(StringBuilder sb) {
         //todo distinct
         sb.append("WITH ");
+        if(distinct){
+            sb.append("DISTINCT ");
+        }
         List<IRet> returnList = getReturnList();
         for(int i = 0; i < returnList.size(); i++){
             returnList.get(i).toTextRepresentation(sb);
@@ -80,8 +113,20 @@ public class With extends Neo4jClause implements IWithAnalyzer {
                 sb.append(", ");
             }
         }
+        if(orderBy != null){
+            sb.append(" ORDER BY ");
+            orderBy.toTextRepresentation(sb);
+        }
+        if(skip != null){
+            sb.append(" SKIP ");
+            skip.toTextRepresentation(sb);
+        }
+        if(limit != null){
+            sb.append(" LIMIT ");
+            limit.toTextRepresentation(sb);
+        }
         if(condition != null){
-            sb.append(" WHERE");
+            sb.append(" WHERE ");
             condition.toTextRepresentation(sb);
         }
     }

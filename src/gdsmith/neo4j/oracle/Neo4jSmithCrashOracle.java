@@ -2,6 +2,7 @@ package gdsmith.neo4j.oracle;
 
 import gdsmith.common.oracle.TestOracle;
 import gdsmith.cypher.CypherQueryAdapter;
+import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.ast.ClauseSequence;
 import gdsmith.neo4j.ast.Symtab;
@@ -21,7 +22,7 @@ public class Neo4jSmithCrashOracle implements TestOracle {
     @Override
     public void check() throws Exception {
         //todo oracle 的检测逻辑，会被调用多次
-        ClauseSequence sequence = randomQueryGenerator.generateQuery(globalState);
+        IClauseSequence sequence = randomQueryGenerator.generateQuery(globalState);
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
         System.out.println(sb);

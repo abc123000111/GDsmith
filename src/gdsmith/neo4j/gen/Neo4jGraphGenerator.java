@@ -43,7 +43,7 @@ public class Neo4jGraphGenerator {
 
     public List<CypherQueryAdapter> generateGraph(Neo4jSchema schema) throws Exception {
         List<CypherQueryAdapter> queries = new ArrayList<>();
-        ClauseSequence.ClauseSequenceBuilder builder = new ClauseSequence.ClauseSequenceBuilder();
+        IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
 
         Randomly r = new Randomly();
 
@@ -65,7 +65,7 @@ public class Neo4jGraphGenerator {
             }
             IPattern pattern = n.build();
             INodesPattern.add(pattern);
-            ClauseSequence sequence = new ClauseSequence.ClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
+            ClauseSequence sequence = (ClauseSequence) ClauseSequence.createClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
             StringBuilder sb = new StringBuilder();
             sequence.toTextRepresentation(sb);
             queries.add(new CypherQueryAdapter(sb.toString()));
@@ -100,7 +100,8 @@ public class Neo4jGraphGenerator {
 
                         IPattern merge = rel.newNodeRef(nodeJ).build();
 
-                        ClauseSequence sequence = new ClauseSequence.ClauseSequenceBuilder().MatchClause(null, patternI, patternJ).MergeClause(merge).ReturnClause(Ret.createStar()).build();
+                        ClauseSequence sequence = (ClauseSequence) ClauseSequence.createClauseSequenceBuilder()
+                                .MatchClause(null, patternI, patternJ).MergeClause(merge).ReturnClause(Ret.createStar()).build();
                         StringBuilder sb = new StringBuilder();
                         sequence.toTextRepresentation(sb);
                         queries.add(new CypherQueryAdapter(sb.toString()));

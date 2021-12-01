@@ -1,22 +1,23 @@
 package gdsmith.neo4j.gen.random;
 
 import gdsmith.Randomly;
+import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.ast.ClauseSequence;
+import gdsmith.neo4j.ast.IClauseSequenceBuilder;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class RandomQueryGenerator {
 
     public static class Seed{
-        ClauseSequence sequence;
+        IClauseSequence sequence;
         boolean bugDetected;
         int resultLength;
 
-        public Seed(ClauseSequence sequence, boolean bugDetected, int resultLength){
+        public Seed(IClauseSequence sequence, boolean bugDetected, int resultLength){
             this.sequence = sequence;
             this.bugDetected = bugDetected;
             this.resultLength = resultLength;
@@ -25,7 +26,7 @@ public class RandomQueryGenerator {
 
     private List<Seed> seeds = new ArrayList<>();
 
-    private ClauseSequence.ClauseSequenceBuilder generateClauses(ClauseSequence.ClauseSequenceBuilder seq, int len) {
+    private IClauseSequenceBuilder generateClauses(IClauseSequenceBuilder seq, int len) {
         if (len == 0) {
             return seq;
         }
@@ -45,22 +46,22 @@ public class RandomQueryGenerator {
         }
     }
 
-    public ClauseSequence generateQuery(Neo4jGlobalState globalState){
+    public IClauseSequence generateQuery(Neo4jGlobalState globalState){
 
         Neo4jSchema schema = globalState.getSchema();
         Randomly r = new Randomly();
-        ClauseSequence sequence;
+        IClauseSequence sequence;
 
         boolean isNotFromSeeds = Randomly.getBooleanWithRatherLowProbability();
         if (isNotFromSeeds || seeds.size() == 0) {
-            ClauseSequence.ClauseSequenceBuilder builder = new ClauseSequence.ClauseSequenceBuilder();
+            IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
             int numOfClauses = r.getInteger(1, 8);
             sequence = generateClauses(builder.MatchClause(), numOfClauses).ReturnClause().build(new RandomConditionGenerator(schema),
                     new RandomAliasGenerator(schema, builder.getIdentifierBuilder()),
                     new RandomPatternGenerator(schema, builder.getIdentifierBuilder()), schema);
         } else {
-            ClauseSequence seedSeq = seeds.get(r.getInteger(0, seeds.size() - 1)).sequence;
-            ClauseSequence.ClauseSequenceBuilder builder = new ClauseSequence.ClauseSequenceBuilder(seedSeq);
+            IClauseSequence seedSeq = seeds.get(r.getInteger(0, seeds.size() - 1)).sequence;
+            IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder(seedSeq);
             int numOfClauses = Randomly.smallNumber();
             sequence = generateClauses(builder, numOfClauses).ReturnClause().build(new RandomConditionGenerator(schema),
                     new RandomAliasGenerator(schema, builder.getIdentifierBuilder()),

@@ -17,6 +17,17 @@ public class ClauseSequence implements IClauseSequence {
         this.identifierBuilder = identifierBuilder;
     }
 
+    public static IClauseSequenceBuilder createClauseSequenceBuilder() {
+        return new ClauseSequenceBuilder();
+    }
+
+    public static ClauseSequenceBuilder createClauseSequenceBuilder(IClauseSequence sequence) {
+        if(!(sequence instanceof ClauseSequence)){
+            throw new RuntimeException();
+        }
+        return new ClauseSequenceBuilder((ClauseSequence) sequence);
+    }
+
     @Override
     public List<ICypherClause> getClauseList() {
         return clauses;
@@ -46,10 +57,59 @@ public class ClauseSequence implements IClauseSequence {
         }
     }
 
-    public static class ClauseSequenceBuilder {
+    public static class ClauseSequenceBuilder implements IClauseSequenceBuilder, IClauseSequenceBuilder.IOngoingReturn,
+            IClauseSequenceBuilder.IOngoingWith, IClauseSequenceBuilder.IOngoingMatch{
 
         protected final IdentifierBuilder identifierBuilder;
         private final ClauseSequence clauseSequence;
+
+        @Override
+        public ClauseSequenceBuilder orderBy(IExpression expression) {
+            ICypherClause clause = clauseSequence.clauses.get(clauseSequence.clauses.size()-1);
+            if(clause instanceof IWith){
+                ((IWith) clause).setOrderBy(expression);
+            }
+            if(clause instanceof IReturn){
+                ((IReturn) clause).setOrderBy(expression);
+            }
+            return this;
+        }
+
+        @Override
+        public ClauseSequenceBuilder limit(IExpression expression) {
+            ICypherClause clause = clauseSequence.clauses.get(clauseSequence.clauses.size()-1);
+            if(clause instanceof IWith){
+                ((IWith) clause).setLimit(expression);
+            }
+            if(clause instanceof IReturn){
+                ((IReturn) clause).setLimit(expression);
+            }
+            return this;
+        }
+
+        @Override
+        public ClauseSequenceBuilder skip(IExpression expression) {
+            ICypherClause clause = clauseSequence.clauses.get(clauseSequence.clauses.size()-1);
+            if(clause instanceof IWith){
+                ((IWith) clause).setLimit(expression);
+            }
+            if(clause instanceof IReturn){
+                ((IReturn) clause).setLimit(expression);
+            }
+            return this;
+        }
+
+        @Override
+        public ClauseSequenceBuilder distinct() {
+            ICypherClause clause = clauseSequence.clauses.get(clauseSequence.clauses.size()-1);
+            if(clause instanceof IWith){
+                ((IWith) clause).setDistinct(true);
+            }
+            if(clause instanceof IReturn){
+                ((IReturn) clause).setDistinct(true);
+            }
+            return this;
+        }
 
         public static class IdentifierBuilder implements IIdentifierBuilder {
             public int nodeNum = 0, relationNum = 0, aliasNum = 0;
@@ -83,49 +143,7 @@ public class ClauseSequence implements IClauseSequence {
             }
         }
 
-        public static class FinishedBuilder{
-            private ClauseSequenceBuilder builder;
-
-            private FinishedBuilder(ClauseSequenceBuilder builder){
-                this.builder = builder;
-            }
-            public ClauseSequence build(IConditionGenerator conditionGenerator, IAliasGenerator aliasGenerator,
-                                        IPatternGenerator patternGenerator, Neo4jSchema schema){
-                new QueryFiller(builder.clauseSequence, patternGenerator, conditionGenerator, aliasGenerator,
-                        schema, builder.identifierBuilder).startVisit();
-                return builder.clauseSequence;
-            }
-
-            public ClauseSequence build(){
-                return builder.clauseSequence;
-            }
-        }
-
-        public static class OngoingSequenceCreate{
-            private ClauseSequenceBuilder builder;
-
-            private OngoingSequenceCreate(ClauseSequenceBuilder builder){
-                this.builder = builder;
-            }
-
-            public ClauseSequenceBuilder WithClause(){
-                return builder.WithClause();
-            }
-
-            public ClauseSequenceBuilder WithClause(IExpression condition, IRet...aliasTuple){
-                return builder.WithClause(condition, aliasTuple);
-            }
-
-            public FinishedBuilder ReturnClause(IRet ...returnList){
-                return builder.ReturnClause(returnList);
-            }
-
-            public ClauseSequence build(){
-                return builder.clauseSequence;
-            }
-        }
-
-        public ClauseSequenceBuilder(){
+        private ClauseSequenceBuilder(){
             identifierBuilder = new IdentifierBuilder();
             clauseSequence = new ClauseSequence(identifierBuilder);
         }
@@ -134,7 +152,7 @@ public class ClauseSequence implements IClauseSequence {
          * 从一个sequence开始继续生成，sequence必须是一个查询语句
          * @param sequence
          */
-        public ClauseSequenceBuilder(ClauseSequence sequence){
+        private ClauseSequenceBuilder(ClauseSequence sequence){
             clauseSequence = (ClauseSequence) sequence.getCopy();
             identifierBuilder = (IdentifierBuilder) clauseSequence.identifierBuilder;
             if(clauseSequence.clauses.get(clauseSequence.clauses.size()-1) instanceof IReturn){
@@ -148,11 +166,11 @@ public class ClauseSequence implements IClauseSequence {
 
 
 
-        public ClauseSequenceBuilder MatchClause(){
+        public IOngoingMatch MatchClause(){
             return MatchClause(null);
         }
 
-        public ClauseSequenceBuilder MatchClause(IExpression condition, IPattern...patternTuple){
+        public IOngoingMatch MatchClause(IExpression condition, IPattern...patternTuple){
             IMatch match = new Match();
             match.setPatternTuple(Arrays.asList(patternTuple));
             match.setCondition(condition);
@@ -160,12 +178,12 @@ public class ClauseSequence implements IClauseSequence {
             return this;
         }
 
-        public ClauseSequenceBuilder WithClause(){
+        public IOngoingWith WithClause(){
             return WithClause(null);
         }
 
 
-        public ClauseSequenceBuilder WithClause(IExpression condition, IRet ...aliasTuple){
+        public IOngoingWith WithClause(IExpression condition, IRet ...aliasTuple){
             IWith with = new With();
             with.setCondition(condition);
             with.setReturnList(Arrays.asList(aliasTuple));
@@ -173,12 +191,23 @@ public class ClauseSequence implements IClauseSequence {
             return this;
         }
 
+        public ClauseSequence build(IConditionGenerator conditionGenerator, IAliasGenerator aliasGenerator,
+                                    IPatternGenerator patternGenerator, Neo4jSchema schema){
+            new QueryFiller(clauseSequence, patternGenerator, conditionGenerator, aliasGenerator,
+                    schema, identifierBuilder).startVisit();
+            return clauseSequence;
+        }
 
-        public FinishedBuilder ReturnClause(IRet ...returnList){
+        public ClauseSequence build(){
+            return clauseSequence;
+        }
+
+
+        public IOngoingReturn ReturnClause(IRet ...returnList){
             IReturn returnClause = new Return();
             returnClause.setReturnList(Arrays.asList(returnList));
             clauseSequence.addClause(returnClause);
-            return new FinishedBuilder(this);
+            return this;
         }
 
         public ClauseSequenceBuilder CreateClause(IPattern pattern){

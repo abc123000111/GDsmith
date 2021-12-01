@@ -11,6 +11,9 @@ public class Return extends Neo4jClause implements IReturnAnalyzer {
 
     private List<IRet> returnList = new ArrayList<>();
 
+    private IExpression orderBy = null, skip = null, limit = null;
+    private boolean distinct = false;
+
     public Return(){
         super(false);
     }
@@ -24,6 +27,46 @@ public class Return extends Neo4jClause implements IReturnAnalyzer {
     @Override
     public void setReturnList(List<IRet> returnList) {
         this.returnList = returnList;
+    }
+
+    @Override
+    public void setDistinct(boolean distinct) {
+        this.distinct = distinct;
+    }
+
+    @Override
+    public boolean isDistinct() {
+        return distinct;
+    }
+
+    @Override
+    public void setOrderBy(IExpression expression) {
+        orderBy = expression;
+    }
+
+    @Override
+    public IExpression getOrderBy() {
+        return orderBy;
+    }
+
+    @Override
+    public void setLimit(IExpression expression) {
+        limit = expression;
+    }
+
+    @Override
+    public IExpression getLimit() {
+        return limit;
+    }
+
+    @Override
+    public void setSkip(IExpression expression) {
+        skip = expression;
+    }
+
+    @Override
+    public IExpression getSkip() {
+        return skip;
     }
 
     @Override
@@ -47,12 +90,27 @@ public class Return extends Neo4jClause implements IReturnAnalyzer {
     @Override
     public void toTextRepresentation(StringBuilder sb) {
         sb.append("RETURN ");
+        if(distinct){
+            sb.append("DISTINCT ");
+        }
         List<IRet> returnList = getReturnList();
         for(int i = 0; i < returnList.size(); i++){
             returnList.get(i).toTextRepresentation(sb);
             if(i != returnList.size()-1){
                 sb.append(", ");
             }
+        }
+        if(orderBy != null){
+            sb.append(" ORDER BY ");
+            orderBy.toTextRepresentation(sb);
+        }
+        if(skip != null){
+            sb.append(" SKIP ");
+            skip.toTextRepresentation(sb);
+        }
+        if(limit != null){
+            sb.append(" LIMIT ");
+            limit.toTextRepresentation(sb);
         }
     }
 

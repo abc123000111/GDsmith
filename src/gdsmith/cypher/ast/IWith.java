@@ -13,6 +13,16 @@ public interface IWith extends ICypherClause{
     IExpression getCondtion();
     void setCondition(IExpression condtion);
 
+    void setOrderBy(IExpression expression);
+    IExpression getOrderBy();
+
+    void setLimit(IExpression expression);
+    IExpression getLimit();
+
+    void setSkip(IExpression expression);
+    IExpression getSkip();
+
+
     @Override
     IWithAnalyzer toAnalyzer();
 }
