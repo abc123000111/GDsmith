@@ -55,7 +55,7 @@ public class RandomQueryGenerator {
         boolean isNotFromSeeds = Randomly.getBooleanWithRatherLowProbability();
         if (isNotFromSeeds || seeds.size() == 0) {
             IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
-            int numOfClauses = r.getInteger(1, 8);
+            int numOfClauses = r.getInteger(1, 6);
             sequence = generateClauses(builder.MatchClause(), numOfClauses).ReturnClause().build(new RandomConditionGenerator(schema),
                     new RandomAliasGenerator(schema, builder.getIdentifierBuilder()),
                     new RandomPatternGenerator(schema, builder.getIdentifierBuilder()), schema);

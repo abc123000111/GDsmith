@@ -38,6 +38,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
             numOfExpressions = 1;
         }*/
+
         int numOfExpressions = r.getInteger(1, 4);
 
         for (int i = 0; i < numOfExpressions; i++) {
@@ -186,6 +187,16 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         }
         if (results.isEmpty()) {
             results.add(Ret.createNewExpressionReturnVal(new ConstExpression(Randomly.smallNumber())));
+        }
+        returnClause.setDistinct(Randomly.getBooleanWithRatherLowProbability());
+        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+            returnClause.setLimit(new ConstExpression(Randomly.smallNumber()));
+        }
+        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+            returnClause.setSkip(new ConstExpression(Randomly.smallNumber()));
+        }
+        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+            returnClause.setOrderBy(results.get(r.getInteger(0, results.size() - 1)).getExpression());
         }
         return results;
     }
@@ -357,6 +368,16 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         }
         if (results.isEmpty()) {
             results.add(Ret.createStar());
+        }
+        withClause.setDistinct(Randomly.getBooleanWithRatherLowProbability());
+        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+            withClause.setLimit(new ConstExpression(Randomly.smallNumber()));
+        }
+        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+            withClause.setSkip(new ConstExpression(Randomly.smallNumber()));
+        }
+        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+            withClause.setOrderBy(results.get(r.getInteger(0, results.size() - 1)).getExpression());
         }
         return results;
     }
