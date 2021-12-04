@@ -4,6 +4,7 @@ import gdsmith.Randomly;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.*;
 import gdsmith.neo4j.ast.Label;
+import gdsmith.neo4j.ast.Neo4jType;
 import gdsmith.neo4j.ast.Property;
 import gdsmith.neo4j.ast.Ret;
 import gdsmith.neo4j.ast.expr.ConstExpression;
@@ -42,7 +43,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
             if (i == 0) {
-                int kind = r.getInteger(0, 5);
+                int kind = r.getInteger(0, 6);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
                         IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
@@ -100,11 +101,14 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             }
                         }
                     }
+                } else if (kind == 5) {
+                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    result = Ret.createNewExpressionReturnVal(new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
                 } else {
                     result = Ret.createStar();
                 }
             } else {
-                int kind = r.getInteger(0, 4);
+                int kind = r.getInteger(0, 5);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
                         IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
@@ -139,6 +143,9 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             }
                         }
                     }
+                } else if (kind == 4) {
+                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    result = Ret.createNewExpressionReturnVal(new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
                 } else {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
@@ -207,7 +214,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
             if (i == 0) {
-                int kind = r.getInteger(0, 5);
+                int kind = r.getInteger(0, 6);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
                         IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
@@ -265,11 +272,14 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             }
                         }
                     }
+                } else if (kind == 5) {
+                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(withClause, schema).generateFunction(type));
                 } else {
                     result = Ret.createStar();
                 }
             } else {
-                int kind = r.getInteger(0, 4);
+                int kind = r.getInteger(0, 5);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
                         IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
@@ -304,6 +314,9 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             }
                         }
                     }
+                } else if (kind == 4) {
+                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(withClause, schema).generateFunction(type));
                 } else {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));

@@ -17,7 +17,7 @@ import java.util.List;
 public class Neo4jGraphGenerator {
     private static int minNumOfNodes = 10;
     private static int maxNumOfNodes = 100;
-    private static double percentOfEdges = 0.000001;
+    private static double percentOfEdges = 0.0001;
     private static List<IPattern> INodesPattern;
 
     private final Neo4jGlobalState globalState;
@@ -49,7 +49,7 @@ public class Neo4jGraphGenerator {
 
         // create nodes
         INodesPattern = new ArrayList<>();
-        int numOfNodes = r.getInteger(maxNumOfNodes, maxNumOfNodes);
+        int numOfNodes = r.getInteger(minNumOfNodes, maxNumOfNodes);
         List<Neo4jSchema.Neo4jLabelInfo> labels = schema.getLabels();
         for (int i = 0; i < numOfNodes; ++i) {
             Pattern.PatternBuilder.OngoingNode n = new Pattern.PatternBuilder(builder.getIdentifierBuilder()).newNamedNode();
