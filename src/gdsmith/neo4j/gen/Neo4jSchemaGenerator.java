@@ -1,6 +1,7 @@
 package gdsmith.neo4j.gen;
 
 import gdsmith.Randomly;
+import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.ast.Neo4jType;
 import gdsmith.neo4j.schema.IPatternElementInfo;
@@ -27,6 +28,7 @@ public class Neo4jSchemaGenerator {
         int numOfLabels = r.getInteger(5,8);
         int numOfRelationTypes = r.getInteger(5, 8);
         int numOfPatternInfos = r.getInteger(5, 8);
+        int numOfIndexes = r.getInteger(5, 8);
         int indexOfProperty = 0;
 
         for (int i = 0; i < numOfLabels; i++) {
@@ -77,6 +79,28 @@ public class Neo4jSchemaGenerator {
 
             Neo4jSchema.Neo4jPatternInfo pi = new Neo4jSchema.Neo4jPatternInfo(patternElementInfos);
             patternInfos.add(pi);
+        }
+
+        for (int i = 0; i < numOfIndexes; i++) {
+            String createIndex = "CREATE INDEX i" + i;
+            createIndex += " IF NOT EXISTS FOR (n:";
+            if (Randomly.getBoolean()) {
+                Neo4jSchema.Neo4jLabelInfo n = labels.get(r.getInteger(0, numOfLabels - 1));
+                createIndex = createIndex + n.getName() + ") ON (n.";
+                IPropertyInfo p = n.getProperties().get(r.getInteger(0, n.getProperties().size() - 1));
+                createIndex = createIndex + p.getKey() + ")";
+            } else {
+                Neo4jSchema.Neo4jRelationTypeInfo re = relationTypes.get(r.getInteger(0, numOfRelationTypes - 1));
+                createIndex = createIndex + re.getName() + ") ON (n.";
+                IPropertyInfo p = re.getProperties().get(r.getInteger(0, re.getProperties().size() - 1));
+                createIndex = createIndex + p.getKey() + ")";
+            }
+            //System.out.println(createIndex);
+            try {
+                globalState.executeStatement(new CypherQueryAdapter(createIndex));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return new Neo4jSchema(new ArrayList<>(), labels, relationTypes, patternInfos);

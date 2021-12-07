@@ -74,7 +74,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                                     IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
                                     IdentifierExpression ie = new IdentifierExpression(node);
                                     GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                                    result = Ret.createNewExpressionReturnVal(exp);
+                                    result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                                     break;
                                 }
                             }
@@ -95,7 +95,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                                             IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
                                             IdentifierExpression ie = new IdentifierExpression(relation);
                                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                                            result = Ret.createNewExpressionReturnVal(exp);
+                                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                                             break;
                                         }
                                     }
@@ -105,7 +105,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     }
                 } else if (kind == 5) {
                     Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
-                    result = Ret.createNewExpressionReturnVal(new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
+                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
                 } else {
                     result = Ret.createStar();
                 }
@@ -139,16 +139,13 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                                     IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
                                     IdentifierExpression ie = new IdentifierExpression(node);
                                     GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                                    result = Ret.createNewExpressionReturnVal(exp);
+                                    result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                                     break;
                                 }
                             }
                         }
                     }
-                } else if (kind == 4) {
-                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
-                    result = Ret.createNewExpressionReturnVal(new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
-                } else {
+                } else if (kind == 4){
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
@@ -163,7 +160,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                                             IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
                                             IdentifierExpression ie = new IdentifierExpression(relation);
                                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
-                                            result = Ret.createNewExpressionReturnVal(exp);
+                                            result = Ret.createNewExpressionAlias(identifierBuilder, exp);
                                             break;
                                         }
                                     }
@@ -171,6 +168,9 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             }
                         }
                     }
+                } else {
+                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
                 }
             }
             if (result != null) {
@@ -190,17 +190,24 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
             results.add(Ret.createNewExpressionReturnVal(new ConstExpression(Randomly.smallNumber())));
         }
         returnClause.setDistinct(Randomly.getBooleanWithRatherLowProbability());
-        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+        if (Randomly.getBooleanWithRatherLowProbability()) {
             returnClause.setLimit(new ConstExpression(Randomly.smallNumber()));
         }
-        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+        if (Randomly.getBooleanWithRatherLowProbability()) {
             returnClause.setSkip(new ConstExpression(Randomly.smallNumber()));
         }
-        if (Randomly.getBooleanWithRatherLowProbability() == true) {
-            returnClause.setOrderBy(
-                    Arrays.asList(results.get(r.getInteger(0, results.size() - 1)).getExpression()),
-                    Randomly.getBoolean());
-
+        if (Randomly.getBooleanWithRatherLowProbability()) {
+            ArrayList<IExpression> expression = new ArrayList<>();
+            int numOfOrderBy = r.getInteger(1, results.size());
+            for (int i = 0; i < numOfOrderBy; i++) {
+                IIdentifier id = results.get(r.getInteger(0, results.size() - 1)).getIdentifier();
+                if (id != null) {
+                    expression.add(new IdentifierExpression(id));
+                }
+            }
+            if (expression.size() > 0) {
+                returnClause.setOrderBy(expression, Randomly.getBoolean());
+            }
         }
         return results;
     }
@@ -330,9 +337,6 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                         }
                     }
                 } else if (kind == 4) {
-                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
-                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(withClause, schema).generateFunction(type));
-                } else {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
@@ -355,6 +359,9 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                             }
                         }
                     }
+                } else {
+                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(withClause, schema).generateFunction(type));
                 }
             }
             if (result != null) {
@@ -374,16 +381,24 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
             results.add(Ret.createStar());
         }
         withClause.setDistinct(Randomly.getBooleanWithRatherLowProbability());
-        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+        if (Randomly.getBooleanWithRatherLowProbability()) {
             withClause.setLimit(new ConstExpression(Randomly.smallNumber()));
         }
-        if (Randomly.getBooleanWithRatherLowProbability() == true) {
+        if (Randomly.getBooleanWithRatherLowProbability()) {
             withClause.setSkip(new ConstExpression(Randomly.smallNumber()));
         }
-        if (Randomly.getBooleanWithRatherLowProbability() == true) {
-            withClause.setOrderBy(
-                    Arrays.asList(results.get(r.getInteger(0, results.size() - 1)).getExpression()),
-                    Randomly.getBoolean());
+        if (Randomly.getBooleanWithRatherLowProbability()) {
+            ArrayList<IExpression> expression = new ArrayList<>();
+            int numOfOrderBy = r.getInteger(1, results.size());
+            for (int i = 0; i < numOfOrderBy; i++) {
+                IIdentifier id = results.get(r.getInteger(0, results.size() - 1)).getIdentifier();
+                if (id != null) {
+                    expression.add(new IdentifierExpression(id));
+                }
+            }
+            if (expression.size() > 0) {
+                withClause.setOrderBy(expression, Randomly.getBoolean());
+            }
         }
         return results;
     }
