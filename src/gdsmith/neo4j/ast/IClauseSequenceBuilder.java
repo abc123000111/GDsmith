@@ -13,14 +13,13 @@ public interface IClauseSequenceBuilder {
     IOngoingMatch MatchClause(IExpression condition, IPattern...patternTuple);
 
     interface IOngoingMatch extends IClauseSequenceBuilder{
-        IOngoingMatch orderBy(IExpression expression);
     }
 
     IOngoingWith WithClause();
     IOngoingWith WithClause(IExpression condition, IRet...aliasTuple);
 
     interface IOngoingWith extends IClauseSequenceBuilder{
-        IOngoingWith orderBy(IExpression expression);
+        IOngoingWith orderBy(boolean isDesc, IExpression ...expression);
         IOngoingWith limit(IExpression expression);
         IOngoingWith skip(IExpression expression);
         IOngoingWith distinct();
@@ -29,7 +28,7 @@ public interface IClauseSequenceBuilder {
     IOngoingReturn ReturnClause(IRet ...returnList);
 
     interface IOngoingReturn extends IClauseSequenceBuilder{
-        IOngoingReturn orderBy(IExpression expression);
+        IOngoingReturn orderBy(boolean isDesc, IExpression ...expression);
         IOngoingReturn limit(IExpression expression);
         IOngoingReturn skip(IExpression expression);
         IOngoingReturn distinct();

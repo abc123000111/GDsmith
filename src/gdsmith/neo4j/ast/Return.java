@@ -11,7 +11,9 @@ public class Return extends Neo4jClause implements IReturnAnalyzer {
 
     private List<IRet> returnList = new ArrayList<>();
 
-    private IExpression orderBy = null, skip = null, limit = null;
+    private IExpression skip = null, limit = null;
+    private List<IExpression> orderBy = new ArrayList<>();
+    boolean isOrderByDesc = false;
     private boolean distinct = false;
 
     public Return(){
@@ -39,15 +41,23 @@ public class Return extends Neo4jClause implements IReturnAnalyzer {
         return distinct;
     }
 
+
     @Override
-    public void setOrderBy(IExpression expression) {
-        orderBy = expression;
+    public List<IExpression> getOrderByExpressions() {
+        return orderBy;
     }
 
     @Override
-    public IExpression getOrderBy() {
-        return orderBy;
+    public boolean isOrderByDesc() {
+        return isOrderByDesc;
     }
+
+    @Override
+    public void setOrderBy(List<IExpression> expressions, boolean isDesc) {
+        orderBy = expressions;
+        isOrderByDesc = isDesc;
+    }
+
 
     @Override
     public void setLimit(IExpression expression) {
@@ -100,9 +110,17 @@ public class Return extends Neo4jClause implements IReturnAnalyzer {
                 sb.append(", ");
             }
         }
-        if(orderBy != null){
+        if(orderBy != null && orderBy.size() != 0){
             sb.append(" ORDER BY ");
-            orderBy.toTextRepresentation(sb);
+            for(int i = 0; i < orderBy.size(); i++){
+                orderBy.get(i).toTextRepresentation(sb);
+                if(i != orderBy.size()-1){
+                    sb.append(", ");
+                }
+            }
+            if(isOrderByDesc){
+                sb.append(" DESC");
+            }
         }
         if(skip != null){
             sb.append(" SKIP ");

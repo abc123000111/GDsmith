@@ -13,8 +13,9 @@ public interface IWith extends ICypherClause{
     IExpression getCondtion();
     void setCondition(IExpression condtion);
 
-    void setOrderBy(IExpression expression);
-    IExpression getOrderBy();
+    void setOrderBy(List<IExpression> expression, boolean isDesc);
+    List<IExpression> getOrderByExpressions();
+    boolean isOrderByDesc();
 
     void setLimit(IExpression expression);
     IExpression getLimit();

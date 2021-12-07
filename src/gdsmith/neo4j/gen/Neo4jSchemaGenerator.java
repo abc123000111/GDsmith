@@ -1,6 +1,7 @@
 package gdsmith.neo4j.gen;
 
 import gdsmith.Randomly;
+import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.ast.Neo4jType;
 import gdsmith.neo4j.schema.IPatternElementInfo;
 import gdsmith.neo4j.schema.IPropertyInfo;
@@ -10,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Neo4jSchemaGenerator {
+
+    private Neo4jGlobalState globalState;
+
+    public Neo4jSchemaGenerator(Neo4jGlobalState globalState){
+        this.globalState = globalState;
+    }
 
     public Neo4jSchema generateSchema(){
         Randomly r = new Randomly();

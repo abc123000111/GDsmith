@@ -64,13 +64,13 @@ public class ClauseSequence implements IClauseSequence {
         private final ClauseSequence clauseSequence;
 
         @Override
-        public ClauseSequenceBuilder orderBy(IExpression expression) {
+        public ClauseSequenceBuilder orderBy(boolean isDesc, IExpression ...expressions) {
             ICypherClause clause = clauseSequence.clauses.get(clauseSequence.clauses.size()-1);
             if(clause instanceof IWith){
-                ((IWith) clause).setOrderBy(expression);
+                ((IWith) clause).setOrderBy(Arrays.asList(expressions), isDesc);
             }
             if(clause instanceof IReturn){
-                ((IReturn) clause).setOrderBy(expression);
+                ((IReturn) clause).setOrderBy(Arrays.asList(expressions), isDesc);
             }
             return this;
         }

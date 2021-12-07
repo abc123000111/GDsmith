@@ -16,6 +16,7 @@ import gdsmith.neo4j.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RandomAliasGenerator extends BasicAliasGenerator {
@@ -196,7 +197,10 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
             returnClause.setSkip(new ConstExpression(Randomly.smallNumber()));
         }
         if (Randomly.getBooleanWithRatherLowProbability() == true) {
-            returnClause.setOrderBy(results.get(r.getInteger(0, results.size() - 1)).getExpression());
+            returnClause.setOrderBy(
+                    Arrays.asList(results.get(r.getInteger(0, results.size() - 1)).getExpression()),
+                    Randomly.getBoolean());
+
         }
         return results;
     }
@@ -377,7 +381,9 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
             withClause.setSkip(new ConstExpression(Randomly.smallNumber()));
         }
         if (Randomly.getBooleanWithRatherLowProbability() == true) {
-            withClause.setOrderBy(results.get(r.getInteger(0, results.size() - 1)).getExpression());
+            withClause.setOrderBy(
+                    Arrays.asList(results.get(r.getInteger(0, results.size() - 1)).getExpression()),
+                    Randomly.getBoolean());
         }
         return results;
     }

@@ -13,8 +13,10 @@ public interface IReturn extends ICypherClause{
     void setDistinct(boolean distinct);
     boolean isDistinct();
 
-    void setOrderBy(IExpression expression);
-    IExpression getOrderBy();
+    void setOrderBy(List<IExpression> expression, boolean isDesc);
+    List<IExpression> getOrderByExpressions();
+    boolean isOrderByDesc();
+
 
     void setLimit(IExpression expression);
     IExpression getLimit();

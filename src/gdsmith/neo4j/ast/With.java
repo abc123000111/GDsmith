@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 public class With extends Neo4jClause implements IWithAnalyzer {
 
     private boolean distinct = false;
-    private IExpression condition = null, orderBy = null, skip = null, limit = null;
+    private IExpression condition = null, skip = null, limit = null;
+    private List<IExpression> orderBy = new ArrayList<>();
+    boolean isOrderByDesc = false;
 
     public With(){
         super(false);
@@ -48,13 +50,19 @@ public class With extends Neo4jClause implements IWithAnalyzer {
     }
 
     @Override
-    public void setOrderBy(IExpression expression) {
-        orderBy = expression;
+    public List<IExpression> getOrderByExpressions() {
+        return orderBy;
     }
 
     @Override
-    public IExpression getOrderBy() {
-        return orderBy;
+    public boolean isOrderByDesc() {
+        return isOrderByDesc;
+    }
+
+    @Override
+    public void setOrderBy(List<IExpression> expressions, boolean isDesc) {
+        orderBy = expressions;
+        isOrderByDesc = isDesc;
     }
 
     @Override
@@ -113,9 +121,17 @@ public class With extends Neo4jClause implements IWithAnalyzer {
                 sb.append(", ");
             }
         }
-        if(orderBy != null){
+        if(orderBy != null && orderBy.size() != 0){
             sb.append(" ORDER BY ");
-            orderBy.toTextRepresentation(sb);
+            for(int i = 0; i < orderBy.size(); i++){
+                orderBy.get(i).toTextRepresentation(sb);
+                if(i != orderBy.size()-1){
+                    sb.append(", ");
+                }
+            }
+            if(isOrderByDesc){
+                sb.append(" DESC");
+            }
         }
         if(skip != null){
             sb.append(" SKIP ");
