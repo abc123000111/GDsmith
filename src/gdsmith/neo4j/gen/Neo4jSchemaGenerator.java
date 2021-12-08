@@ -95,7 +95,7 @@ public class Neo4jSchemaGenerator {
                 IPropertyInfo p = re.getProperties().get(r.getInteger(0, re.getProperties().size() - 1));
                 createIndex = createIndex + p.getKey() + ")";
             }
-            //System.out.println(createIndex);
+            System.out.println(createIndex);
             try {
                 globalState.executeStatement(new CypherQueryAdapter(createIndex));
             } catch (Exception e) {
