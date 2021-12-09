@@ -4,8 +4,8 @@ import gdsmith.Randomly;
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.cypher.standard_ast.CypherType;
-import gdsmith.neo4j.schema.IPatternElementInfo;
-import gdsmith.neo4j.schema.IPropertyInfo;
+import gdsmith.cypher.schema.IPatternElementInfo;
+import gdsmith.cypher.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;

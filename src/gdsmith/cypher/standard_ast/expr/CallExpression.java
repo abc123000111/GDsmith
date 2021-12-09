@@ -1,7 +1,7 @@
 package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
-import gdsmith.neo4j.schema.IFunctionInfo;
+import gdsmith.cypher.schema.IFunctionInfo;
 
 import java.util.ArrayList;
 import java.util.List;

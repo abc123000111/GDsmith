@@ -1,4 +1,4 @@
-package gdsmith.neo4j.schema;
+package gdsmith.cypher.schema;
 
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.analyzer.ICypherTypeAnalyzer;

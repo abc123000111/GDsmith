@@ -1,4 +1,4 @@
-package gdsmith.neo4j.schema;
+package gdsmith.cypher.schema;
 
 import java.util.List;
 

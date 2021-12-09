@@ -1,7 +1,6 @@
-package gdsmith.neo4j.schema;
+package gdsmith.cypher.schema;
 
 import gdsmith.cypher.ast.ICypherType;
-import gdsmith.neo4j.schema.IPropertyInfo;
 
 import java.util.List;
 

@@ -9,6 +9,7 @@ import java.util.List;
 import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.ICypherTypeAnalyzer;
+import gdsmith.cypher.schema.*;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.schema.Neo4jSchema.Neo4jTable;
 import gdsmith.cypher.standard_ast.CypherType;
@@ -87,7 +88,7 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> im
         return relationTypes;
     }
 
-    public static class Neo4jPatternInfo implements IPatternInfo{
+    public static class Neo4jPatternInfo implements IPatternInfo {
 
         private List<IPatternElementInfo> patternElementInfos = new ArrayList<>();
 
@@ -210,7 +211,7 @@ public class Neo4jSchema extends AbstractSchema<Neo4jGlobalState, Neo4jTable> im
         }
     }
 
-    public static abstract class Neo4jFunctionInfo implements IFunctionInfo{
+    public static abstract class Neo4jFunctionInfo implements IFunctionInfo {
         private String name;
         private List<IParamInfo> params;
         private CypherType expectedReturnType;

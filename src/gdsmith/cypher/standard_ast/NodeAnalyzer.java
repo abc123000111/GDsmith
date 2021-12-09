@@ -5,8 +5,8 @@ import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
-import gdsmith.neo4j.schema.ILabelInfo;
-import gdsmith.neo4j.schema.IPropertyInfo;
+import gdsmith.cypher.schema.ILabelInfo;
+import gdsmith.cypher.schema.IPropertyInfo;
 
 import java.util.ArrayList;
 import java.util.List;

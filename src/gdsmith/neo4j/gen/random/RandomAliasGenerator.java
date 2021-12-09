@@ -9,7 +9,7 @@ import gdsmith.cypher.standard_ast.expr.GetPropertyExpression;
 import gdsmith.cypher.standard_ast.expr.IdentifierExpression;
 import gdsmith.cypher.dsl.BasicAliasGenerator;
 import gdsmith.cypher.dsl.IIdentifierBuilder;
-import gdsmith.neo4j.schema.IPropertyInfo;
+import gdsmith.cypher.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;

@@ -2,8 +2,8 @@ package gdsmith.cypher;
 
 import gdsmith.cypher.ast.ILabel;
 import gdsmith.cypher.ast.IType;
-import gdsmith.neo4j.schema.ILabelInfo;
-import gdsmith.neo4j.schema.IRelationTypeInfo;
+import gdsmith.cypher.schema.ILabelInfo;
+import gdsmith.cypher.schema.IRelationTypeInfo;
 
 public interface ICypherSchema {
     boolean containsLabel(ILabel label);

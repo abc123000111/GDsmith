@@ -2,7 +2,7 @@ package gdsmith.cypher.ast.analyzer;
 
 import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
-import gdsmith.neo4j.schema.IPropertyInfo;
+import gdsmith.cypher.schema.IPropertyInfo;
 
 import java.util.List;
 

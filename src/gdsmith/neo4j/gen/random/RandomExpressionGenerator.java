@@ -8,7 +8,7 @@ import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
 import gdsmith.cypher.standard_ast.CypherType;
 import gdsmith.cypher.standard_ast.expr.*;
-import gdsmith.neo4j.schema.IPropertyInfo;
+import gdsmith.cypher.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;
