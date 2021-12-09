@@ -1,4 +1,4 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.*;
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Create extends Neo4jClause implements ICreateAnalyzer {
+public class Create extends CypherClause implements ICreateAnalyzer {
 
     public Create(){
         super(true);

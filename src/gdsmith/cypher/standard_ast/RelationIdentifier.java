@@ -1,7 +1,7 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.neo4j.dsl.IIdentifierBuilder;
+import gdsmith.cypher.dsl.IIdentifierBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +49,7 @@ public class RelationIdentifier implements IRelationIdentifier {
 
     @Override
     public ICypherType getType() {
-        return Neo4jType.RELATION;
+        return CypherType.RELATION;
     }
 
     @Override

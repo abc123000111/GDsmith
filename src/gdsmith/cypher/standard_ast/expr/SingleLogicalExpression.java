@@ -1,8 +1,8 @@
-package gdsmith.neo4j.ast.expr;
+package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
 
-public class SingleLogicalExpression extends Neo4jExpression{
+public class SingleLogicalExpression extends CypherExpression {
 
     @Override
     public IExpression getCopy() {

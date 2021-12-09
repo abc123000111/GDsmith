@@ -1,7 +1,7 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.neo4j.dsl.IIdentifierBuilder;
+import gdsmith.cypher.dsl.IIdentifierBuilder;
 
 public class Alias implements IAlias {
     protected String name;
@@ -27,7 +27,7 @@ public class Alias implements IAlias {
 
     @Override
     public ICypherType getType() {
-        return Neo4jType.UNKNOWN;
+        return CypherType.UNKNOWN;
     }
 
     @Override

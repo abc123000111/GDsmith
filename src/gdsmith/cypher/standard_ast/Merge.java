@@ -1,4 +1,4 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IMergeAnalyzer;
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Merge extends Neo4jClause implements IMergeAnalyzer {
+public class Merge extends CypherClause implements IMergeAnalyzer {
 
     public Merge(){
         super(true);

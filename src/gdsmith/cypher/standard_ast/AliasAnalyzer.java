@@ -1,8 +1,7 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.IAlias;
 import gdsmith.cypher.ast.IExpression;
-import gdsmith.cypher.ast.IPattern;
 import gdsmith.cypher.ast.analyzer.IAliasAnalyzer;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 

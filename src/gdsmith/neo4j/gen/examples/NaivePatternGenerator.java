@@ -5,10 +5,10 @@ import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
 import gdsmith.neo4j.schema.Neo4jSchema;
-import gdsmith.neo4j.ast.Label;
-import gdsmith.neo4j.ast.Pattern;
-import gdsmith.neo4j.dsl.BasicPatternGenerator;
-import gdsmith.neo4j.dsl.IIdentifierBuilder;
+import gdsmith.cypher.standard_ast.Label;
+import gdsmith.cypher.standard_ast.Pattern;
+import gdsmith.cypher.dsl.BasicPatternGenerator;
+import gdsmith.cypher.dsl.IIdentifierBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

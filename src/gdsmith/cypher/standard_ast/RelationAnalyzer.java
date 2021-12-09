@@ -1,10 +1,9 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
-import gdsmith.neo4j.schema.ILabelInfo;
 import gdsmith.neo4j.schema.IPropertyInfo;
 
 import java.util.ArrayList;

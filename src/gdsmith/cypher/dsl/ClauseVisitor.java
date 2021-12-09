@@ -1,7 +1,7 @@
-package gdsmith.neo4j.dsl;
+package gdsmith.cypher.dsl;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.neo4j.ast.ClauseSequence;
+import gdsmith.cypher.standard_ast.ClauseSequence;
 
 public abstract class ClauseVisitor<C extends IContext> {
 

@@ -4,8 +4,6 @@ import gdsmith.common.oracle.TestOracle;
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.neo4j.Neo4jGlobalState;
-import gdsmith.neo4j.ast.ClauseSequence;
-import gdsmith.neo4j.ast.Symtab;
 import gdsmith.neo4j.gen.random.RandomQueryGenerator;
 
 public class Neo4jSmithCrashOracle implements TestOracle {

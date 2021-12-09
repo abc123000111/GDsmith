@@ -3,12 +3,12 @@ package gdsmith.neo4j.gen.random;
 import gdsmith.Randomly;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.*;
-import gdsmith.neo4j.ast.*;
-import gdsmith.neo4j.ast.expr.ConstExpression;
-import gdsmith.neo4j.ast.expr.GetPropertyExpression;
-import gdsmith.neo4j.ast.expr.IdentifierExpression;
-import gdsmith.neo4j.dsl.BasicAliasGenerator;
-import gdsmith.neo4j.dsl.IIdentifierBuilder;
+import gdsmith.cypher.standard_ast.*;
+import gdsmith.cypher.standard_ast.expr.ConstExpression;
+import gdsmith.cypher.standard_ast.expr.GetPropertyExpression;
+import gdsmith.cypher.standard_ast.expr.IdentifierExpression;
+import gdsmith.cypher.dsl.BasicAliasGenerator;
+import gdsmith.cypher.dsl.IIdentifierBuilder;
 import gdsmith.neo4j.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
@@ -102,7 +102,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                         }
                     }
                 } else if (kind == 5) {
-                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN, CypherType.NODE, CypherType.RELATION);
                     result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
                     orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                 } else {
@@ -169,7 +169,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                         }
                     }
                 } else {
-                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN, CypherType.NODE, CypherType.RELATION);
                     result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
                     orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                 }
@@ -294,7 +294,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                         }
                     }
                 } else if (kind == 5) {
-                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN, CypherType.NODE, CypherType.RELATION);
                     result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(withClause, schema).generateFunction(type));
                     orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                 } else {
@@ -361,7 +361,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                         }
                     }
                 } else {
-                    Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN, Neo4jType.NODE, Neo4jType.RELATION);
+                    CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN, CypherType.NODE, CypherType.RELATION);
                     result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(withClause, schema).generateFunction(type));
                     orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                 }

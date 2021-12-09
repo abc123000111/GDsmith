@@ -1,27 +1,27 @@
-package gdsmith.neo4j.ast.expr;
+package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.cypher.ast.ICopyable;
 import gdsmith.cypher.ast.ICypherType;
 import gdsmith.cypher.ast.IExpression;
-import gdsmith.neo4j.ast.Neo4jType;
+import gdsmith.cypher.standard_ast.CypherType;
 
-public class ConstExpression extends Neo4jExpression{
+public class ConstExpression extends CypherExpression {
     Object value;
     ICypherType type;
 
     public ConstExpression(Object value){
         this.value = value;
         if(value instanceof Integer || value instanceof Float || value instanceof Long || value instanceof Double){
-            type = Neo4jType.NUMBER;
+            type = CypherType.NUMBER;
         }
         else if(value instanceof String){
-            type = Neo4jType.STRING;
+            type = CypherType.STRING;
         }
         else if(value instanceof Boolean){
-            type = Neo4jType.BOOLEAN;
+            type = CypherType.BOOLEAN;
         }
         else {
-            type = Neo4jType.UNKNOWN;
+            type = CypherType.UNKNOWN;
         }
     }
 
@@ -35,7 +35,7 @@ public class ConstExpression extends Neo4jExpression{
 
     @Override
     public void toTextRepresentation(StringBuilder sb) {
-        switch ((Neo4jType)type){
+        switch ((CypherType)type){
             case NUMBER: sb.append("" + value); break;
             case STRING: sb.append("\"" + value + "\""); break;
             case BOOLEAN: sb.append("" + value); break;
@@ -59,7 +59,7 @@ public class ConstExpression extends Neo4jExpression{
         if(type != ((ConstExpression) o).type){
             return false;
         }
-        if(type == Neo4jType.UNKNOWN){
+        if(type == CypherType.UNKNOWN){
             return false;
         }
         return value.equals(((ConstExpression) o).value);

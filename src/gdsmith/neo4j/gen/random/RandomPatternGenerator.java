@@ -7,13 +7,11 @@ import gdsmith.cypher.ast.IPattern;
 import gdsmith.cypher.ast.IType;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
-import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
-import gdsmith.neo4j.ast.ClauseSequence;
-import gdsmith.neo4j.ast.Label;
-import gdsmith.neo4j.ast.Pattern;
-import gdsmith.neo4j.ast.RelationType;
-import gdsmith.neo4j.dsl.BasicPatternGenerator;
-import gdsmith.neo4j.dsl.IIdentifierBuilder;
+import gdsmith.cypher.standard_ast.Label;
+import gdsmith.cypher.standard_ast.Pattern;
+import gdsmith.cypher.standard_ast.RelationType;
+import gdsmith.cypher.dsl.BasicPatternGenerator;
+import gdsmith.cypher.dsl.IIdentifierBuilder;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;

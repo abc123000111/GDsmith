@@ -1,9 +1,9 @@
-package gdsmith.neo4j.ast.expr;
+package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.IIdentifier;
 
-public class IdentifierExpression extends Neo4jExpression{
+public class IdentifierExpression extends CypherExpression {
 
     private final IIdentifier identifier;
 

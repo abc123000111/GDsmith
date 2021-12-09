@@ -1,4 +1,4 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 
 import gdsmith.cypher.ast.*;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Match extends Neo4jClause implements IMatchAnalyzer {
+public class Match extends CypherClause implements IMatchAnalyzer {
     private boolean isOptional = false;
     private IExpression condition = null;
 

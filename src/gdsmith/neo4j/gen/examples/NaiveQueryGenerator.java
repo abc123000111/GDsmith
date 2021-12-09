@@ -2,9 +2,9 @@ package gdsmith.neo4j.gen.examples;
 
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.neo4j.Neo4jGlobalState;
-import gdsmith.neo4j.ast.IClauseSequenceBuilder;
+import gdsmith.cypher.standard_ast.IClauseSequenceBuilder;
 import gdsmith.neo4j.schema.Neo4jSchema;
-import gdsmith.neo4j.ast.ClauseSequence;
+import gdsmith.cypher.standard_ast.ClauseSequence;
 
 public class NaiveQueryGenerator {
 

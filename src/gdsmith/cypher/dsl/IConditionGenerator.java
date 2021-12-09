@@ -1,7 +1,5 @@
-package gdsmith.neo4j.dsl;
+package gdsmith.cypher.dsl;
 
-import gdsmith.cypher.ast.IMatch;
-import gdsmith.cypher.ast.IWith;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
 

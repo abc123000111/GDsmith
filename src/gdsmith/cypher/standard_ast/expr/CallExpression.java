@@ -1,4 +1,4 @@
-package gdsmith.neo4j.ast.expr;
+package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.neo4j.schema.IFunctionInfo;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CallExpression extends Neo4jExpression{
+public class CallExpression extends CypherExpression {
     private String functionName;
     private String functionSignature;
     List<IExpression> params;

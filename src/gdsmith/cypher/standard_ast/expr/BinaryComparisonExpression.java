@@ -1,10 +1,9 @@
-package gdsmith.neo4j.ast.expr;
+package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.Randomly;
-import gdsmith.cypher.ast.ICypherType;
 import gdsmith.cypher.ast.IExpression;
 
-public class BinaryComparisonExpression extends Neo4jExpression{
+public class BinaryComparisonExpression extends CypherExpression {
 
     @Override
     public IExpression getCopy() {

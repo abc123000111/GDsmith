@@ -1,8 +1,8 @@
 package gdsmith.neo4j.schema;
 
-import gdsmith.neo4j.ast.Neo4jType;
+import gdsmith.cypher.standard_ast.CypherType;
 
 public interface IParamInfo {
     boolean isOptionalLength();
-    Neo4jType getParamType();
+    CypherType getParamType();
 }

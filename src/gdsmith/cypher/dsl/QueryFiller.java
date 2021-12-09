@@ -1,12 +1,12 @@
-package gdsmith.neo4j.dsl;
+package gdsmith.cypher.dsl;
 
 import gdsmith.cypher.ast.ICreate;
 import gdsmith.cypher.ast.IMatch;
 import gdsmith.cypher.ast.IReturn;
 import gdsmith.cypher.ast.IWith;
 import gdsmith.neo4j.schema.Neo4jSchema;
-import gdsmith.neo4j.ast.ClauseSequence;
-import gdsmith.neo4j.dsl.QueryFiller.QueryFillerContext;
+import gdsmith.cypher.standard_ast.ClauseSequence;
+import gdsmith.cypher.dsl.QueryFiller.QueryFillerContext;
 
 public class QueryFiller extends ClauseVisitor<QueryFillerContext>{
 

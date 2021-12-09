@@ -3,7 +3,7 @@ package gdsmith.neo4j.gen;
 import gdsmith.Randomly;
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.neo4j.Neo4jGlobalState;
-import gdsmith.neo4j.ast.Neo4jType;
+import gdsmith.cypher.standard_ast.CypherType;
 import gdsmith.neo4j.schema.IPatternElementInfo;
 import gdsmith.neo4j.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
@@ -36,7 +36,7 @@ public class Neo4jSchemaGenerator {
             List<IPropertyInfo> properties = new ArrayList<>();
             for (int j = 0; j < numOfProperties; j++) {
                 String key = "k" + indexOfProperty;
-                Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN);
+                CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN);
                 boolean isOptional = Randomly.getBoolean();
                 Neo4jSchema.Neo4jPropertyInfo p = new Neo4jSchema.Neo4jPropertyInfo(key, type, isOptional);
                 properties.add(p);
@@ -52,7 +52,7 @@ public class Neo4jSchemaGenerator {
             List<IPropertyInfo> properties = new ArrayList<>();
             for (int j = 0; j < numOfProperties; j++) {
                 String key = "k" + indexOfProperty;
-                Neo4jType type = Randomly.fromOptions(Neo4jType.NUMBER, Neo4jType.STRING, Neo4jType.BOOLEAN);
+                CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN);
                 boolean isOptional = Randomly.getBoolean();
                 Neo4jSchema.Neo4jPropertyInfo p = new Neo4jSchema.Neo4jPropertyInfo(key, type, isOptional);
                 properties.add(p);

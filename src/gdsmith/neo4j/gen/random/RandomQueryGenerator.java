@@ -3,8 +3,8 @@ package gdsmith.neo4j.gen.random;
 import gdsmith.Randomly;
 import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.neo4j.Neo4jGlobalState;
-import gdsmith.neo4j.ast.ClauseSequence;
-import gdsmith.neo4j.ast.IClauseSequenceBuilder;
+import gdsmith.cypher.standard_ast.ClauseSequence;
+import gdsmith.cypher.standard_ast.IClauseSequenceBuilder;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;

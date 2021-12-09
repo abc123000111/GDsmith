@@ -1,9 +1,9 @@
-package gdsmith.neo4j.ast.expr;
+package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.cypher.ast.ICypherClause;
 import gdsmith.cypher.ast.IExpression;
 
-public abstract class Neo4jExpression implements IExpression {
+public abstract class CypherExpression implements IExpression {
     protected IExpression parentExpression;
     protected ICypherClause parentClause;
 

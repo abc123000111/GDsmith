@@ -1,8 +1,6 @@
-package gdsmith.neo4j.dsl;
+package gdsmith.cypher.dsl;
 
 import gdsmith.cypher.ast.IRet;
-import gdsmith.cypher.ast.IReturn;
-import gdsmith.cypher.ast.IWith;
 import gdsmith.cypher.ast.analyzer.IReturnAnalyzer;
 import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
 import gdsmith.neo4j.schema.Neo4jSchema;

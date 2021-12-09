@@ -1,9 +1,9 @@
-package gdsmith.neo4j.ast.expr;
+package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.Randomly;
 import gdsmith.cypher.ast.IExpression;
 
-public class StringMatchingExpression extends Neo4jExpression{
+public class StringMatchingExpression extends CypherExpression {
     private IExpression source, pattern;
     private StringMatchingOperation op;
 

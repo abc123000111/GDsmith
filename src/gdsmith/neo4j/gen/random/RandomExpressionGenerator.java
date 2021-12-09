@@ -1,15 +1,13 @@
 package gdsmith.neo4j.gen.random;
 
 import gdsmith.Randomly;
-import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 import gdsmith.cypher.ast.analyzer.IIdentifierAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
-import gdsmith.neo4j.ast.Neo4jType;
-import gdsmith.neo4j.ast.expr.*;
-import gdsmith.neo4j.schema.ILabelInfo;
+import gdsmith.cypher.standard_ast.CypherType;
+import gdsmith.cypher.standard_ast.expr.*;
 import gdsmith.neo4j.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
@@ -30,9 +28,9 @@ public class RandomExpressionGenerator
     public IExpression generateNumberAgg(){
         Randomly randomly = new Randomly();
         int randNum = randomly.getInteger(0, 50);
-        IExpression param = generateGetProperty(Neo4jType.NUMBER);
+        IExpression param = generateGetProperty(CypherType.NUMBER);
         if(param == null){
-            param = generateConstExpression(Neo4jType.NUMBER);
+            param = generateConstExpression(CypherType.NUMBER);
         }
         if( randNum < 10){
             return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.MAX_NUMBER, Arrays.asList(param));
@@ -52,9 +50,9 @@ public class RandomExpressionGenerator
     public IExpression generateStringAgg(){
         Randomly randomly = new Randomly();
         int randNum = randomly.getInteger(0, 20);
-        IExpression param = generateGetProperty(Neo4jType.NUMBER);
+        IExpression param = generateGetProperty(CypherType.NUMBER);
         if(param == null){
-            param = generateConstExpression(Neo4jType.NUMBER);
+            param = generateConstExpression(CypherType.NUMBER);
         }
         if( randNum < 10){
             return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.MAX_STRING, Arrays.asList(param));
@@ -62,14 +60,14 @@ public class RandomExpressionGenerator
         return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.MIN_STRING, Arrays.asList(param));
     }
 
-    public IExpression generateFunction(Neo4jType type){
-        if(type == Neo4jType.NUMBER){
+    public IExpression generateFunction(CypherType type){
+        if(type == CypherType.NUMBER){
             return generateNumberAgg();
         }
         return generateStringAgg();
     }
 
-    public IExpression generateGetProperty(Neo4jType type){
+    public IExpression generateGetProperty(CypherType type){
         Randomly randomly = new Randomly();
 
         List<INodeAnalyzer> nodeAnalyzers = clauseAnalyzer.getAvailableNodeIdentifiers();
@@ -101,7 +99,7 @@ public class RandomExpressionGenerator
         return generateConstExpression(type);
     }
 
-    public IExpression generateConstExpression(Neo4jType type){
+    public IExpression generateConstExpression(CypherType type){
         Randomly randomly = new Randomly();
 
         if(randomly.getInteger(0, 100) < 25){
@@ -124,7 +122,7 @@ public class RandomExpressionGenerator
     public IExpression generateComparison(){
         Randomly randomly = new Randomly();
         int randomNum = randomly.getInteger(0, 100);
-        Neo4jType type = Neo4jType.NUMBER;
+        CypherType type = CypherType.NUMBER;
         if(randomNum < 60){
             return BinaryComparisonExpression.randomComparison(generateGetProperty(type),
                     generateConstExpression(type));
@@ -135,12 +133,12 @@ public class RandomExpressionGenerator
     private IExpression generateStringMatching(){
         Randomly randomly = new Randomly();
         //todo more
-        IExpression getProperty = generateGetProperty(Neo4jType.STRING);
+        IExpression getProperty = generateGetProperty(CypherType.STRING);
         if(getProperty == null){
             return StringMatchingExpression.
-                    randomMatching(generateConstExpression(Neo4jType.STRING), generateConstExpression(Neo4jType.STRING));
+                    randomMatching(generateConstExpression(CypherType.STRING), generateConstExpression(CypherType.STRING));
         }
-        return StringMatchingExpression.randomMatching(getProperty, generateConstExpression(Neo4jType.STRING));
+        return StringMatchingExpression.randomMatching(getProperty, generateConstExpression(CypherType.STRING));
     }
 
 

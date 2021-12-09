@@ -1,18 +1,17 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.ICypherClause;
 import gdsmith.cypher.ast.IIdentifier;
-import gdsmith.cypher.ast.IPattern;
 import gdsmith.cypher.ast.analyzer.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Neo4jClause implements IClauseAnalyzer {
+public abstract class CypherClause implements IClauseAnalyzer {
     protected final Symtab symtab;
     protected ICypherClause nextClause = null, prevClause = null;
 
-    public Neo4jClause(boolean extendParent){
+    public CypherClause(boolean extendParent){
         symtab = new Symtab(this, extendParent);
     }
 

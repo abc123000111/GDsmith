@@ -1,14 +1,12 @@
 package gdsmith.neo4j.gen.examples;
 
 import gdsmith.cypher.ast.IRet;
-import gdsmith.cypher.ast.IReturn;
-import gdsmith.cypher.ast.IWith;
 import gdsmith.cypher.ast.analyzer.IReturnAnalyzer;
 import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
 import gdsmith.neo4j.schema.Neo4jSchema;
-import gdsmith.neo4j.ast.Ret;
-import gdsmith.neo4j.dsl.BasicAliasGenerator;
-import gdsmith.neo4j.dsl.IIdentifierBuilder;
+import gdsmith.cypher.standard_ast.Ret;
+import gdsmith.cypher.dsl.BasicAliasGenerator;
+import gdsmith.cypher.dsl.IIdentifierBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

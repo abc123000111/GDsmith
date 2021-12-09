@@ -1,8 +1,7 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
-import gdsmith.neo4j.dsl.IIdentifierBuilder;
+import gdsmith.cypher.dsl.IIdentifierBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +40,7 @@ public class NodeIdentifier implements INodeIdentifier {
 
     @Override
     public ICypherType getType() {
-        return Neo4jType.NODE;
+        return CypherType.NODE;
     }
 
     @Override

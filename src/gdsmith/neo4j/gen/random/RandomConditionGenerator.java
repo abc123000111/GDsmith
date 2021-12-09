@@ -4,8 +4,7 @@ import gdsmith.Randomly;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
-import gdsmith.neo4j.ast.expr.ConstExpression;
-import gdsmith.neo4j.dsl.BasicConditionGenerator;
+import gdsmith.cypher.dsl.BasicConditionGenerator;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
 public class RandomConditionGenerator extends BasicConditionGenerator {

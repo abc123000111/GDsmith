@@ -1,4 +1,4 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.*;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class With extends Neo4jClause implements IWithAnalyzer {
+public class With extends CypherClause implements IWithAnalyzer {
 
     private boolean distinct = false;
     private IExpression condition = null, skip = null, limit = null;

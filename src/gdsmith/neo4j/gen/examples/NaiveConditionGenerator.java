@@ -1,12 +1,10 @@
 package gdsmith.neo4j.gen.examples;
 
 import gdsmith.cypher.ast.IExpression;
-import gdsmith.cypher.ast.IMatch;
-import gdsmith.cypher.ast.IWith;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
 import gdsmith.neo4j.schema.Neo4jSchema;
-import gdsmith.neo4j.dsl.BasicConditionGenerator;
+import gdsmith.cypher.dsl.BasicConditionGenerator;
 
 public class NaiveConditionGenerator extends BasicConditionGenerator {
 

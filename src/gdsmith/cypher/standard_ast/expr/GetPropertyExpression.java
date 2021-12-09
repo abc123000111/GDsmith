@@ -1,8 +1,8 @@
-package gdsmith.neo4j.ast.expr;
+package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.cypher.ast.IExpression;
 
-public class GetPropertyExpression extends Neo4jExpression{
+public class GetPropertyExpression extends CypherExpression {
     private final IExpression fromExpression;
     private final String propertyName;
 

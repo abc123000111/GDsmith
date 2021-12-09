@@ -1,18 +1,17 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
-import gdsmith.cypher.ast.ICypherType;
 import gdsmith.cypher.ast.analyzer.ICypherTypeAnalyzer;
 
-public class Neo4jBasicTypeAnalyzer implements ICypherTypeAnalyzer {
+public class CypherBasicTypeAnalyzer implements ICypherTypeAnalyzer {
 
-    private Neo4jType type;
+    private CypherType type;
 
-    public Neo4jBasicTypeAnalyzer(Neo4jType type){
+    public CypherBasicTypeAnalyzer(CypherType type){
         this.type = type;
     }
 
     @Override
-    public Neo4jType getType() {
+    public CypherType getType() {
         return type;
     }
 

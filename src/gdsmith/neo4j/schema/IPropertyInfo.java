@@ -1,7 +1,6 @@
 package gdsmith.neo4j.schema;
 
-import gdsmith.cypher.ast.ICypherType;
-import gdsmith.neo4j.ast.Neo4jType;
+import gdsmith.cypher.standard_ast.CypherType;
 
 public interface IPropertyInfo {
     /**
@@ -14,7 +13,7 @@ public interface IPropertyInfo {
      * 属性的类型
      * @return
      */
-    Neo4jType getType();
+    CypherType getType();
 
     /**
      * 是否label/type下的每一个node/relation都具有该属性

@@ -1,7 +1,7 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.*;
-import gdsmith.neo4j.dsl.IIdentifierBuilder;
+import gdsmith.cypher.dsl.IIdentifierBuilder;
 
 public class Ret implements IRet {
     private boolean isAll;

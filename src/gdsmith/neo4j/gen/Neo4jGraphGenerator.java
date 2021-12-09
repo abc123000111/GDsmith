@@ -6,8 +6,8 @@ import gdsmith.cypher.ast.Direction;
 import gdsmith.cypher.ast.INodeIdentifier;
 import gdsmith.cypher.ast.IPattern;
 import gdsmith.neo4j.Neo4jGlobalState;
-import gdsmith.neo4j.ast.*;
-import gdsmith.neo4j.ast.expr.ConstExpression;
+import gdsmith.cypher.standard_ast.*;
+import gdsmith.cypher.standard_ast.expr.ConstExpression;
 import gdsmith.neo4j.schema.IPropertyInfo;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
@@ -23,7 +23,7 @@ public class Neo4jGraphGenerator {
     private final Neo4jGlobalState globalState;
 
     // todo(rly): handle Exception
-    private ConstExpression generatePropertyValue(Randomly r, Neo4jType type) throws Exception {
+    private ConstExpression generatePropertyValue(Randomly r, CypherType type) throws Exception {
         switch (type){
             case NUMBER: return new ConstExpression(r.getInteger());
             case STRING: return new ConstExpression(r.getString());

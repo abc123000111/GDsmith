@@ -1,4 +1,4 @@
-package gdsmith.neo4j.ast;
+package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.ICypherType;
 import gdsmith.cypher.ast.IExpression;
@@ -7,9 +7,9 @@ import gdsmith.cypher.ast.IProperty;
 public class Property implements IProperty {
     private String key;
     private IExpression value;
-    private Neo4jType type;
+    private CypherType type;
 
-    public Property(String key, Neo4jType type, IExpression value){
+    public Property(String key, CypherType type, IExpression value){
         this.key = key;
         this.value = value;
         this.type = type;
