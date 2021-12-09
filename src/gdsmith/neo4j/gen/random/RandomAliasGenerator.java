@@ -65,7 +65,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         result = Ret.createRelationRef(relation);
-                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                        if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             for(int j = 0; j < props.size(); j++) {
                                 IPropertyInfo prop = props.get(i);
@@ -90,7 +90,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                 } else if (kind == 4) {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
-                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                        if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             if (props.size() > 0) {
                                 IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
@@ -132,7 +132,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         result = Ret.createRelationRef(relation);
-                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                        if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             for(int j = 0; j < props.size(); j++) {
                                 IPropertyInfo prop = props.get(i);
@@ -157,7 +157,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                 } else if (kind == 4){
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
-                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                        if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             if (props.size() > 0) {
                                 IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
@@ -257,7 +257,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         result = Ret.createRelationRef(relation);
-                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                        if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             for(int j = 0; j < props.size(); j++) {
                                 IPropertyInfo prop = props.get(i);
@@ -282,7 +282,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                 } else if (kind == 4) {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
-                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                        if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             if (props.size() > 0) {
                                 IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
@@ -324,7 +324,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         result = Ret.createRelationRef(relation);
-                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                        if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             for(int j = 0; j < props.size(); j++) {
                                 IPropertyInfo prop = props.get(i);
@@ -349,7 +349,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                 } else if (kind == 4) {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
-                        if (relation.getLengthLowerBound() == relation.getLengthUpperBound() && relation.getLengthLowerBound() == 1) {
+                        if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             if (props.size() > 0) {
                                 IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
