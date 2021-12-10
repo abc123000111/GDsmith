@@ -3,13 +3,14 @@ package gdsmith.cypher.dsl;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.IWithAnalyzer;
+import gdsmith.cypher.schema.CypherSchema;
 import gdsmith.neo4j.schema.Neo4jSchema;
 
-public abstract class BasicConditionGenerator implements IConditionGenerator{
+public abstract class BasicConditionGenerator<S extends CypherSchema<?,?>> implements IConditionGenerator{
 
-    private final Neo4jSchema schema;
+    private final S schema;
 
-    public BasicConditionGenerator(Neo4jSchema schema){
+    public BasicConditionGenerator(S schema){
         this.schema = schema;
     }
 
@@ -23,6 +24,6 @@ public abstract class BasicConditionGenerator implements IConditionGenerator{
         withClause.setCondition(generateWithCondition(withClause, schema));
     }
 
-    public abstract IExpression generateMatchCondition(IMatchAnalyzer matchClause, Neo4jSchema schema);
-    public abstract IExpression generateWithCondition(IWithAnalyzer withClause, Neo4jSchema schema);
+    public abstract IExpression generateMatchCondition(IMatchAnalyzer matchClause, S schema);
+    public abstract IExpression generateWithCondition(IWithAnalyzer withClause, S schema);
 }

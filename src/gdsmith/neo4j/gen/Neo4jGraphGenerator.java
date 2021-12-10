@@ -5,6 +5,7 @@ import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.cypher.ast.Direction;
 import gdsmith.cypher.ast.INodeIdentifier;
 import gdsmith.cypher.ast.IPattern;
+import gdsmith.cypher.schema.CypherSchema;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.cypher.standard_ast.*;
 import gdsmith.cypher.standard_ast.expr.ConstExpression;
@@ -50,10 +51,10 @@ public class Neo4jGraphGenerator {
         // create nodes
         INodesPattern = new ArrayList<>();
         int numOfNodes = r.getInteger(minNumOfNodes, maxNumOfNodes);
-        List<Neo4jSchema.Neo4jLabelInfo> labels = schema.getLabels();
+        List<CypherSchema.CypherLabelInfo> labels = schema.getLabels();
         for (int i = 0; i < numOfNodes; ++i) {
             Pattern.PatternBuilder.OngoingNode n = new Pattern.PatternBuilder(builder.getIdentifierBuilder()).newNamedNode();
-            for (Neo4jSchema.Neo4jLabelInfo l : labels) {
+            for (CypherSchema.CypherLabelInfo l : labels) {
                 if (r.getBooleanWithRatherLowProbability()) { // choose label
                     n = n.withLabels(new Label(l.getName()));
                     for (IPropertyInfo p : l.getProperties()) {
@@ -74,10 +75,10 @@ public class Neo4jGraphGenerator {
 
 
         // create relations
-        List<Neo4jSchema.Neo4jRelationTypeInfo> relationTypes = schema.getRelationTypes();
+        List<CypherSchema.CypherRelationTypeInfo> relationTypes = schema.getRelationTypes();
         for (int i = 0; i < numOfNodes; ++i) {
             for (int j = 0; j < numOfNodes; ++j) {
-                for (Neo4jSchema.Neo4jRelationTypeInfo relationType : relationTypes) {
+                for (CypherSchema.CypherRelationTypeInfo relationType : relationTypes) {
                     if (r.getInteger(0, 1000000) < percentOfEdges * 1000000) { // choose this type
                         IPattern patternI = INodesPattern.get(i);
                         IPattern patternJ = INodesPattern.get(j);

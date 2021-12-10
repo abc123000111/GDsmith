@@ -2,7 +2,6 @@ package gdsmith.cypher.standard_ast;
 
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.dsl.*;
-import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -191,12 +190,12 @@ public class ClauseSequence implements IClauseSequence {
             return this;
         }
 
-        public ClauseSequence build(IConditionGenerator conditionGenerator, IAliasGenerator aliasGenerator,
+        /*public ClauseSequence build(IConditionGenerator conditionGenerator, IAliasGenerator aliasGenerator,
                                     IPatternGenerator patternGenerator, Neo4jSchema schema){
             new QueryFiller(clauseSequence, patternGenerator, conditionGenerator, aliasGenerator,
                     schema, identifierBuilder).startVisit();
             return clauseSequence;
-        }
+        }*/
 
         public ClauseSequence build(){
             return clauseSequence;

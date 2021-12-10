@@ -1,8 +1,9 @@
-package gdsmith.neo4j.gen.random;
+package gdsmith.cypher.gen.random;
 
 import gdsmith.Randomly;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.*;
+import gdsmith.cypher.schema.CypherSchema;
 import gdsmith.cypher.standard_ast.*;
 import gdsmith.cypher.standard_ast.expr.ConstExpression;
 import gdsmith.cypher.standard_ast.expr.GetPropertyExpression;
@@ -15,13 +16,13 @@ import gdsmith.neo4j.schema.Neo4jSchema;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RandomAliasGenerator extends BasicAliasGenerator {
-    public RandomAliasGenerator(Neo4jSchema schema, IIdentifierBuilder identifierBuilder) {
+public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAliasGenerator<S> {
+    public RandomAliasGenerator(S schema, IIdentifierBuilder identifierBuilder) {
         super(schema, identifierBuilder);
     }
 
     @Override
-    public List<IRet> generateReturnAlias(IReturnAnalyzer returnClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
+    public List<IRet> generateReturnAlias(IReturnAnalyzer returnClause, IIdentifierBuilder identifierBuilder, S schema) {
         List<IRet> results = new ArrayList<>();
         List<INodeAnalyzer> idNode = returnClause.getExtendableNodeIdentifiers();
         List<IRelationAnalyzer> idRelation = returnClause.getExtendablePatternIdentifiers();
@@ -103,7 +104,8 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     }
                 } else if (kind == 5) {
                     CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN, CypherType.NODE, CypherType.RELATION);
-                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
+                    result = Ret.createNewExpressionAlias(identifierBuilder, 
+                            new RandomExpressionGenerator<>(returnClause, schema).generateFunction(type));
                     orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                 } else {
                     result = Ret.createStar();
@@ -170,7 +172,8 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     }
                 } else {
                     CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN, CypherType.NODE, CypherType.RELATION);
-                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(returnClause, schema).generateFunction(type));
+                    result = Ret.createNewExpressionAlias(identifierBuilder, 
+                            new RandomExpressionGenerator<>(returnClause, schema).generateFunction(type));
                     orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                 }
             }
@@ -210,7 +213,7 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
     }
 
     @Override
-    public List<IRet> generateWithAlias(IWithAnalyzer withClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
+    public List<IRet> generateWithAlias(IWithAnalyzer withClause, IIdentifierBuilder identifierBuilder, S schema) {
         List<IRet> withAlias = withClause.getReturnList();
         if (withAlias.size() > 0) {
             return withAlias;
@@ -295,7 +298,8 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     }
                 } else if (kind == 5) {
                     CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN, CypherType.NODE, CypherType.RELATION);
-                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(withClause, schema).generateFunction(type));
+                    result = Ret.createNewExpressionAlias(identifierBuilder, 
+                            new RandomExpressionGenerator<>(withClause, schema).generateFunction(type));
                     orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                 } else {
                     result = Ret.createStar();
@@ -362,7 +366,8 @@ public class RandomAliasGenerator extends BasicAliasGenerator {
                     }
                 } else {
                     CypherType type = Randomly.fromOptions(CypherType.NUMBER, CypherType.STRING, CypherType.BOOLEAN, CypherType.NODE, CypherType.RELATION);
-                    result = Ret.createNewExpressionAlias(identifierBuilder, new RandomExpressionGenerator(withClause, schema).generateFunction(type));
+                    result = Ret.createNewExpressionAlias(identifierBuilder, 
+                            new RandomExpressionGenerator<>(withClause, schema).generateFunction(type));
                     orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                 }
             }

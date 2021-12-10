@@ -1,4 +1,4 @@
-package gdsmith.neo4j.gen.random;
+package gdsmith.cypher.gen.random;
 
 import gdsmith.Randomly;
 import gdsmith.cypher.ast.Direction;
@@ -7,6 +7,7 @@ import gdsmith.cypher.ast.IPattern;
 import gdsmith.cypher.ast.IType;
 import gdsmith.cypher.ast.analyzer.IMatchAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
+import gdsmith.cypher.schema.CypherSchema;
 import gdsmith.cypher.standard_ast.Label;
 import gdsmith.cypher.standard_ast.Pattern;
 import gdsmith.cypher.standard_ast.RelationType;
@@ -17,14 +18,14 @@ import gdsmith.neo4j.schema.Neo4jSchema;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RandomPatternGenerator extends BasicPatternGenerator {
+public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPatternGenerator<S> {
 
-    public RandomPatternGenerator(Neo4jSchema schema, IIdentifierBuilder identifierBuilder) {
+    public RandomPatternGenerator(S schema, IIdentifierBuilder identifierBuilder) {
         super(schema, identifierBuilder);
     }
 
     @Override
-    public List<IPattern> generatePattern(IMatchAnalyzer matchClause, IIdentifierBuilder identifierBuilder, Neo4jSchema schema) {
+    public List<IPattern> generatePattern(IMatchAnalyzer matchClause, IIdentifierBuilder identifierBuilder, S schema) {
         List<IPattern> matchPattern = matchClause.getPatternTuple();
         if (matchPattern.size() > 0) {
             return matchPattern;
@@ -51,7 +52,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                     //boolean isNamed = Randomly.getBoolean();
                     boolean isNamed = !Randomly.getBooleanWithSmallProbability();
                     if (withLabel) {
-                        Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
+                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());
                         if (isNamed) {
                             patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode().withLabels(label).build());
@@ -82,7 +83,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                     //boolean isNamedLeft = Randomly.getBoolean();
                     boolean isNamedLeft = !Randomly.getBooleanWithSmallProbability();
                     if (withLabelLeft) {
-                        Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
+                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());
                         if (isNamedLeft) {
                             leftNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode().withLabels(label);
@@ -113,7 +114,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                 Direction direction = Randomly.fromOptions(Direction.LEFT, Direction.RIGHT, Direction.BOTH);
                 int typeOfLength = r.getInteger(0, 3);
                 if (withType) {
-                    Neo4jSchema.Neo4jRelationTypeInfo typeInfo = schema.getRelationTypes().get(r.getInteger(0, sizeOfTypes - 1));
+                    CypherSchema.CypherRelationTypeInfo typeInfo = schema.getRelationTypes().get(r.getInteger(0, sizeOfTypes - 1));
                     IType type = new RelationType(typeInfo.getName());
                     if (isNamed) {
                         if (typeOfLength == 0) {
@@ -167,7 +168,7 @@ public class RandomPatternGenerator extends BasicPatternGenerator {
                     //boolean isNamedRight = Randomly.getBoolean();
                     boolean isNamedRight = !Randomly.getBooleanWithSmallProbability();
                     if (withLabelRight) {
-                        Neo4jSchema.Neo4jLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
+                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
                         ILabel label = new Label(labelInfo.getName());
                         if (isNamedRight) {
                             rightNode = relation.newNamedNode().withLabels(label);

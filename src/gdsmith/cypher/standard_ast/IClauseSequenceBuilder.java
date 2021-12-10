@@ -38,8 +38,8 @@ public interface IClauseSequenceBuilder {
     IClauseSequenceBuilder MergeClause();
     IClauseSequenceBuilder MergeClause(IPattern pattern);
 
-    public IClauseSequence build(IConditionGenerator conditionGenerator, IAliasGenerator aliasGenerator,
-                                IPatternGenerator patternGenerator, Neo4jSchema schema);
+    //public IClauseSequence build(IConditionGenerator conditionGenerator, IAliasGenerator aliasGenerator,
+    //                            IPatternGenerator patternGenerator, Neo4jSchema schema);
 
     public IClauseSequence build();
 }

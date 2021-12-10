@@ -5,10 +5,10 @@ import gdsmith.cypher.standard_ast.ClauseSequence;
 
 public abstract class ClauseVisitor<C extends IContext> {
 
-    private ClauseSequence clauseSequence;
+    private IClauseSequence clauseSequence;
     private C context;
 
-    public ClauseVisitor(ClauseSequence clauseSequence, C context){
+    public ClauseVisitor(IClauseSequence clauseSequence, C context){
         this.clauseSequence = clauseSequence;
     }
 

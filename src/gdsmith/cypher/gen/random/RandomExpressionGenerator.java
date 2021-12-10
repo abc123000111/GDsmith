@@ -1,4 +1,4 @@
-package gdsmith.neo4j.gen.random;
+package gdsmith.cypher.gen.random;
 
 import gdsmith.Randomly;
 import gdsmith.cypher.ast.*;
@@ -6,6 +6,7 @@ import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
 import gdsmith.cypher.ast.analyzer.IIdentifierAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
+import gdsmith.cypher.schema.CypherSchema;
 import gdsmith.cypher.standard_ast.CypherType;
 import gdsmith.cypher.standard_ast.expr.*;
 import gdsmith.cypher.schema.IPropertyInfo;
@@ -16,11 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RandomExpressionGenerator
+public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
 {
     IClauseAnalyzer clauseAnalyzer;
-    Neo4jSchema schema;
-    public RandomExpressionGenerator(IClauseAnalyzer clauseAnalyzer, Neo4jSchema schema){
+    S schema;
+    public RandomExpressionGenerator(IClauseAnalyzer clauseAnalyzer, S schema){
         this.clauseAnalyzer = clauseAnalyzer;
         this.schema = schema;
     }
