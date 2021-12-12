@@ -2,6 +2,7 @@ package gdsmith.cypher;
 
 import gdsmith.GlobalState;
 import gdsmith.common.query.ExpectedErrors;
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
 
 public class CypherQueryAdapter extends Query<CypherConnection> {
@@ -48,6 +49,11 @@ public class CypherQueryAdapter extends Query<CypherConnection> {
         globalState.getConnection().executeStatement(query);
         System.out.println(query);
         return true;
+    }
+
+    @Override
+    public <G extends GlobalState<?, ?, CypherConnection>> GDSmithResultSet executeAndGet(G globalState, String... fills) throws Exception {
+        return globalState.getConnection().executeStatementAndGet(query);
     }
 
     @Override

@@ -1,0 +1,107 @@
+--java.lang.NullPointerException
+--	at gdsmith.cypher.standard_ast.expr.SingleLogicalExpression.<init>(SingleLogicalExpression.java:38)
+--	at gdsmith.cypher.standard_ast.expr.SingleLogicalExpression.getCopy(SingleLogicalExpression.java:13)
+--	at gdsmith.cypher.standard_ast.expr.BinaryLogicalExpression.getCopy(BinaryLogicalExpression.java:12)
+--	at gdsmith.cypher.standard_ast.expr.BinaryLogicalExpression.getCopy(BinaryLogicalExpression.java:12)
+--	at gdsmith.cypher.standard_ast.Match.getCopy(Match.java:64)
+--	at gdsmith.cypher.standard_ast.ClauseSequence.lambda$0(ClauseSequence.java:38)
+--	at java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1382)
+--	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:580)
+--	at gdsmith.cypher.standard_ast.ClauseSequence.getCopy(ClauseSequence.java:38)
+--	at gdsmith.cypher.standard_ast.ClauseSequence$ClauseSequenceBuilder.<init>(ClauseSequence.java:155)
+--	at gdsmith.cypher.standard_ast.ClauseSequence$ClauseSequenceBuilder.<init>(ClauseSequence.java:154)
+--	at gdsmith.cypher.standard_ast.ClauseSequence.createClauseSequenceBuilder(ClauseSequence.java:27)
+--	at gdsmith.cypher.gen.random.RandomQueryGenerator.generateQuery(RandomQueryGenerator.java:68)
+--	at gdsmith.neo4j.oracle.Neo4jSmithCrashOracle.check(Neo4jSmithCrashOracle.java:25)
+--	at gdsmith.ProviderAdapter.generateAndTestDatabase(ProviderAdapter.java:49)
+--	at gdsmith.Main$DBMSExecutor.run(Main.java:317)
+--	at gdsmith.Main$2.run(Main.java:501)
+--	at gdsmith.Main$2.runThread(Main.java:479)
+--	at gdsmith.Main$2.run(Main.java:469)
+--	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+--	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+--	at java.lang.Thread.run(Thread.java:748)
+---- Time: 2021/12/12 23:24:01
+-- Database: database0
+-- Database version: 
+-- seed value: 1639322524020
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

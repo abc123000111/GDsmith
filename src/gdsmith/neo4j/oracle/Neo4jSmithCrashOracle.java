@@ -1,6 +1,7 @@
 package gdsmith.neo4j.oracle;
 
 import gdsmith.common.oracle.TestOracle;
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.neo4j.Neo4jGlobalState;
@@ -24,13 +25,18 @@ public class Neo4jSmithCrashOracle implements TestOracle {
         IClauseSequence sequence = randomQueryGenerator.generateQuery(globalState);
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
-        System.out.println(sb);
-        globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
+
+        System.out.println("check=" + sb);
+        // globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
+
+        GDSmithResultSet r = globalState.executeStatementAndGet(new CypherQueryAdapter(sb.toString()));
 
         boolean isCoverageIncreasing = false;
         boolean isBugDetected = false;
-        int resultLength = 0;
+        int resultLength = r.getRowNum();
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
+
+        // resultLength = 0;
 
         if (isCoverageIncreasing || isBugDetected || resultLength > 0) {
             randomQueryGenerator.addSeed(new RandomQueryGenerator.Seed(

@@ -7,6 +7,7 @@ import gdsmith.GlobalState;
 import gdsmith.IgnoreMeException;
 import gdsmith.SQLancerDBConnection;
 import gdsmith.common.query.ExpectedErrors;
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
 import gdsmith.common.query.SQLancerResultSet;
 import gdsmith.common.schema.AbstractRowValue;
@@ -64,7 +65,7 @@ public abstract class PivotedQuerySynthesisBase<S extends GlobalState<?, ?, C>, 
      *             if the query unexpectedly fails
      */
     private boolean containsRows(Query<C> query) throws Exception {
-        try (SQLancerResultSet result = query.executeAndGet(globalState)) {
+        try (GDSmithResultSet result = query.executeAndGet(globalState)) {
             if (result == null) {
                 throw new IgnoreMeException();
             }

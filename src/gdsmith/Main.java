@@ -22,10 +22,12 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.JCommander.Builder;
 
 import gdsmith.common.log.Loggable;
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
 import gdsmith.common.query.SQLancerResultSet;
 import gdsmith.mysql.MySQLProvider;
 import gdsmith.neo4j.Neo4jProvider;
+import org.neo4j.driver.Result;
 
 public final class Main {
 
@@ -229,9 +231,9 @@ public final class Main {
             return success;
         }
 
-        public SQLancerResultSet executeAndGet(Query<C> q, String... fills) throws Exception {
+        public GDSmithResultSet executeAndGet(Query<C> q, String... fills) throws Exception {
             globalState.getState().logStatement(q);
-            SQLancerResultSet result;
+            GDSmithResultSet result;
             result = q.executeAndGet(globalState, fills);
             Main.nrSuccessfulActions.addAndGet(1);
             return result;

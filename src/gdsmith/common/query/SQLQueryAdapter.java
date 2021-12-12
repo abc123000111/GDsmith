@@ -1,13 +1,13 @@
 package gdsmith.common.query;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import gdsmith.GlobalState;
 import gdsmith.Main;
 import gdsmith.SQLConnection;
+import org.neo4j.driver.Result;
 
 public class SQLQueryAdapter extends Query<SQLConnection> {
 
@@ -70,7 +70,7 @@ public class SQLQueryAdapter extends Query<SQLConnection> {
 
     @Override
     public <G extends GlobalState<?, ?, SQLConnection>> boolean execute(G globalState, String... fills)
-            throws SQLException {
+            throws Exception {
         Statement s;
         if (fills.length > 0) {
             s = globalState.getConnection().prepareStatement(fills[0]);
@@ -102,8 +102,9 @@ public class SQLQueryAdapter extends Query<SQLConnection> {
     }
 
     @Override
-    public <G extends GlobalState<?, ?, SQLConnection>> SQLancerResultSet executeAndGet(G globalState, String... fills)
+    public <G extends GlobalState<?, ?, SQLConnection>> GDSmithResultSet executeAndGet(G globalState, String... fills)
             throws SQLException {
+        /*
         Statement s;
         if (fills.length > 0) {
             s = globalState.getConnection().prepareStatement(fills[0]);
@@ -113,7 +114,7 @@ public class SQLQueryAdapter extends Query<SQLConnection> {
         } else {
             s = globalState.getConnection().createStatement();
         }
-        ResultSet result;
+        Result result;
         try {
             if (fills.length > 0) {
                 result = ((PreparedStatement) s).executeQuery();
@@ -124,12 +125,13 @@ public class SQLQueryAdapter extends Query<SQLConnection> {
             if (result == null) {
                 return null;
             }
-            return new SQLancerResultSet(result);
+            return new GDSmithResultSet(result);
         } catch (Exception e) {
             s.close();
             Main.nrUnsuccessfulActions.addAndGet(1);
             checkException(e);
         }
+        */
         return null;
     }
 
