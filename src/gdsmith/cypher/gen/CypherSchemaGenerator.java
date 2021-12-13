@@ -83,28 +83,6 @@ public abstract class CypherSchemaGenerator <S extends CypherSchema<G,?>, G exte
             patternInfos.add(pi);
         }
 
-        /*for (int i = 0; i < numOfIndexes; i++) {
-            String createIndex = "CREATE INDEX i" + i;
-            createIndex += " IF NOT EXISTS FOR (n:";
-            if (Randomly.getBoolean()) {
-                CypherSchema.CypherLabelInfo n = labels.get(r.getInteger(0, numOfLabels - 1));
-                createIndex = createIndex + n.getName() + ") ON (n.";
-                IPropertyInfo p = n.getProperties().get(r.getInteger(0, n.getProperties().size() - 1));
-                createIndex = createIndex + p.getKey() + ")";
-            } else {
-                CypherSchema.CypherRelationTypeInfo re = relationTypes.get(r.getInteger(0, numOfRelationTypes - 1));
-                createIndex = createIndex + re.getName() + ") ON (n.";
-                IPropertyInfo p = re.getProperties().get(r.getInteger(0, re.getProperties().size() - 1));
-                createIndex = createIndex + p.getKey() + ")";
-            }
-            System.out.println(createIndex);
-            try {
-                globalState.executeStatement(new CypherQueryAdapter(createIndex));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
-
         return generateSchemaObject(globalState, labels, relationTypes, patternInfos);
     }
 
