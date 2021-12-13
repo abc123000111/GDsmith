@@ -44,8 +44,8 @@ public class AgensGraphGraphGenerator {
 
     public List<CypherQueryAdapter> generateGraph(AgensGraphSchema schema) throws Exception {
         List<CypherQueryAdapter> queries = new ArrayList<>();
-        queries.add(new CypherQueryAdapter("CREATE (p)"));
-        /*IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
+        //queries.add(new CypherQueryAdapter("CREATE (p)"));
+        IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
 
         Randomly r = new Randomly();
 
@@ -55,16 +55,15 @@ public class AgensGraphGraphGenerator {
         List<CypherSchema.CypherLabelInfo> labels = schema.getLabels();
         for (int i = 0; i < numOfNodes; ++i) {
             Pattern.PatternBuilder.OngoingNode n = new Pattern.PatternBuilder(builder.getIdentifierBuilder()).newNamedNode();
-            for (CypherSchema.CypherLabelInfo l : labels) {
-                if (r.getBooleanWithRatherLowProbability()) { // choose label
-                    n = n.withLabels(new Label(l.getName()));
-                    for (IPropertyInfo p : l.getProperties()) {
-                        if (r.getBooleanWithRatherLowProbability()) { // choose property
-                            n = n.withProperties(new Property(p.getKey(), p.getType(), generatePropertyValue(r, p.getType())));
-                        }
-                    }
+            CypherSchema.CypherLabelInfo l = labels.get(r.getInteger(0, labels.size() - 1)); // choose label
+
+            n = n.withLabels(new Label(l.getName()));
+            for (IPropertyInfo p : l.getProperties()) {
+                if (r.getBooleanWithRatherLowProbability()) { // choose property
+                    n = n.withProperties(new Property(p.getKey(), p.getType(), generatePropertyValue(r, p.getType())));
                 }
             }
+
             IPattern pattern = n.build();
             INodesPattern.add(pattern);
             ClauseSequence sequence = (ClauseSequence) ClauseSequence.createClauseSequenceBuilder().CreateClause(pattern).ReturnClause(Ret.createStar()).build();
@@ -72,8 +71,6 @@ public class AgensGraphGraphGenerator {
             sequence.toTextRepresentation(sb);
             queries.add(new CypherQueryAdapter(sb.toString()));
         }
-
-
 
         // create relations
         List<CypherSchema.CypherRelationTypeInfo> relationTypes = schema.getRelationTypes();
@@ -90,11 +87,9 @@ public class AgensGraphGraphGenerator {
                                 .newRefDefinedNode(nodeI)
                                 .newNamedRelation().withType(new RelationType(relationType.getName()));
 
-                        for (IPropertyInfo p : relationType.getProperties()) {
-                            if (r.getBooleanWithRatherLowProbability()) { // choose this property
-                                rel = rel.withProperties(new Property(p.getKey(), p.getType(), generatePropertyValue(r, p.getType())));
-                            }
-                        }
+                        IPropertyInfo p = relationType.getProperties().get(r.getInteger(0, relationType.getProperties().size() - 1)); // choose this property
+
+                        rel = rel.withProperties(new Property(p.getKey(), p.getType(), generatePropertyValue(r, p.getType())));
 
                         int dirChoice = r.getInteger(0, 2); // generate direction
                         Direction dir = (dirChoice == 0) ? Direction.LEFT : Direction.RIGHT; // For generate in AgensGraph, ALL relationships should be directed.
@@ -110,7 +105,7 @@ public class AgensGraphGraphGenerator {
                     }
                 }
             }
-        }*/
+        }
 
         return queries;
     }
