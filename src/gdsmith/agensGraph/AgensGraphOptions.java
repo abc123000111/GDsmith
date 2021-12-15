@@ -6,7 +6,6 @@ import gdsmith.DBMSSpecificOptions;
 import gdsmith.OracleFactory;
 import gdsmith.agensGraph.oracle.AgensGraphAlwaysTrueOracle;
 import gdsmith.common.oracle.TestOracle;
-import gdsmith.agensGraph.AgensGraphGlobalState;
 
 import java.sql.SQLException;
 import java.util.Arrays;

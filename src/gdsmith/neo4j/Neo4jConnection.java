@@ -8,7 +8,7 @@ import org.neo4j.driver.TransactionWork;
 
 public class Neo4jConnection extends CypherConnection {
 
-    private static Driver driver;
+    private Driver driver;
 
     public Neo4jConnection(Driver driver){
         this.driver = driver;

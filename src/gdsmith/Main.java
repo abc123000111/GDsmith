@@ -27,6 +27,7 @@ import gdsmith.common.query.SQLancerResultSet;
 import gdsmith.mysql.MySQLProvider;
 import gdsmith.neo4j.Neo4jProvider;
 import gdsmith.agensGraph.AgensGraphProvider;
+import gdsmith.redisGraph.RedisGraphProvider;
 
 public final class Main {
 
@@ -540,6 +541,7 @@ public final class Main {
         providers.add(new MySQLProvider());
         providers.add(new Neo4jProvider());
         providers.add(new AgensGraphProvider());
+        providers.add(new RedisGraphProvider());
         return providers;
     }
 

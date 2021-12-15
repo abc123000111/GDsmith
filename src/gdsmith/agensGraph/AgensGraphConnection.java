@@ -1,11 +1,6 @@
 package gdsmith.agensGraph;
 
 import gdsmith.cypher.CypherConnection;
-import org.neo4j.driver.Session;
-import org.neo4j.driver.Transaction;
-import org.neo4j.driver.TransactionWork;
-
-import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
 

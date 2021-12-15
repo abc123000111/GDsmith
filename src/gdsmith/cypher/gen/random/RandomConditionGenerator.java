@@ -13,7 +13,7 @@ public class RandomConditionGenerator<S extends CypherSchema<?,?>> extends Basic
         super(schema);
     }
 
-    private static final int NO_CONDITION_RATE = 20, MAX_DEPTH = 3;
+    private static final int NO_CONDITION_RATE = 20, MAX_DEPTH = 1;
 
     @Override
     public IExpression generateMatchCondition(IMatchAnalyzer matchClause, S schema) {

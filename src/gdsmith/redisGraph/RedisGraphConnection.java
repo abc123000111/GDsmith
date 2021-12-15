@@ -1,17 +1,18 @@
 package gdsmith.redisGraph;
 
+import com.redislabs.redisgraph.RedisGraphContext;
+import com.redislabs.redisgraph.RedisGraphTransaction;
+import com.redislabs.redisgraph.impl.api.RedisGraph;
 import gdsmith.cypher.CypherConnection;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.Session;
-import org.neo4j.driver.Transaction;
-import org.neo4j.driver.TransactionWork;
 
 public class RedisGraphConnection extends CypherConnection {
 
-    private static Driver driver;
+    private final RedisGraph graph;
+    private String graphName;
 
-    public RedisGraphConnection(Driver driver){
-        this.driver = driver;
+    public RedisGraphConnection(RedisGraph graph, String graphName){
+         this.graph = graph;
+         this.graphName = graphName;
     }
 
 
@@ -24,22 +25,18 @@ public class RedisGraphConnection extends CypherConnection {
     @Override
     public void close() throws Exception {
         //Neo4jDriverManager.closeDriver(driver);
+        graph.deleteGraph(graphName);
     }
 
     @Override
     public void executeStatement(String arg) throws Exception{
-        try ( Session session = driver.session() )
-        {
-            String greeting = session.writeTransaction( new TransactionWork<String>()
-            {
-                @Override
-                public String execute( Transaction tx )
-                {
-                    tx.run(arg);
-                    return "";
-                }
-            } );
-            System.out.println( greeting );
-        }
+        graph.query(graphName, arg);
+        /*
+        try(RedisGraphContext context = graph.getContext()) {
+            context.watch(graphName);
+            RedisGraphTransaction t = context.multi();
+            t.query(graphName, arg);
+            t.exec();
+        }*/
     }
 }

@@ -1,4 +1,4 @@
-package gdsmith.agensGraph;
+package gdsmith.redisGraph;
 
 import gdsmith.common.schema.*;
 
@@ -9,24 +9,24 @@ import java.util.List;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.ICypherTypeAnalyzer;
 import gdsmith.cypher.schema.*;
-import gdsmith.agensGraph.AgensGraphSchema.AgensGraphTable;
+import gdsmith.redisGraph.RedisGraphSchema.RedisGraphTable;
 import gdsmith.cypher.standard_ast.CypherType;
 
-public class AgensGraphSchema extends CypherSchema<AgensGraphGlobalState, AgensGraphTable> {
+public class RedisGraphSchema extends CypherSchema<RedisGraphGlobalState, RedisGraphTable> {
 
 
-    public static AgensGraphSchema createEmptyNewSchema(){
-        return new AgensGraphSchema(new ArrayList<AgensGraphTable>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    public static RedisGraphSchema createEmptyNewSchema(){
+        return new RedisGraphSchema(new ArrayList<RedisGraphTable>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     //todo complete
-    public AgensGraphSchema(List<AgensGraphTable> databaseTables, List<CypherLabelInfo> labels,
-                       List<CypherRelationTypeInfo> relationTypes, List<CypherPatternInfo> patternInfos) {
+    public RedisGraphSchema(List<RedisGraphTable> databaseTables, List<CypherLabelInfo> labels,
+                            List<CypherRelationTypeInfo> relationTypes, List<CypherPatternInfo> patternInfos) {
         super(databaseTables, labels, relationTypes, patternInfos);
     }
 
 
-    public enum AgensGraphBuiltInFunctions implements IFunctionInfo{
+    public enum RedisGraphBuiltInFunctions implements IFunctionInfo{
         AVG("avg", "avg@number", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
             public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
@@ -105,7 +105,7 @@ public class AgensGraphSchema extends CypherSchema<AgensGraphGlobalState, AgensG
         },
         ;
 
-        AgensGraphBuiltInFunctions(String name, String signature, CypherType expectedReturnType, IParamInfo... params){
+        RedisGraphBuiltInFunctions(String name, String signature, CypherType expectedReturnType, IParamInfo... params){
             this.name = name;
             this.params = Arrays.asList(params);
             this.expectedReturnType = expectedReturnType;
@@ -136,25 +136,25 @@ public class AgensGraphSchema extends CypherSchema<AgensGraphGlobalState, AgensG
         }
     }
 
-    public enum AgensGraphDataType{
+    public enum RedisGraphDataType{
 
     }
-    public static class AgensGraphTable extends AbstractTable<AgensGraphTableColumn, TableIndex, AgensGraphGlobalState> {
+    public static class RedisGraphTable extends AbstractTable<RedisGraphTableColumn, TableIndex, RedisGraphGlobalState> {
 
         //todo complete
-        public AgensGraphTable(String name, List<AgensGraphTableColumn> columns, List<TableIndex> indexes, boolean isView) {
+        public RedisGraphTable(String name, List<RedisGraphTableColumn> columns, List<TableIndex> indexes, boolean isView) {
             super(name, columns, indexes, isView);
         }
 
         @Override
-        public long getNrRows(AgensGraphGlobalState globalState) {
+        public long getNrRows(RedisGraphGlobalState globalState) {
             return 0;
         }
     }
 
-    public static class AgensGraphTableColumn extends AbstractTableColumn<AgensGraphTable, AgensGraphDataType>{
+    public static class RedisGraphTableColumn extends AbstractTableColumn<RedisGraphTable, RedisGraphDataType>{
         //todo complete
-        public AgensGraphTableColumn(String name, AgensGraphTable table, AgensGraphDataType type) {
+        public RedisGraphTableColumn(String name, RedisGraphTable table, RedisGraphDataType type) {
             super(name, table, type);
         }
     }
