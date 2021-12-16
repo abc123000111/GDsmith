@@ -6,7 +6,7 @@ import org.neo4j.driver.*;
 
 public class Neo4jConnection extends CypherConnection {
 
-    private static Driver driver;
+    private Driver driver;
 
     public Neo4jConnection(Driver driver){
         this.driver = driver;
@@ -37,7 +37,7 @@ public class Neo4jConnection extends CypherConnection {
                     return "";
                 }
             } );
-            System.out.println( greeting );
+            //System.out.println( greeting );
         }
     }
 

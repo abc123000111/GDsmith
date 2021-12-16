@@ -46,8 +46,8 @@ public class CypherQueryAdapter extends Query<CypherConnection> {
 
     @Override
     public <G extends GlobalState<?, ?, CypherConnection>> boolean execute(G globalState, String... fills) throws Exception {
-        globalState.getConnection().executeStatement(query);
         System.out.println(query);
+        globalState.getConnection().executeStatement(query);
         return true;
     }
 

@@ -45,7 +45,7 @@ public class StringMatchingExpression extends CypherExpression {
 
     @Override
     public IExpression getCopy() {
-        return null;
+        return new StringMatchingExpression(source.getCopy(), pattern.getCopy(), op);
     }
 
     @Override

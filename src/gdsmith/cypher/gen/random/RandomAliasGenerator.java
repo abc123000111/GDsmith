@@ -67,6 +67,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         result = Ret.createRelationRef(relation);
                         if (relation.isSingleRelation()) {
+                            //result = Ret.createRelationRef(relation);//todo
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             for(int j = 0; j < props.size(); j++) {
                                 IPropertyInfo prop = props.get(i);
@@ -135,6 +136,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         result = Ret.createRelationRef(relation);
                         if (relation.isSingleRelation()) {
+                            //result = Ret.createRelationRef(relation);//todo
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             for(int j = 0; j < props.size(); j++) {
                                 IPropertyInfo prop = props.get(i);

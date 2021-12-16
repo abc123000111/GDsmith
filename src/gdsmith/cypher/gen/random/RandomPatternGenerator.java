@@ -41,7 +41,7 @@ public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPa
             numOfPatterns = 1;
         }*/
         int numOfPatterns = Randomly.getBooleanWithRatherLowProbability() ? 2 : 1;
-        matchClause.getSource().setOptional(Randomly.getBooleanWithRatherLowProbability());
+        //matchClause.getSource().setOptional(Randomly.getBooleanWithRatherLowProbability());
 
         for (int i = 0; i < numOfPatterns; i++) {
             int lenOfPattern = Randomly.fromOptions(1, 3);
