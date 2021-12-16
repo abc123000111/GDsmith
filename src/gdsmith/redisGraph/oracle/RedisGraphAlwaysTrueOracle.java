@@ -24,7 +24,7 @@ public class RedisGraphAlwaysTrueOracle implements TestOracle {
         IClauseSequence sequence = randomQueryGenerator.generateQuery(globalState);
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
-        System.out.println(sb);
+        //System.out.println(sb);
         globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
 
         boolean isCoverageIncreasing = false;

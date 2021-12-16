@@ -23,7 +23,7 @@ public class RedisGraphSchemaGenerator extends CypherSchemaGenerator<RedisGraphS
 
     @Override
     public RedisGraphSchema generateSchemaObject(RedisGraphGlobalState globalState, List<CypherSchema.CypherLabelInfo> labels, List<CypherSchema.CypherRelationTypeInfo> relationTypes, List<CypherSchema.CypherPatternInfo> patternInfos) {
-        Randomly r = new Randomly();
+        /*Randomly r = new Randomly();
         int numOfIndexes = r.getInteger(5, 8);
 
         for (int i = 0; i < numOfIndexes; i++) {
@@ -45,7 +45,7 @@ public class RedisGraphSchemaGenerator extends CypherSchemaGenerator<RedisGraphS
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         return new RedisGraphSchema(new ArrayList<>(), labels, relationTypes, patternInfos);
     }

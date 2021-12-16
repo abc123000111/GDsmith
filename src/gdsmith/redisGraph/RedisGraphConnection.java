@@ -24,19 +24,11 @@ public class RedisGraphConnection extends CypherConnection {
 
     @Override
     public void close() throws Exception {
-        //Neo4jDriverManager.closeDriver(driver);
         graph.deleteGraph(graphName);
     }
 
     @Override
     public void executeStatement(String arg) throws Exception{
         graph.query(graphName, arg);
-        /*
-        try(RedisGraphContext context = graph.getContext()) {
-            context.watch(graphName);
-            RedisGraphTransaction t = context.multi();
-            t.query(graphName, arg);
-            t.exec();
-        }*/
     }
 }

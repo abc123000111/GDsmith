@@ -34,8 +34,7 @@ public class RedisGraphProvider extends CypherProviderAdapter<RedisGraphGlobalSt
         RedisGraphConnection con = null;
         try{
             con = new RedisGraphConnection(new RedisGraph(host, port), "sqlancer");
-            con.executeStatement("CREATE (p)");
-            //todo 建空图/数据库
+            con.executeStatement("MATCH (n) DETACH DELETE n");
         } catch (Exception e) {
             e.printStackTrace();
         }

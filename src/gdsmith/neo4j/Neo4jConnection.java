@@ -39,7 +39,7 @@ public class Neo4jConnection extends CypherConnection {
                     return "";
                 }
             } );
-            System.out.println( greeting );
+            //System.out.println( greeting );
         }
     }
 }

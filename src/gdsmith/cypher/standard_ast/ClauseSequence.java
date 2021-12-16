@@ -177,6 +177,19 @@ public class ClauseSequence implements IClauseSequence {
             return this;
         }
 
+        public IOngoingMatch OptionalMatchClause(){
+            return OptionalMatchClause(null);
+        }
+
+        public IOngoingMatch OptionalMatchClause(IExpression condition, IPattern...patternTuple){
+            IMatch match = new Match();
+            match.setPatternTuple(Arrays.asList(patternTuple));
+            match.setCondition(condition);
+            match.setOptional(true);
+            clauseSequence.addClause(match);
+            return this;
+        }
+
         public IOngoingWith WithClause(){
             return WithClause(null);
         }

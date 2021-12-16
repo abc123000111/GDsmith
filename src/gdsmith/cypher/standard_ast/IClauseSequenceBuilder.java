@@ -10,6 +10,9 @@ public interface IClauseSequenceBuilder {
     IOngoingMatch MatchClause();
     IOngoingMatch MatchClause(IExpression condition, IPattern...patternTuple);
 
+    IOngoingMatch OptionalMatchClause();
+    IOngoingMatch OptionalMatchClause(IExpression condition, IPattern...patternTuple);
+
     interface IOngoingMatch extends IClauseSequenceBuilder{
     }
 

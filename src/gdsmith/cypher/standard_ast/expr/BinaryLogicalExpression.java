@@ -36,6 +36,7 @@ public class BinaryLogicalExpression extends CypherExpression {
     public static BinaryLogicalExpression randomLogical(IExpression left, IExpression right){
         Randomly randomly = new Randomly();
         int operationNum = randomly.getInteger(0, 90);
+        //int operationNum = randomly.getInteger(0, 59); //todo
         if(operationNum < 30){
             return new BinaryLogicalExpression(left, right, BinaryLogicalOperation.AND);
         }
