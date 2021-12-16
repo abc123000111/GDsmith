@@ -21,9 +21,8 @@ public class GetPropertyExpression extends CypherExpression {
 
     @Override
     public IExpression getCopy() {
-        return null;
+        return new GetPropertyExpression(fromExpression.getCopy(), propertyName);
     }
-
     @Override
     public boolean equals(Object o){
         if(!(o instanceof GetPropertyExpression)){
