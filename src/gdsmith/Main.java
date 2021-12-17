@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.JCommander.Builder;
 
+import gdsmith.arcadeDB.ArcadeDBProvider;
 import gdsmith.common.log.Loggable;
 import gdsmith.common.query.Query;
 import gdsmith.common.query.SQLancerResultSet;
@@ -544,6 +545,7 @@ public final class Main {
         providers.add(new AgensGraphProvider());
         providers.add(new RedisGraphProvider());
         providers.add(new MemGraphProvider());
+        providers.add(new ArcadeDBProvider());
         return providers;
     }
 
