@@ -71,7 +71,7 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
             IClauseSequence seedSeq = seeds.get(r.getInteger(0, seeds.size() - 1)).sequence;
             IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder(seedSeq);
             int numOfClauses = Randomly.smallNumber();
-            sequence = generateClauses(builder.MatchClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH")).ReturnClause().build();
+            sequence = generateClauses(builder.WithClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH")).ReturnClause().build();
             new QueryFiller<S>(sequence,
                     new RandomPatternGenerator<>(schema, builder.getIdentifierBuilder()),
                     new RandomConditionGenerator<>(schema),

@@ -21,10 +21,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.JCommander.Builder;
 
+import gdsmith.arcadeDB.ArcadeDBProvider;
 import gdsmith.common.log.Loggable;
 import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
 import gdsmith.common.query.SQLancerResultSet;
+import gdsmith.memGraph.MemGraphProvider;
 import gdsmith.mysql.MySQLProvider;
 import gdsmith.neo4j.Neo4jProvider;
 import gdsmith.agensGraph.AgensGraphProvider;
@@ -543,6 +545,8 @@ public final class Main {
         providers.add(new Neo4jProvider());
         providers.add(new AgensGraphProvider());
         providers.add(new RedisGraphProvider());
+        providers.add(new MemGraphProvider());
+        providers.add(new ArcadeDBProvider());
         return providers;
     }
 
