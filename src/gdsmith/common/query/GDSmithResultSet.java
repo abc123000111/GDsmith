@@ -35,25 +35,22 @@ public class GDSmithResultSet implements Closeable {
 
     public void registerEpilogue(Runnable runnableEpilogue) {
 
-
     }
 
     public boolean next() throws SQLException {
+        // TODO: refactor me
         return true;
     }
 
-    public int getInt(int i) throws SQLException {
-        return 1;
-    }
-
     public String getString(int i) throws SQLException {
+        // TODO: refactor me
         return "zzz";
     }
 
     public long getLong(int i) throws SQLException {
+        // TODO: refactor me
         return 1;
     }
-
 
     public boolean isClosed() throws SQLException {
         return true;
