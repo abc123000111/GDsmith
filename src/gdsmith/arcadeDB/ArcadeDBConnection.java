@@ -1,15 +1,16 @@
 package gdsmith.arcadeDB;
 
+import com.arcadedb.database.Database;
 import gdsmith.cypher.CypherConnection;
 import java.sql.Connection;
 import java.sql.Statement;
 
 public class ArcadeDBConnection extends CypherConnection {
 
-    private Connection connection;
+    private Database database;
 
-    public ArcadeDBConnection(Connection connection){
-        this.connection = connection;
+    public ArcadeDBConnection(Database database){
+        this.database = database;
     }
 
     @Override
@@ -19,12 +20,20 @@ public class ArcadeDBConnection extends CypherConnection {
 
     @Override
     public void close() throws Exception {
-        connection.close();
+        database.close();
     }
 
     @Override
     public void executeStatement(String arg) throws Exception{
-        Statement stmt = connection.createStatement();
-        stmt.execute(arg);
+        try {
+            database.begin();
+            database.query("CYPHER", arg);
+            database.commit();
+
+        } catch (Exception e) {
+            database.rollback();
+        } finally {
+            database.close();
+        }
     }
 }

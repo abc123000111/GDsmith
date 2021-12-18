@@ -1,12 +1,12 @@
 package gdsmith.arcadeDB;
 
+import com.arcadedb.database.Database;
+import com.arcadedb.database.DatabaseFactory;
 import gdsmith.*;
-import gdsmith.agensGraph.AgensGraphConnection;
 import gdsmith.common.log.LoggableFactory;
 
 import gdsmith.cypher.*;
 import gdsmith.arcadeDB.gen.ArcadeDBGraphGenerator;
-import org.neo4j.driver.Driver;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,6 +23,7 @@ public class ArcadeDBProvider extends CypherProviderAdapter<ArcadeDBGlobalState,
         String username = globalState.getOptions().getUserName();
         String password = globalState.getOptions().getPassword();
         String host = globalState.getOptions().getHost();
+        String path = globalState.getDbmsSpecificOptions().EMBEDDED_PATH;
         int port = globalState.getOptions().getPort();
         if (host == null) {
             host = ArcadeDBOptions.DEFAULT_HOST;
@@ -33,20 +34,19 @@ public class ArcadeDBProvider extends CypherProviderAdapter<ArcadeDBGlobalState,
 
         ArcadeDBConnection con = null;
 
+
+
         try{
-            Class.forName("org.postgresql.Driver");
-
-            Properties props = new Properties();
-            props.setProperty("user", username);
-            props.setProperty("password", password);
-            props.setProperty("ssl", "false");
-
-            String connectionString = "jdbc:postgresql://"+host+":"+port+"/mydb";
-            Connection connection = DriverManager.getConnection(connectionString, props);
-            con = new ArcadeDBConnection(connection);
-            con.executeStatement("DROP GRAPH IF EXISTS sqlancer CASCADE");
-            con.executeStatement("CREATE GRAPH sqlancer");
-            con.executeStatement("SET graph_path = sqlancer");
+            DatabaseFactory arcade = new DatabaseFactory(path);
+            Database database;
+            if(!arcade.exists()){
+                database = arcade.create();
+            }
+            else{
+                database = arcade.open();
+            }
+            con = new ArcadeDBConnection(database);
+            //todo 初始化
         } catch (Exception e) {
             e.printStackTrace();
         }

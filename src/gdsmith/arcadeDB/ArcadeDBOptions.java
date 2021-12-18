@@ -18,6 +18,9 @@ public class ArcadeDBOptions implements DBMSSpecificOptions<ArcadeDBOptions.Arca
     public static final String DEFAULT_HOST = "localhost";
     public static final int DEFAULT_PORT = 2424; //todo 改
 
+    @Parameter(names = "--path")
+    public String EMBEDDED_PATH = "databases/mydb";
+
     @Parameter(names = "--oracle")
     public List<ArcadeDBOracleFactory> oracles = Arrays.asList(ArcadeDBOracleFactory.ALWAYS_TRUE);
 
