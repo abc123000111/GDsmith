@@ -1,10 +1,8 @@
 package gdsmith.neo4j;
 
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.cypher.CypherConnection;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.Session;
-import org.neo4j.driver.Transaction;
-import org.neo4j.driver.TransactionWork;
+import org.neo4j.driver.*;
 
 public class Neo4jConnection extends CypherConnection {
 
@@ -40,6 +38,15 @@ public class Neo4jConnection extends CypherConnection {
                 }
             } );
             //System.out.println( greeting );
+        }
+    }
+
+
+    @Override
+    public GDSmithResultSet executeStatementAndGet(String arg) throws Exception{
+        try ( Session session = driver.session() )
+        {
+            return new GDSmithResultSet(session.run(arg));
         }
     }
 }

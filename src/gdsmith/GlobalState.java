@@ -1,5 +1,6 @@
 package gdsmith;
 
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
 import gdsmith.common.query.SQLancerResultSet;
 import gdsmith.common.schema.AbstractSchema;
@@ -110,9 +111,9 @@ public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends Ab
         return success;
     }
 
-    public SQLancerResultSet executeStatementAndGet(Query<C> q, String... fills) throws Exception {
+    public GDSmithResultSet executeStatementAndGet(Query<C> q, String... fills) throws Exception {
         ExecutionTimer timer = executePrologue(q);
-        SQLancerResultSet result = manager.executeAndGet(q, fills);
+        GDSmithResultSet result = manager.executeAndGet(q, fills);
         boolean success = result != null;
         if (success) {
             result.registerEpilogue(() -> {

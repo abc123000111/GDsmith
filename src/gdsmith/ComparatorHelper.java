@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import gdsmith.common.query.ExpectedErrors;
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.SQLQueryAdapter;
 import gdsmith.common.query.SQLancerResultSet;
 
@@ -49,7 +50,7 @@ public final class ComparatorHelper {
         }
         SQLQueryAdapter q = new SQLQueryAdapter(queryString, errors);
         List<String> resultSet = new ArrayList<>();
-        SQLancerResultSet result = null;
+        GDSmithResultSet result = null;
         try {
             result = q.executeAndGet(state);
             if (result == null) {

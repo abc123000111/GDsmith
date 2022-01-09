@@ -36,7 +36,7 @@ public abstract class Query<C extends SQLancerDBConnection> implements Loggable 
         return getQueryString();
     }
 
-    public <G extends GlobalState<?, ?, C>> SQLancerResultSet executeAndGet(G globalState, String... fills)
+    public <G extends GlobalState<?, ?, C>> GDSmithResultSet executeAndGet(G globalState, String... fills)
             throws Exception {
         throw new AssertionError();
     }
@@ -46,7 +46,7 @@ public abstract class Query<C extends SQLancerDBConnection> implements Loggable 
         return execute(globalState);
     }
 
-    public <G extends GlobalState<?, ?, C>> SQLancerResultSet executeAndGetLogged(G globalState) throws Exception {
+    public <G extends GlobalState<?, ?, C>> GDSmithResultSet executeAndGetLogged(G globalState) throws Exception {
         logQueryString(globalState);
         return executeAndGet(globalState);
     }

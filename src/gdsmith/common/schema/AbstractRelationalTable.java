@@ -4,6 +4,7 @@ import java.util.List;
 
 import gdsmith.IgnoreMeException;
 import gdsmith.SQLGlobalState;
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.SQLQueryAdapter;
 import gdsmith.common.query.SQLancerResultSet;
 
@@ -18,7 +19,7 @@ public class AbstractRelationalTable<C extends AbstractTableColumn<?, ?>, I exte
     public long getNrRows(G globalState) {
         if (rowCount == NO_ROW_COUNT_AVAILABLE) {
             SQLQueryAdapter q = new SQLQueryAdapter("SELECT COUNT(*) FROM " + name);
-            try (SQLancerResultSet query = q.executeAndGet(globalState)) {
+            try (GDSmithResultSet query = q.executeAndGet(globalState)) {
                 if (query == null) {
                     throw new IgnoreMeException();
                 }
