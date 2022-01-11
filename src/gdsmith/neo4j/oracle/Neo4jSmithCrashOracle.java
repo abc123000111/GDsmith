@@ -26,11 +26,8 @@ public class Neo4jSmithCrashOracle implements TestOracle {
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
 
-        // System.out.println("check=" + sb);
+        System.out.println(sb);
         // globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
-
-        // GDSmithResultSet r = globalState.executeStatementAndGet(new CypherQueryAdapter("MATCH (n) RETURN *"));
-
         GDSmithResultSet r = globalState.executeStatementAndGet(new CypherQueryAdapter(sb.toString()));
         
         boolean isCoverageIncreasing = false;

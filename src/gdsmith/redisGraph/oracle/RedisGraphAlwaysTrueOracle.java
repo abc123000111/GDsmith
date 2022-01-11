@@ -1,5 +1,6 @@
 package gdsmith.redisGraph.oracle;
 
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.redisGraph.RedisGraphSchema;
 import gdsmith.common.oracle.TestOracle;
 import gdsmith.cypher.CypherQueryAdapter;
@@ -24,12 +25,14 @@ public class RedisGraphAlwaysTrueOracle implements TestOracle {
         IClauseSequence sequence = randomQueryGenerator.generateQuery(globalState);
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
-        //System.out.println(sb);
-        globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
+
+        System.out.println(sb);
+        //globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
+        GDSmithResultSet r = globalState.executeStatementAndGet(new CypherQueryAdapter(sb.toString()));
 
         boolean isCoverageIncreasing = false;
         boolean isBugDetected = false;
-        int resultLength = 0;
+        int resultLength = r.getRowNum();
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
 
         if (isCoverageIncreasing || isBugDetected || resultLength > 0) {

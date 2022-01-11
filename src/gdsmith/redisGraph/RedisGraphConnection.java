@@ -3,7 +3,9 @@ package gdsmith.redisGraph;
 import com.redislabs.redisgraph.RedisGraphContext;
 import com.redislabs.redisgraph.RedisGraphTransaction;
 import com.redislabs.redisgraph.impl.api.RedisGraph;
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.cypher.CypherConnection;
+import org.neo4j.driver.Session;
 
 public class RedisGraphConnection extends CypherConnection {
 
@@ -30,5 +32,10 @@ public class RedisGraphConnection extends CypherConnection {
     @Override
     public void executeStatement(String arg) throws Exception{
         graph.query(graphName, arg);
+    }
+
+    @Override
+    public GDSmithResultSet executeStatementAndGet(String arg) throws Exception{
+        return new GDSmithResultSet(graph.query(graphName, arg));
     }
 }

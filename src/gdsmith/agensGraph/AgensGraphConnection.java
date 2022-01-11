@@ -1,6 +1,9 @@
 package gdsmith.agensGraph;
 
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.cypher.CypherConnection;
+import org.neo4j.driver.Session;
+
 import java.sql.Connection;
 import java.sql.Statement;
 
@@ -26,5 +29,11 @@ public class AgensGraphConnection extends CypherConnection {
     public void executeStatement(String arg) throws Exception{
         Statement stmt = connection.createStatement();
         stmt.execute(arg);
+    }
+
+    @Override
+    public GDSmithResultSet executeStatementAndGet(String arg) throws Exception{
+        Statement stmt = connection.createStatement();
+        return new GDSmithResultSet(stmt.executeQuery(arg));
     }
 }

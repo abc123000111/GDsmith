@@ -1,5 +1,6 @@
 package gdsmith.memGraph;
 
+import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.cypher.CypherConnection;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Session;
@@ -39,7 +40,15 @@ public class MemGraphConnection extends CypherConnection {
                     return "";
                 }
             } );
-            System.out.println( greeting );
+            //System.out.println( greeting );
+        }
+    }
+
+    @Override
+    public GDSmithResultSet executeStatementAndGet(String arg) throws Exception{
+        try ( Session session = driver.session() )
+        {
+            return new GDSmithResultSet(session.run(arg));
         }
     }
 }

@@ -30,7 +30,7 @@ public class GDSmithResultSet implements Closeable {
             result.add(m);
         }
         // System.out.println("finish parse!");
-        // System.out.println("result_size=" + result.size());
+        System.out.println("result_size=" + resultRowNum);
     }
 
     public GDSmithResultSet(ResultSet rs) throws SQLException {
@@ -46,6 +46,7 @@ public class GDSmithResultSet implements Closeable {
             }
             result.add(row);
         }
+        System.out.println("result_size=" + resultRowNum);
     }
 
     public GDSmithResultSet(com.redislabs.redisgraph.ResultSet rs) throws SQLException {
@@ -60,6 +61,7 @@ public class GDSmithResultSet implements Closeable {
             }
             result.add(row);
         }
+        System.out.println("result_size=" + resultRowNum);
     }
 
 
