@@ -52,7 +52,7 @@ public final class ComparatorHelper {
         List<String> resultSet = new ArrayList<>();
         GDSmithResultSet result = null;
         try {
-            result = q.executeAndGet(state);
+            result = q.executeAndGet(state).get(0);
             if (result == null) {
                 throw new IgnoreMeException();
             }

@@ -28,7 +28,7 @@ public class MemGraphAlwaysTrueOracle implements TestOracle {
         
         System.out.println(sb);
         //globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
-        GDSmithResultSet r = globalState.executeStatementAndGet(new CypherQueryAdapter(sb.toString()));
+        GDSmithResultSet r = globalState.executeStatementAndGet(new CypherQueryAdapter(sb.toString())).get(0);
 
         boolean isCoverageIncreasing = false;
         boolean isBugDetected = false;

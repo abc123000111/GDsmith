@@ -4,6 +4,9 @@ import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.cypher.CypherConnection;
 import org.neo4j.driver.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Neo4jConnection extends CypherConnection {
 
     private Driver driver;
@@ -43,10 +46,10 @@ public class Neo4jConnection extends CypherConnection {
 
 
     @Override
-    public GDSmithResultSet executeStatementAndGet(String arg) throws Exception{
+    public List<GDSmithResultSet> executeStatementAndGet(String arg) throws Exception{
         try ( Session session = driver.session() )
         {
-            return new GDSmithResultSet(session.run(arg));
+            return Arrays.asList(new GDSmithResultSet(session.run(arg)));
         }
     }
 }

@@ -2,6 +2,7 @@ package gdsmith.arcadeDB;
 
 import com.arcadedb.database.Database;
 import com.arcadedb.database.DatabaseFactory;
+import com.google.gson.JsonObject;
 import gdsmith.*;
 import gdsmith.common.log.LoggableFactory;
 
@@ -20,37 +21,7 @@ public class ArcadeDBProvider extends CypherProviderAdapter<ArcadeDBGlobalState,
 
     @Override
     public CypherConnection createDatabase(ArcadeDBGlobalState globalState) throws Exception {
-        String username = globalState.getOptions().getUserName();
-        String password = globalState.getOptions().getPassword();
-        String host = globalState.getOptions().getHost();
-        String path = globalState.getDbmsSpecificOptions().EMBEDDED_PATH;
-        int port = globalState.getOptions().getPort();
-        if (host == null) {
-            host = ArcadeDBOptions.DEFAULT_HOST;
-        }
-        if (port == MainOptions.NO_SET_PORT) {
-            port = ArcadeDBOptions.DEFAULT_PORT;
-        }
-
-        ArcadeDBConnection con = null;
-
-
-
-        try{
-            DatabaseFactory arcade = new DatabaseFactory(path);
-            Database database;
-            if(!arcade.exists()){
-                database = arcade.create();
-            }
-            else{
-                database = arcade.open();
-            }
-            con = new ArcadeDBConnection(database);
-            //todo 初始化
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return con;
+        return createDatabaseWithOptions(globalState.getOptions(), globalState.getDbmsSpecificOptions());
     }
 
     @Override
@@ -93,5 +64,43 @@ public class ArcadeDBProvider extends CypherProviderAdapter<ArcadeDBGlobalState,
             }
         });
         se.executeStatements(); //执行query，相当于随机地改变表的结构并添加行？*/
+    }
+
+    @Override
+    public ArcadeDBOptions generateOptionsFromConfig(JsonObject config) {
+        return ArcadeDBOptions.parseOptionFromFile(config);
+    }
+
+    @Override
+    public CypherConnection createDatabaseWithOptions(MainOptions mainOptions, ArcadeDBOptions specificOptions) throws Exception {
+        String username = specificOptions.getUsername();
+        String password = specificOptions.getPassword();
+        String host = specificOptions.getHost();
+        int port = specificOptions.getPort();
+        String path = specificOptions.EMBEDDED_PATH;
+        if (host == null) {
+            host = ArcadeDBOptions.DEFAULT_HOST;
+        }
+        if (port == MainOptions.NO_SET_PORT) {
+            port = ArcadeDBOptions.DEFAULT_PORT;
+        }
+
+        ArcadeDBConnection con = null;
+
+        try{
+            DatabaseFactory arcade = new DatabaseFactory(path);
+            Database database;
+            if(!arcade.exists()){
+                database = arcade.create();
+            }
+            else{
+                database = arcade.open();
+            }
+            con = new ArcadeDBConnection(database);
+            //todo 初始化
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return con;
     }
 }

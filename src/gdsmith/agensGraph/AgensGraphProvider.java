@@ -1,5 +1,6 @@
 package gdsmith.agensGraph;
 
+import com.google.gson.JsonObject;
 import gdsmith.*;
 import gdsmith.common.log.LoggableFactory;
 
@@ -17,29 +18,7 @@ public class AgensGraphProvider extends CypherProviderAdapter<AgensGraphGlobalSt
 
     @Override
     public CypherConnection createDatabase(AgensGraphGlobalState globalState) throws Exception {
-        String username = globalState.getOptions().getUserName();
-        String password = globalState.getOptions().getPassword();
-        String host = globalState.getOptions().getHost();
-        int port = globalState.getOptions().getPort();
-        if (host == null) {
-            host = AgensGraphOptions.DEFAULT_HOST;
-        }
-        if (port == MainOptions.NO_SET_PORT) {
-            port = AgensGraphOptions.DEFAULT_PORT;
-        }
-        AgensGraphConnection con = null;
-        try{
-            Class.forName("net.bitnine.agensgraph.Driver");
-            String connectionString = "jdbc:agensgraph://"+host+":"+port+"/agens";
-            Connection connection = DriverManager.getConnection(connectionString, username, password);
-            con = new AgensGraphConnection(connection);
-            con.executeStatement("DROP GRAPH IF EXISTS sqlancer CASCADE");
-            con.executeStatement("CREATE GRAPH sqlancer");
-            con.executeStatement("SET graph_path = sqlancer");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return con;
+        return createDatabaseWithOptions(globalState.getOptions(), globalState.getDbmsSpecificOptions());
     }
 
     @Override
@@ -82,5 +61,37 @@ public class AgensGraphProvider extends CypherProviderAdapter<AgensGraphGlobalSt
             }
         });
         se.executeStatements(); //执行query，相当于随机地改变表的结构并添加行？*/
+    }
+
+    @Override
+    public AgensGraphOptions generateOptionsFromConfig(JsonObject config) {
+        return AgensGraphOptions.parseOptionFromFile(config);
+    }
+
+    @Override
+    public CypherConnection createDatabaseWithOptions(MainOptions mainOptions, AgensGraphOptions specificOptions) throws Exception {
+        String username = specificOptions.getUsername();
+        String password = specificOptions.getPassword();
+        String host = specificOptions.getHost();
+        int port = specificOptions.getPort();
+        if (host == null) {
+            host = AgensGraphOptions.DEFAULT_HOST;
+        }
+        if (port == MainOptions.NO_SET_PORT) {
+            port = AgensGraphOptions.DEFAULT_PORT;
+        }
+        AgensGraphConnection con = null;
+        try{
+            Class.forName("net.bitnine.agensgraph.Driver");
+            String connectionString = "jdbc:agensgraph://"+host+":"+port+"/agens";
+            Connection connection = DriverManager.getConnection(connectionString, username, password);
+            con = new AgensGraphConnection(connection);
+            con.executeStatement("DROP GRAPH IF EXISTS sqlancer CASCADE");
+            con.executeStatement("CREATE GRAPH sqlancer");
+            con.executeStatement("SET graph_path = sqlancer");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return con;
     }
 }

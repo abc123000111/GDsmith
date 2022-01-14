@@ -5,6 +5,8 @@ import gdsmith.common.query.ExpectedErrors;
 import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
 
+import java.util.List;
+
 public class CypherQueryAdapter extends Query<CypherConnection> {
 
     private final String query;
@@ -52,7 +54,7 @@ public class CypherQueryAdapter extends Query<CypherConnection> {
     }
 
     @Override
-    public <G extends GlobalState<?, ?, CypherConnection>> GDSmithResultSet executeAndGet(G globalState, String... fills) throws Exception {
+    public <G extends GlobalState<?, ?, CypherConnection>> List<GDSmithResultSet> executeAndGet(G globalState, String... fills) throws Exception {
         return globalState.getConnection().executeStatementAndGet(query);
     }
 

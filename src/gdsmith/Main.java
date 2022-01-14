@@ -26,6 +26,7 @@ import gdsmith.common.log.Loggable;
 import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
 import gdsmith.common.query.SQLancerResultSet;
+import gdsmith.composite.CompositeProvider;
 import gdsmith.memGraph.MemGraphProvider;
 import gdsmith.mysql.MySQLProvider;
 import gdsmith.neo4j.Neo4jProvider;
@@ -234,9 +235,9 @@ public final class Main {
             return success;
         }
 
-        public GDSmithResultSet executeAndGet(Query<C> q, String... fills) throws Exception {
+        public List<GDSmithResultSet> executeAndGet(Query<C> q, String... fills) throws Exception {
             globalState.getState().logStatement(q);
-            GDSmithResultSet result;
+            List<GDSmithResultSet> result;
             result = q.executeAndGet(globalState, fills);
             Main.nrSuccessfulActions.addAndGet(1);
             return result;
@@ -539,14 +540,17 @@ public final class Main {
         return threadsShutdown == 0 ? 0 : options.getErrorExitCode();
     }
 
-    static List<DatabaseProvider<?, ?, ?>> getDBMSProviders() {
-        List<DatabaseProvider<?, ?, ?>> providers = new ArrayList<>();
-        providers.add(new MySQLProvider());
-        providers.add(new Neo4jProvider());
-        providers.add(new AgensGraphProvider());
-        providers.add(new RedisGraphProvider());
-        providers.add(new MemGraphProvider());
-        providers.add(new ArcadeDBProvider());
+    static List<DatabaseProvider<?, ?, ?>> providers = new ArrayList<>();
+    public static List<DatabaseProvider<?, ?, ?>> getDBMSProviders() {
+        if(providers.size()==0){
+            providers.add(new MySQLProvider());
+            providers.add(new Neo4jProvider());
+            providers.add(new AgensGraphProvider());
+            providers.add(new RedisGraphProvider());
+            providers.add(new MemGraphProvider());
+            providers.add(new ArcadeDBProvider());
+            providers.add(new CompositeProvider());
+        }
         return providers;
     }
 

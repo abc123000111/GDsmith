@@ -6,6 +6,8 @@ import org.neo4j.driver.Session;
 
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
 
 public class AgensGraphConnection extends CypherConnection {
 
@@ -32,8 +34,8 @@ public class AgensGraphConnection extends CypherConnection {
     }
 
     @Override
-    public GDSmithResultSet executeStatementAndGet(String arg) throws Exception{
+    public List<GDSmithResultSet> executeStatementAndGet(String arg) throws Exception{
         Statement stmt = connection.createStatement();
-        return new GDSmithResultSet(stmt.executeQuery(arg));
+        return Arrays.asList(new GDSmithResultSet(stmt.executeQuery(arg)));
     }
 }

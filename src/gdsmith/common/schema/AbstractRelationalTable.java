@@ -19,7 +19,7 @@ public class AbstractRelationalTable<C extends AbstractTableColumn<?, ?>, I exte
     public long getNrRows(G globalState) {
         if (rowCount == NO_ROW_COUNT_AVAILABLE) {
             SQLQueryAdapter q = new SQLQueryAdapter("SELECT COUNT(*) FROM " + name);
-            try (GDSmithResultSet query = q.executeAndGet(globalState)) {
+            try (GDSmithResultSet query = q.executeAndGet(globalState).get(0)) {
                 if (query == null) {
                     throw new IgnoreMeException();
                 }

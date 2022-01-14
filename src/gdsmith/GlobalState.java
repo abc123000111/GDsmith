@@ -6,6 +6,8 @@ import gdsmith.common.query.SQLancerResultSet;
 import gdsmith.common.schema.AbstractSchema;
 import gdsmith.common.schema.AbstractTable;
 
+import java.util.List;
+
 public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends AbstractSchema<?, ?>, C extends SQLancerDBConnection> {
 
     protected C databaseConnection;
@@ -111,20 +113,20 @@ public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends Ab
         return success;
     }
 
-    public GDSmithResultSet executeStatementAndGet(Query<C> q, String... fills) throws Exception {
+    public List<GDSmithResultSet> executeStatementAndGet(Query<C> q, String... fills) throws Exception {
         ExecutionTimer timer = executePrologue(q);
-        GDSmithResultSet result = manager.executeAndGet(q, fills);
-        boolean success = result != null;
+        List<GDSmithResultSet> results = manager.executeAndGet(q, fills);
+        boolean success = results != null || results.stream().anyMatch(r->r==null);
         if (success) {
-            result.registerEpilogue(() -> {
+            results.forEach(result->result.registerEpilogue(() -> {
                 try {
                     executeEpilogue(q, success, timer);
                 } catch (Exception e) {
                     throw new AssertionError(e);
                 }
-            });
+            }));
         }
-        return result;
+        return results;
     }
 
     public S getSchema() {

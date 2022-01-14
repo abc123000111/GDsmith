@@ -3,11 +3,11 @@ package gdsmith.common.query;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import gdsmith.GlobalState;
 import gdsmith.Main;
 import gdsmith.SQLConnection;
-import org.neo4j.driver.Result;
 
 public class SQLQueryAdapter extends Query<SQLConnection> {
 
@@ -102,7 +102,7 @@ public class SQLQueryAdapter extends Query<SQLConnection> {
     }
 
     @Override
-    public <G extends GlobalState<?, ?, SQLConnection>> GDSmithResultSet executeAndGet(G globalState, String... fills)
+    public <G extends GlobalState<?, ?, SQLConnection>> List<GDSmithResultSet> executeAndGet(G globalState, String... fills)
             throws SQLException {
         /*
         Statement s;

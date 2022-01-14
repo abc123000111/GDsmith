@@ -7,6 +7,9 @@ import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
 import org.neo4j.driver.TransactionWork;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MemGraphConnection extends CypherConnection {
 
     private Driver driver;
@@ -45,10 +48,10 @@ public class MemGraphConnection extends CypherConnection {
     }
 
     @Override
-    public GDSmithResultSet executeStatementAndGet(String arg) throws Exception{
+    public List<GDSmithResultSet> executeStatementAndGet(String arg) throws Exception{
         try ( Session session = driver.session() )
         {
-            return new GDSmithResultSet(session.run(arg));
+            return Arrays.asList(new GDSmithResultSet(session.run(arg)));
         }
     }
 }

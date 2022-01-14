@@ -1,5 +1,6 @@
 package gdsmith.redisGraph;
 
+import com.google.gson.JsonObject;
 import com.redislabs.redisgraph.impl.api.RedisGraph;
 import gdsmith.*;
 import gdsmith.redisGraph.RedisGraphConnection;
@@ -21,24 +22,7 @@ public class RedisGraphProvider extends CypherProviderAdapter<RedisGraphGlobalSt
 
     @Override
     public CypherConnection createDatabase(RedisGraphGlobalState globalState) throws Exception {
-        String username = globalState.getOptions().getUserName();
-        String password = globalState.getOptions().getPassword();
-        String host = globalState.getOptions().getHost();
-        int port = globalState.getOptions().getPort();
-        if (host == null) {
-            host = RedisGraphOptions.DEFAULT_HOST;
-        }
-        if (port == MainOptions.NO_SET_PORT) {
-            port = RedisGraphOptions.DEFAULT_PORT;
-        }
-        RedisGraphConnection con = null;
-        try{
-            con = new RedisGraphConnection(new RedisGraph(host, port), "sqlancer");
-            con.executeStatement("MATCH (n) DETACH DELETE n");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return con;
+        return createDatabaseWithOptions(globalState.getOptions(), globalState.getDbmsSpecificOptions());
     }
 
     @Override
@@ -81,5 +65,32 @@ public class RedisGraphProvider extends CypherProviderAdapter<RedisGraphGlobalSt
             }
         });
         se.executeStatements(); //执行query，相当于随机地改变表的结构并添加行？*/
+    }
+
+    @Override
+    public RedisGraphOptions generateOptionsFromConfig(JsonObject config) {
+        return RedisGraphOptions.parseOptionFromFile(config);
+    }
+
+    @Override
+    public CypherConnection createDatabaseWithOptions(MainOptions mainOptions, RedisGraphOptions specificOptions) throws Exception {
+        String username = specificOptions.getUsername();
+        String password = specificOptions.getPassword();
+        String host = specificOptions.getHost();
+        int port = specificOptions.getPort();
+        if (host == null) {
+            host = RedisGraphOptions.DEFAULT_HOST;
+        }
+        if (port == MainOptions.NO_SET_PORT) {
+            port = RedisGraphOptions.DEFAULT_PORT;
+        }
+        RedisGraphConnection con = null;
+        try{
+            con = new RedisGraphConnection(new RedisGraph(host, port), "sqlancer");
+            con.executeStatement("MATCH (n) DETACH DELETE n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return con;
     }
 }

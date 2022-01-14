@@ -65,7 +65,7 @@ public abstract class PivotedQuerySynthesisBase<S extends GlobalState<?, ?, C>, 
      *             if the query unexpectedly fails
      */
     private boolean containsRows(Query<C> query) throws Exception {
-        try (GDSmithResultSet result = query.executeAndGet(globalState)) {
+        try (GDSmithResultSet result = query.executeAndGet(globalState).get(0)) {
             if (result == null) {
                 throw new IgnoreMeException();
             }

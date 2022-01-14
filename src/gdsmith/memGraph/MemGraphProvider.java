@@ -1,5 +1,6 @@
 package gdsmith.memGraph;
 
+import com.google.gson.JsonObject;
 import gdsmith.*;
 import gdsmith.common.log.LoggableFactory;
 
@@ -16,23 +17,7 @@ public class MemGraphProvider extends CypherProviderAdapter<MemGraphGlobalState,
 
     @Override
     public CypherConnection createDatabase(MemGraphGlobalState globalState) throws Exception {
-        String username = globalState.getOptions().getUserName();
-        String password = globalState.getOptions().getPassword();
-        String host = globalState.getOptions().getHost();
-        int port = globalState.getOptions().getPort();
-        if (host == null) {
-            host = MemGraphOptions.DEFAULT_HOST;
-        }
-        if (port == MainOptions.NO_SET_PORT) {
-            port = MemGraphOptions.DEFAULT_PORT;
-        }
-
-        String url = String.format("bolt://%s:%d", host, port);
-        Driver driver = MemGraphDriverManager.getDriver(url, username, password);
-        MemGraphConnection con = new MemGraphConnection(driver);
-        con.executeStatement("MATCH (n) DETACH DELETE n");
-        //con.executeStatement("CALL apoc.schema.assert({}, {})");
-        return con;
+        return createDatabaseWithOptions(globalState.getOptions(), globalState.getDbmsSpecificOptions());
     }
 
     @Override
@@ -75,5 +60,31 @@ public class MemGraphProvider extends CypherProviderAdapter<MemGraphGlobalState,
             }
         });
         se.executeStatements(); //执行query，相当于随机地改变表的结构并添加行？*/
+    }
+
+    @Override
+    public MemGraphOptions generateOptionsFromConfig(JsonObject config) {
+        return MemGraphOptions.parseOptionFromFile(config);
+    }
+
+    @Override
+    public CypherConnection createDatabaseWithOptions(MainOptions mainOptions, MemGraphOptions specificOptions) throws Exception {
+        String username = specificOptions.getUsername();
+        String password = specificOptions.getPassword();
+        String host = specificOptions.getHost();
+        int port = specificOptions.getPort();
+        if (host == null) {
+            host = MemGraphOptions.DEFAULT_HOST;
+        }
+        if (port == MainOptions.NO_SET_PORT) {
+            port = MemGraphOptions.DEFAULT_PORT;
+        }
+
+        String url = String.format("bolt://%s:%d", host, port);
+        Driver driver = MemGraphDriverManager.getDriver(url, username, password);
+        MemGraphConnection con = new MemGraphConnection(driver);
+        con.executeStatement("MATCH (n) DETACH DELETE n");
+        //con.executeStatement("CALL apoc.schema.assert({}, {})");
+        return con;
     }
 }

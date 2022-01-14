@@ -4,6 +4,8 @@ import gdsmith.GlobalState;
 import gdsmith.SQLancerDBConnection;
 import gdsmith.common.log.Loggable;
 
+import java.util.List;
+
 public abstract class Query<C extends SQLancerDBConnection> implements Loggable {
 
     /**
@@ -36,7 +38,7 @@ public abstract class Query<C extends SQLancerDBConnection> implements Loggable 
         return getQueryString();
     }
 
-    public <G extends GlobalState<?, ?, C>> GDSmithResultSet executeAndGet(G globalState, String... fills)
+    public <G extends GlobalState<?, ?, C>> List<GDSmithResultSet> executeAndGet(G globalState, String... fills)
             throws Exception {
         throw new AssertionError();
     }
@@ -46,7 +48,7 @@ public abstract class Query<C extends SQLancerDBConnection> implements Loggable 
         return execute(globalState);
     }
 
-    public <G extends GlobalState<?, ?, C>> GDSmithResultSet executeAndGetLogged(G globalState) throws Exception {
+    public <G extends GlobalState<?, ?, C>> List<GDSmithResultSet> executeAndGetLogged(G globalState) throws Exception {
         logQueryString(globalState);
         return executeAndGet(globalState);
     }

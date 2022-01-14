@@ -1,5 +1,7 @@
 package gdsmith.neo4j;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import gdsmith.*;
 import gdsmith.common.log.LoggableFactory;
 
@@ -8,11 +10,39 @@ import gdsmith.neo4j.gen.Neo4jGraphGenerator;
 import org.neo4j.driver.Driver;
 import gdsmith.neo4j.gen.Neo4jNodeGenerator;
 
+import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.List;
 
 public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4jOptions> {
     public Neo4jProvider() {
         super(Neo4jGlobalState.class, Neo4jOptions.class);
+    }
+
+    @Override
+    public Neo4jOptions generateOptionsFromConfig(JsonObject config) {
+        return Neo4jOptions.parseOptionFromFile(config);
+    }
+
+    @Override
+    public CypherConnection createDatabaseWithOptions(MainOptions mainOptions, Neo4jOptions specificOptions) throws Exception {
+        String username = specificOptions.getUsername();
+        String password = specificOptions.getPassword();
+        String host = specificOptions.getHost();
+        int port = specificOptions.getPort();
+        if (host == null) {
+            host = Neo4jOptions.DEFAULT_HOST;
+        }
+        if (port == MainOptions.NO_SET_PORT) {
+            port = Neo4jOptions.DEFAULT_PORT;
+        }
+
+        String url = String.format("bolt://%s:%d", host, port);
+        Driver driver = Neo4jDriverManager.getDriver(url, username, password);
+        Neo4jConnection con = new Neo4jConnection(driver);
+        con.executeStatement("MATCH (n) DETACH DELETE n");
+        con.executeStatement("CALL apoc.schema.assert({}, {})");
+        return con;
     }
 
     enum Action implements AbstractAction<Neo4jGlobalState> {
@@ -33,23 +63,7 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
 
     @Override
     public CypherConnection createDatabase(Neo4jGlobalState globalState) throws Exception {
-        String username = globalState.getOptions().getUserName();
-        String password = globalState.getOptions().getPassword();
-        String host = globalState.getOptions().getHost();
-        int port = globalState.getOptions().getPort();
-        if (host == null) {
-            host = Neo4jOptions.DEFAULT_HOST;
-        }
-        if (port == MainOptions.NO_SET_PORT) {
-            port = Neo4jOptions.DEFAULT_PORT;
-        }
-
-        String url = String.format("bolt://%s:%d", host, port);
-        Driver driver = Neo4jDriverManager.getDriver(url, username, password);
-        Neo4jConnection con = new Neo4jConnection(driver);
-        con.executeStatement("MATCH (n) DETACH DELETE n");
-        con.executeStatement("CALL apoc.schema.assert({}, {})");
-        return con;
+       return createDatabaseWithOptions(globalState.getOptions(), globalState.getDbmsSpecificOptions());
     }
 
     @Override

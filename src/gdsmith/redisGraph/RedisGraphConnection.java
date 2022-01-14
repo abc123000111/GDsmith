@@ -7,6 +7,9 @@ import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.cypher.CypherConnection;
 import org.neo4j.driver.Session;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class RedisGraphConnection extends CypherConnection {
 
     private final RedisGraph graph;
@@ -35,7 +38,7 @@ public class RedisGraphConnection extends CypherConnection {
     }
 
     @Override
-    public GDSmithResultSet executeStatementAndGet(String arg) throws Exception{
-        return new GDSmithResultSet(graph.query(graphName, arg));
+    public List<GDSmithResultSet> executeStatementAndGet(String arg) throws Exception{
+        return Arrays.asList(new GDSmithResultSet(graph.query(graphName, arg)));
     }
 }
