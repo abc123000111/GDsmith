@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class CompositeProvider extends CypherProviderAdapter<CompositeGlobalState, CompositeOptions> {
     public CompositeProvider() {
@@ -77,14 +78,18 @@ public class CompositeProvider extends CypherProviderAdapter<CompositeGlobalStat
         try {
             FileReader fileReader = new FileReader(specificOptions.getConfigPath());
             JsonObject jsonObject = gson.fromJson(fileReader, JsonObject.class);
+            Set<String> databaseNamesWithVersion = jsonObject.keySet();
             for(DatabaseProvider provider: Main.getDBMSProviders()){
                 String databaseName = provider.getDBMSName().toLowerCase();
                 MainOptions options = mainOptions;
-                if(jsonObject.has(databaseName)){
-                    DBMSSpecificOptions command = ((CypherProviderAdapter)provider)
-                            .generateOptionsFromConfig(jsonObject.getAsJsonObject(provider.getDBMSName().toLowerCase()));
-                    connections.add(((CypherProviderAdapter)provider).createDatabaseWithOptions(options, command));
+                for(String nameWithVersion : databaseNamesWithVersion){
+                    if(nameWithVersion.contains(provider.getDBMSName().toLowerCase())){
+                        DBMSSpecificOptions command = ((CypherProviderAdapter)provider)
+                                .generateOptionsFromConfig(jsonObject.getAsJsonObject(nameWithVersion));
+                        connections.add(((CypherProviderAdapter)provider).createDatabaseWithOptions(options, command));
+                    }
                 }
+
             }
             System.out.println("success");
         } catch (FileNotFoundException e) {
