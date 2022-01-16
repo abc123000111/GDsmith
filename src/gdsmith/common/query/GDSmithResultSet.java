@@ -4,20 +4,60 @@ package gdsmith.common.query;
 import org.neo4j.driver.Record;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class GDSmithResultSet implements Closeable {
 
     int resultRowNum;
     List<Map<String, Object>> result;
+
+    public List<Map<String, Object>> getResult() {
+        return result;
+    }
+
+    private String getMapAsString(Map<String, Object> m) {
+        String s = "{";
+        for (String key : m.keySet()) {
+            s += key + ":" + m.get(key).toString() + ",";
+        }
+        s += "}";
+        return s;
+    }
+
+    private List<String> resultToStringList() {
+        List<String> l = new ArrayList<>();
+        for (int i = 0; i < result.size(); ++i) {
+            l.add(getMapAsString(result.get(i)));
+        }
+        return l;
+    }
+
+    public boolean compare(GDSmithResultSet secondGDSmithResultSet, boolean withOrder) {
+        List<String> firstSortList = new ArrayList<>(resultToStringList());
+        List<String> secondSortList = new ArrayList<>(secondGDSmithResultSet.resultToStringList());
+
+        if (firstSortList.size() != secondSortList.size()) {
+            return false;
+        }
+
+        if (!withOrder) {
+            Collections.sort(firstSortList);
+            Collections.sort(secondSortList);
+        }
+
+        return firstSortList.equals(secondSortList);
+    }
+
+    public boolean compareWithOrder(GDSmithResultSet secondGDSmithResultSet) {
+        return compare(secondGDSmithResultSet, true);
+    }
+    public boolean compareWithOutOrder(GDSmithResultSet secondGDSmithResultSet) {
+        return compare(secondGDSmithResultSet, false);
+    }
 
     public GDSmithResultSet(org.neo4j.driver.Result rs) {
         List<Record> resultList = rs.list();
