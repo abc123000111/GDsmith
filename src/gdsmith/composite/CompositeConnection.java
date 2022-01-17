@@ -35,7 +35,7 @@ public class CompositeConnection extends CypherConnection {
 
     @Override
     public List<GDSmithResultSet> executeStatementAndGet(String arg) throws Exception{
-        System.out.println("execute statement: "+arg);
+        //System.out.println("execute statement: "+arg);
         List<GDSmithResultSet> results = new ArrayList<>();
         for(CypherConnection connection : connections){
             List<GDSmithResultSet> result = connection.executeStatementAndGet(arg);

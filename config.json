@@ -1,14 +1,20 @@
 {
-  "neo4j@4.4.1": {
+  "neo4j@4.4.3": {
     "port": 7687,
     "host": "localhost",
-    "username": "sqlancer",
+    "username": "neo4j",
     "password": "sqlancer"
   },
-  "neo4j@4.3.1": {
-    "port": 7688,
+  "neo4j@4.3.14": {
+    "port": 7689,
     "host": "localhost",
-    "username": "sqlancer",
+    "username": "neo4j",
+    "password": "sqlancer"
+  },
+  "neo4j@4.2.14": {
+    "port": 7691,
+    "host": "localhost",
+    "username": "neo4j",
     "password": "sqlancer"
   }
 }

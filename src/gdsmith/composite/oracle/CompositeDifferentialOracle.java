@@ -31,13 +31,18 @@ public class CompositeDifferentialOracle implements TestOracle {
         List<GDSmithResultSet> results = globalState.executeStatementAndGet(new CypherQueryAdapter(sb.toString()));
 
         //todo 判断不同的resultSet返回是否一致
+        boolean isBugDetected = false;
+        for(int i = 1; i < results.size(); i++) {
+            if (!results.get(i).compareWithOutOrder(results.get(i - 1))) {
+                throw new AssertionError("the content of the result sets mismatch!");
+            }
+        }
 
         boolean isCoverageIncreasing = false;
-        boolean isBugDetected = false;
-        int resultLength = 0;
+        int resultLength = results.get(0).getRowNum();
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
 
-        if (isCoverageIncreasing || isBugDetected || resultLength > 0) {
+        if (isCoverageIncreasing || resultLength > 0) {
             randomQueryGenerator.addSeed(new RandomQueryGenerator.Seed(
                     sequence, isBugDetected, resultLength
             ));//添加seed

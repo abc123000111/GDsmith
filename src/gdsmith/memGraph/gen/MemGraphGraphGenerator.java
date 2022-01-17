@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MemGraphGraphGenerator {
     private static int minNumOfNodes = 10;
-    private static int maxNumOfNodes = 100;
+    private static int maxNumOfNodes = 20;
     private static double percentOfEdges = 0.0001;
     private static List<IPattern> INodesPattern;
 
@@ -44,7 +44,6 @@ public class MemGraphGraphGenerator {
 
     public List<CypherQueryAdapter> generateGraph(MemGraphSchema schema) throws Exception {
         List<CypherQueryAdapter> queries = new ArrayList<>();
-        //queries.add(new CypherQueryAdapter("CREATE (p)"));
         IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
 
         Randomly r = new Randomly();

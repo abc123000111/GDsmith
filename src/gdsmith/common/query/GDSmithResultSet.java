@@ -37,6 +37,13 @@ public class GDSmithResultSet implements Closeable {
     }
 
     public boolean compare(GDSmithResultSet secondGDSmithResultSet, boolean withOrder) {
+        if (getRowNum() == 0 || secondGDSmithResultSet.getRowNum() == 0) {
+            if (getRowNum() == secondGDSmithResultSet.getRowNum()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         List<String> firstSortList = new ArrayList<>(resultToStringList());
         List<String> secondSortList = new ArrayList<>(secondGDSmithResultSet.resultToStringList());
 
@@ -84,6 +91,7 @@ public class GDSmithResultSet implements Closeable {
             for(int i = 1; i <= columns; ++i){
                 row.put(md.getColumnName(i), rs.getObject(i));
             }
+            // System.out.println(row);
             result.add(row);
         }
         System.out.println("result_size=" + resultRowNum);
@@ -99,6 +107,7 @@ public class GDSmithResultSet implements Closeable {
             for (String k : r.keys()) {
                 row.put(k, r.getValue(k));
             }
+            // System.out.println(row);
             result.add(row);
         }
         System.out.println("result_size=" + resultRowNum);
