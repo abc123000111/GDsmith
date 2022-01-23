@@ -22,13 +22,17 @@ public class GDSmithResultSet implements Closeable {
     private String getMapAsString(Map<String, Object> m) {
         String s = "{";
         for (String key : m.keySet()) {
-            s += key + ":" + m.get(key).toString() + ",";
+            if (m.get(key) == null) {
+                s += key + ":null,";
+            } else {
+                s += key + ":" + m.get(key).toString() + ",";
+            }
         }
         s += "}";
         return s;
     }
 
-    private List<String> resultToStringList() {
+    public List<String> resultToStringList() {
         List<String> l = new ArrayList<>();
         for (int i = 0; i < result.size(); ++i) {
             l.add(getMapAsString(result.get(i)));
@@ -55,7 +59,6 @@ public class GDSmithResultSet implements Closeable {
             Collections.sort(firstSortList);
             Collections.sort(secondSortList);
         }
-
         return firstSortList.equals(secondSortList);
     }
 

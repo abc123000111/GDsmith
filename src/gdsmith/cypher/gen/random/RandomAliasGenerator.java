@@ -50,7 +50,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         result = Ret.createAliasRef(alias);
                         orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                     }
-                } else if (kind == 1) {
+                } /*else if (kind == 1) {
                     if (sizeOfNode > 0) {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
                         result = Ret.createNodeRef(node);
@@ -69,7 +69,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         if (relation.isSingleRelation()) {
                             //result = Ret.createRelationRef(relation);//todo
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
-                            for(int j = 0; j < props.size(); j++) {
+                            for (int j = 0; j < props.size(); j++) {
                                 IPropertyInfo prop = props.get(i);
                                 IdentifierExpression ie = new IdentifierExpression(relation);
                                 GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
@@ -77,7 +77,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                             }
                         }
                     }
-                } else if (kind == 3) {
+                }*/ else if (kind == 1 || kind == 2) {
                     if (sizeOfNode > 0) {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
@@ -89,7 +89,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                             orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                         }
                     }
-                } else if (kind == 4) {
+                } else if (kind == 3 || kind == 4) {
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         if (relation.isSingleRelation()) {
@@ -119,7 +119,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         result = Ret.createAliasRef(alias);
                         orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                     }
-                } else if (kind == 1) {
+                } /*else if (kind == 1) {
                     if (sizeOfNode > 0) {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
                         result = Ret.createNodeRef(node);
@@ -138,7 +138,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         if (relation.isSingleRelation()) {
                             //result = Ret.createRelationRef(relation);//todo
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
-                            for(int j = 0; j < props.size(); j++) {
+                            for (int j = 0; j < props.size(); j++) {
                                 IPropertyInfo prop = props.get(i);
                                 IdentifierExpression ie = new IdentifierExpression(relation);
                                 GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
@@ -146,7 +146,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                             }
                         }
                     }
-                } else if (kind == 3) {
+                }*/ else if (kind == 1 || kind == 2) {
                     if (sizeOfNode > 0) {
                         INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
@@ -158,7 +158,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                             orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                         }
                     }
-                } else if (kind == 4){
+                } else if (kind == 3 || kind == 4){
                     if (sizeOfRelation > 0) {
                         IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
                         if (relation.isSingleRelation()) {
@@ -196,12 +196,12 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
             results.add(Ret.createNewExpressionReturnVal(new ConstExpression(Randomly.smallNumber())));
         }
         returnClause.setDistinct(Randomly.getBooleanWithRatherLowProbability());
-        if (Randomly.getBooleanWithRatherLowProbability()) {
+        /*if (Randomly.getBooleanWithRatherLowProbability()) {
             returnClause.setLimit(new ConstExpression(Randomly.smallNumber()));
         }
         if (Randomly.getBooleanWithRatherLowProbability()) {
             returnClause.setSkip(new ConstExpression(Randomly.smallNumber()));
-        }
+        }*/
         if (Randomly.getBooleanWithRatherLowProbability()) {
             int numOfOrderBy = r.getInteger(1, results.size());
             while (orderByExpression.size() > numOfOrderBy) {
@@ -390,12 +390,12 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
             results.add(Ret.createStar());
         }
         withClause.setDistinct(Randomly.getBooleanWithRatherLowProbability());
-        if (Randomly.getBooleanWithRatherLowProbability()) {
+        /*if (Randomly.getBooleanWithRatherLowProbability()) {
             withClause.setLimit(new ConstExpression(Randomly.smallNumber()));
         }
         if (Randomly.getBooleanWithRatherLowProbability()) {
             withClause.setSkip(new ConstExpression(Randomly.smallNumber()));
-        }
+        }*/ //todo
         if (Randomly.getBooleanWithRatherLowProbability()) {
             int numOfOrderBy = r.getInteger(1, results.size());
             while (orderByExpression.size() > numOfOrderBy) {

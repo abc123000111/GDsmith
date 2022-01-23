@@ -116,7 +116,7 @@ public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends Ab
     public List<GDSmithResultSet> executeStatementAndGet(Query<C> q, String... fills) throws Exception {
         ExecutionTimer timer = executePrologue(q);
         List<GDSmithResultSet> results = manager.executeAndGet(q, fills);
-        boolean success = results != null || results.stream().anyMatch(r->r==null);
+        /*boolean success = results != null || results.stream().anyMatch(r->r==null);
         if (success) {
             results.forEach(result->result.registerEpilogue(() -> {
                 try {
@@ -125,6 +125,12 @@ public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends Ab
                     throw new AssertionError(e);
                 }
             }));
+        }*/
+        boolean success = results != null;
+        try {
+            executeEpilogue(q, success, timer);
+        } catch (Exception e) {
+            throw new AssertionError(e);
         }
         return results;
     }

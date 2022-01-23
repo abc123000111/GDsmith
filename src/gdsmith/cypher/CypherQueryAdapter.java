@@ -28,17 +28,17 @@ public class CypherQueryAdapter extends Query<CypherConnection> {
 
     @Override
     public String getLogString() {
-        return "";
+        return getQueryString();
     }
 
     @Override
     public String getQueryString() {
-        return "";
+        return query;
     }
 
     @Override
     public String getUnterminatedQueryString() {
-        return "";
+        return canonicalizeString(query);
     }
 
     @Override

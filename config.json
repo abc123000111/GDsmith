@@ -5,12 +5,12 @@
     "username": "neo4j",
     "password": "sqlancer"
   },
-  "neo4j@4.3.14": {
+  /*"neo4j@4.3.14": {
     "port": 7689,
     "host": "localhost",
     "username": "neo4j",
     "password": "sqlancer"
-  },
+  },*/
   "neo4j@4.2.14": {
     "port": 7691,
     "host": "localhost",

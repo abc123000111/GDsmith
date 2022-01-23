@@ -8,7 +8,10 @@ import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.composite.CompositeGlobalState;
 import gdsmith.cypher.gen.random.RandomQueryGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CompositeDifferentialOracle implements TestOracle {
 
@@ -34,18 +37,31 @@ public class CompositeDifferentialOracle implements TestOracle {
         boolean isBugDetected = false;
         for(int i = 1; i < results.size(); i++) {
             if (!results.get(i).compareWithOutOrder(results.get(i - 1))) {
-                throw new AssertionError("the content of the result sets mismatch!");
+                String msg = "The contents of the result sets mismatch!\n";
+                msg = msg + "First: " + results.get(i - 1).resultToStringList() + "\n";
+                msg = msg + "Second: " + results.get(i).resultToStringList() + "\n";
+                throw new AssertionError(msg);
             }
         }
 
-        boolean isCoverageIncreasing = false;
         int resultLength = results.get(0).getRowNum();
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
 
-        if (isCoverageIncreasing || resultLength > 0) {
+        if (resultLength > 0) {
             randomQueryGenerator.addSeed(new RandomQueryGenerator.Seed(
                     sequence, isBugDetected, resultLength
             ));//添加seed
+
+            //todo 更新属性选择概率
+            List<String> coveredProperty = new ArrayList<>();
+            Pattern prop = Pattern.compile("\\.(k\\d{1,2})\\)");
+            Matcher matcher = prop.matcher(sb);
+            while(matcher.find()){
+                if (!coveredProperty.contains(matcher.group(1))) {
+                    coveredProperty.add(matcher.group(1));
+                }
+            }
+            System.out.println(coveredProperty);
         }
     }
 }
