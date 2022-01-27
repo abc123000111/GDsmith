@@ -4,7 +4,7 @@ import gdsmith.Randomly;
 import gdsmith.cypher.ast.ICypherType;
 
 public enum CypherType implements ICypherType {
-    NUMBER, BOOLEAN, STRING, NODE, RELATION, UNKNOWN;
+    NUMBER, BOOLEAN, STRING, NODE, RELATION, UNKNOWN, LIST, MAP;
 
     public static CypherType getRandomBasicType(){
         Randomly randomly = new Randomly();

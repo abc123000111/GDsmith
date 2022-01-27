@@ -1,9 +1,15 @@
 package gdsmith.cypher.standard_ast.expr;
 
+import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.ICopyable;
 import gdsmith.cypher.ast.ICypherType;
 import gdsmith.cypher.ast.IExpression;
+import gdsmith.cypher.ast.analyzer.ICypherTypeDescriptor;
+import gdsmith.cypher.ast.analyzer.IIdentifierAnalyzer;
 import gdsmith.cypher.standard_ast.CypherType;
+import gdsmith.cypher.standard_ast.CypherTypeDescriptor;
+
+import java.util.List;
 
 public class ConstExpression extends CypherExpression {
     Object value;
@@ -23,6 +29,11 @@ public class ConstExpression extends CypherExpression {
         else {
             type = CypherType.UNKNOWN;
         }
+    }
+
+    @Override
+    public ICypherTypeDescriptor analyzeType(ICypherSchema schema, List<IIdentifierAnalyzer> identifiers) {
+        return new CypherTypeDescriptor(type);
     }
 
     public ICypherType getType(){

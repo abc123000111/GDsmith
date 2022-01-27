@@ -3,6 +3,7 @@ package gdsmith.cypher.standard_ast;
 import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
+import gdsmith.cypher.ast.analyzer.IContextInfo;
 import gdsmith.cypher.ast.analyzer.IRelationAnalyzer;
 import gdsmith.cypher.schema.IPropertyInfo;
 
@@ -14,21 +15,21 @@ import java.util.stream.Collectors;
 public class RelationAnalyzer extends RelationIdentifier implements IRelationAnalyzer {
     IRelationAnalyzer formerDef = null;
     IRelationIdentifier source;
-    IClauseAnalyzer clauseAnalyzer;
     IExpression sourceExpression = null;
+    IContextInfo contextInfo;
 
-    RelationAnalyzer(IRelationIdentifier relationIdentifier, IClauseAnalyzer clauseAnalyzer, IExpression sourceExpression){
+    RelationAnalyzer(IRelationIdentifier relationIdentifier, IContextInfo contextInfo, IExpression sourceExpression){
         this(relationIdentifier.getName(), relationIdentifier.getTypes().get(0), relationIdentifier.getDirection(),
                 relationIdentifier.getProperties(), relationIdentifier.getLengthLowerBound(), relationIdentifier.getLengthUpperBound());
         source = relationIdentifier;
-        this.clauseAnalyzer = clauseAnalyzer;
+        this.contextInfo = contextInfo;
         this.sourceExpression = sourceExpression;
         this.lengthLowerBound = source.getLengthLowerBound();
         this.lengthUpperBound = source.getLengthUpperBound();
     }
 
-    RelationAnalyzer(IRelationIdentifier relationIdentifier, IClauseAnalyzer clauseAnalyzer){
-        this(relationIdentifier, clauseAnalyzer, null);
+    RelationAnalyzer(IRelationIdentifier relationIdentifier, IContextInfo contextInfo){
+        this(relationIdentifier, contextInfo, null);
     }
 
     RelationAnalyzer(String name, IType relationType, Direction direction, List<IProperty> properties, int lengthLowerBound, int lengthUpperBound) {
@@ -46,13 +47,13 @@ public class RelationAnalyzer extends RelationIdentifier implements IRelationAna
     }
 
     @Override
-    public IRelationAnalyzer getFormerDef() {
-        return formerDef;
+    public IContextInfo getContextInfo() {
+        return contextInfo;
     }
 
     @Override
-    public IClauseAnalyzer getClauseAnalyzer() {
-        return clauseAnalyzer;
+    public IRelationAnalyzer getFormerDef() {
+        return formerDef;
     }
 
     @Override

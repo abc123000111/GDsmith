@@ -1,7 +1,12 @@
 package gdsmith.cypher.standard_ast.expr;
 
+import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.IExpression;
+import gdsmith.cypher.ast.analyzer.ICypherTypeDescriptor;
+import gdsmith.cypher.ast.analyzer.IIdentifierAnalyzer;
 import gdsmith.cypher.schema.IFunctionInfo;
+import gdsmith.cypher.standard_ast.CypherType;
+import gdsmith.cypher.standard_ast.CypherTypeDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +15,7 @@ import java.util.stream.Collectors;
 public class CallExpression extends CypherExpression {
     private String functionName;
     private String functionSignature;
-    List<IExpression> params;
+    private List<IExpression> params;
 
     public CallExpression(IFunctionInfo functionInfo, List<IExpression> params){
         this.functionName = functionInfo.getName();
@@ -32,6 +37,11 @@ public class CallExpression extends CypherExpression {
         params.forEach(e->{e.toTextRepresentation(sb); sb.append(", ");});
         sb.delete(sb.length()-2, sb.length()); //多余的", "
         sb.append(")");
+    }
+
+    @Override
+    public ICypherTypeDescriptor analyzeType(ICypherSchema schema, List<IIdentifierAnalyzer> identifiers) {
+        return new CypherTypeDescriptor(CypherType.UNKNOWN);
     }
 
     @Override

@@ -50,7 +50,8 @@ public class Symtab implements ICypherSymtab {
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isAlias()){
-                    aliases.add(new AliasAnalyzer((IAlias) aliasDef.getIdentifier(), parentClause));
+                    aliases.add(new AliasAnalyzer((IAlias) aliasDef.getIdentifier(),
+                            new ContextInfo(parentClause,parentClause.getExtendableIdentifiers())));
                 }
                 if(aliasDef.isAll()){
                     return parentClause.getPrevClause().toAnalyzer().getAvailableAliases();
@@ -165,7 +166,8 @@ public class Symtab implements ICypherSymtab {
             for(IPattern pattern : patterns){
                 for(IPatternElement patternElement : pattern.getPatternElements()){
                     if(patternElement instanceof INodeIdentifier && !patternElement.isAnonymous()){
-                        nodes.add(new NodeAnalyzer((INodeIdentifier) patternElement, parentClause));
+                        nodes.add(new NodeAnalyzer((INodeIdentifier) patternElement,
+                                new ContextInfo(parentClause, parentClause.getExtendableIdentifiers())));
                     }
                 }
             }
@@ -177,7 +179,8 @@ public class Symtab implements ICypherSymtab {
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isNodeIdentifier()){
-                    nodes.add(new NodeAnalyzer((INodeIdentifier) aliasDef.getIdentifier(), parentClause));
+                    nodes.add(new NodeAnalyzer((INodeIdentifier) aliasDef.getIdentifier(),
+                            new ContextInfo(parentClause, parentClause.getExtendableIdentifiers())));
                 }
                 if(aliasDef.isAll() && parentClause.getPrevClause() != null){
                     return parentClause.getPrevClause().toAnalyzer().getAvailableNodeIdentifiers();
@@ -205,7 +208,8 @@ public class Symtab implements ICypherSymtab {
             for(IPattern pattern : patterns){
                 for(IPatternElement patternElement : pattern.getPatternElements()){
                     if(patternElement instanceof IRelationIdentifier && !patternElement.isAnonymous()){
-                        relations.add(new RelationAnalyzer((IRelationIdentifier) patternElement, parentClause));
+                        relations.add(new RelationAnalyzer((IRelationIdentifier) patternElement,
+                                new ContextInfo(parentClause, parentClause.getExtendableIdentifiers())));
                     }
                 }
             }
@@ -216,7 +220,8 @@ public class Symtab implements ICypherSymtab {
         if(parentClause instanceof IWith || parentClause instanceof IReturn){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isRelationIdentifier()){
-                    relations.add(new RelationAnalyzer((IRelationIdentifier) aliasDef.getIdentifier(), parentClause));
+                    relations.add(new RelationAnalyzer((IRelationIdentifier) aliasDef.getIdentifier(),
+                            new ContextInfo(parentClause, parentClause.getExtendableIdentifiers())));
                 }
                 if(aliasDef.isAll() && parentClause.getPrevClause() != null){
                     return parentClause.getPrevClause().toAnalyzer().getAvailableRelationIdentifiers();
@@ -272,6 +277,24 @@ public class Symtab implements ICypherSymtab {
             }
         }
         return relations;
+    }
+
+    @Override
+    public List<IIdentifierAnalyzer> getLocalIdentifiers() {
+        List<IIdentifierAnalyzer> identifierAnalyzers = new ArrayList<>();
+        identifierAnalyzers.addAll(getLocalNodePatterns());
+        identifierAnalyzers.addAll(getLocalRelationPatterns());
+        identifierAnalyzers.addAll(getLocalAliasDefs());
+        return identifierAnalyzers;
+    }
+
+    @Override
+    public List<IIdentifierAnalyzer> getAvailableIdentifiers() {
+        List<IIdentifierAnalyzer> identifierAnalyzers = new ArrayList<>();
+        identifierAnalyzers.addAll(getAvailableNodePatterns());
+        identifierAnalyzers.addAll(getAvailableRelationPatterns());
+        identifierAnalyzers.addAll(getAvailableAliasDefs());
+        return identifierAnalyzers;
     }
 
 }

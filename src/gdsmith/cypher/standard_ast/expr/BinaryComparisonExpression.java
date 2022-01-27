@@ -1,9 +1,21 @@
 package gdsmith.cypher.standard_ast.expr;
 
 import gdsmith.Randomly;
+import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.IExpression;
+import gdsmith.cypher.ast.analyzer.ICypherTypeDescriptor;
+import gdsmith.cypher.ast.analyzer.IIdentifierAnalyzer;
+import gdsmith.cypher.standard_ast.CypherType;
+import gdsmith.cypher.standard_ast.CypherTypeDescriptor;
+
+import java.util.List;
 
 public class BinaryComparisonExpression extends CypherExpression {
+
+    @Override
+    public ICypherTypeDescriptor analyzeType(ICypherSchema schema, List<IIdentifierAnalyzer> identifiers) {
+        return new CypherTypeDescriptor(CypherType.BOOLEAN);
+    }
 
     @Override
     public IExpression getCopy() {

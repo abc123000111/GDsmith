@@ -11,7 +11,6 @@ import gdsmith.cypher.standard_ast.expr.IdentifierExpression;
 import gdsmith.cypher.dsl.BasicAliasGenerator;
 import gdsmith.cypher.dsl.IIdentifierBuilder;
 import gdsmith.cypher.schema.IPropertyInfo;
-import gdsmith.neo4j.schema.Neo4jSchema;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
     public List<IRet> generateReturnAlias(IReturnAnalyzer returnClause, IIdentifierBuilder identifierBuilder, S schema) {
         List<IRet> results = new ArrayList<>();
         List<INodeAnalyzer> idNode = returnClause.getExtendableNodeIdentifiers();
-        List<IRelationAnalyzer> idRelation = returnClause.getExtendablePatternIdentifiers();
+        List<IRelationAnalyzer> idRelation = returnClause.getExtendableRelationIdentifiers();
         List<IAliasAnalyzer> idAlias = returnClause.getExtendableAliases();
         Randomly r = new Randomly();
         int sizeOfAlias = idAlias.size();
@@ -223,7 +222,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
 
         List<IRet> results = new ArrayList<>();
         List<INodeAnalyzer> idNode = withClause.getExtendableNodeIdentifiers();
-        List<IRelationAnalyzer> idRelation = withClause.getExtendablePatternIdentifiers();
+        List<IRelationAnalyzer> idRelation = withClause.getExtendableRelationIdentifiers();
         List<IAliasAnalyzer> idAlias = withClause.getExtendableAliases();
         Randomly r = new Randomly();
         int sizeOfAlias = idAlias.size();

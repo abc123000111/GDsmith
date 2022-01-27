@@ -24,6 +24,8 @@ public interface IClauseAnalyzer extends ICypherClause{
      */
     List<IRelationAnalyzer> getLocalRelationIdentifiers();
 
+    List<IIdentifierAnalyzer> getLocalIdentifiers();
+
     /**
      * 本clause的作用域中可以使用的别名，即where中可以使用的，包括了本地定义的和继承自之前clause的
      * @return
@@ -42,6 +44,8 @@ public interface IClauseAnalyzer extends ICypherClause{
      */
     List<IRelationAnalyzer> getAvailableRelationIdentifiers();
 
+    List<IIdentifierAnalyzer> getAvailableIdentifiers();
+
     /**
      * 本clause继承自上一clause的别名，可以在定义pattern和alias时使用
      * @return
@@ -58,7 +62,9 @@ public interface IClauseAnalyzer extends ICypherClause{
      * 本clause继承自上一clause的relation identifier，可以在定义pattern和alias时使用
      * @return
      */
-    List<IRelationAnalyzer> getExtendablePatternIdentifiers();
+    List<IRelationAnalyzer> getExtendableRelationIdentifiers();
+
+    List<IIdentifierAnalyzer> getExtendableIdentifiers();
 
     /**
      * 查找当前作用域的Identifier

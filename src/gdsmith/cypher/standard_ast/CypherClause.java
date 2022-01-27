@@ -83,17 +83,36 @@ public abstract class CypherClause implements IClauseAnalyzer {
     }
 
     @Override
-    public List<IRelationAnalyzer> getExtendablePatternIdentifiers() {
+    public List<IRelationAnalyzer> getExtendableRelationIdentifiers() {
         if(prevClause == null)
             return new ArrayList<>();
         return prevClause.toAnalyzer().getAvailableRelationIdentifiers();
     }
 
-    protected List<IIdentifierAnalyzer> getAvailableIdentifiers(){
+    @Override
+    public List<IIdentifierAnalyzer> getAvailableIdentifiers(){
         List<IIdentifierAnalyzer> identifierAnalyzers = new ArrayList<>();
         identifierAnalyzers.addAll(getAvailableNodeIdentifiers());
         identifierAnalyzers.addAll(getAvailableRelationIdentifiers());
         identifierAnalyzers.addAll(getAvailableAliases());
+        return identifierAnalyzers;
+    }
+
+    @Override
+    public List<IIdentifierAnalyzer> getLocalIdentifiers(){
+        List<IIdentifierAnalyzer> identifierAnalyzers = new ArrayList<>();
+        identifierAnalyzers.addAll(getLocalNodeIdentifiers());
+        identifierAnalyzers.addAll(getLocalRelationIdentifiers());
+        identifierAnalyzers.addAll(getLocalAliases());
+        return identifierAnalyzers;
+    }
+
+    @Override
+    public List<IIdentifierAnalyzer> getExtendableIdentifiers(){
+        List<IIdentifierAnalyzer> identifierAnalyzers = new ArrayList<>();
+        identifierAnalyzers.addAll(getExtendableNodeIdentifiers());
+        identifierAnalyzers.addAll(getExtendableRelationIdentifiers());
+        identifierAnalyzers.addAll(getExtendableAliases());
         return identifierAnalyzers;
     }
 

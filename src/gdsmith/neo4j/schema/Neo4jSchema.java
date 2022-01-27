@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
-import gdsmith.cypher.ast.analyzer.ICypherTypeAnalyzer;
+import gdsmith.cypher.ast.analyzer.ICypherTypeDescriptor;
 import gdsmith.cypher.schema.*;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.neo4j.schema.Neo4jSchema.Neo4jTable;
@@ -31,77 +30,77 @@ public class Neo4jSchema extends CypherSchema<Neo4jGlobalState, Neo4jTable> {
     public enum Neo4jBuiltInFunctions implements IFunctionInfo{
         AVG("avg", "avg@number", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         MAX_NUMBER("max", "max@number", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         MAX_STRING("max", "max@string", CypherType.STRING, new CypherParamInfo(CypherType.STRING, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         MIN_NUMBER("min", "min@number", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         MIN_STRING("min", "min@string", CypherType.STRING, new CypherParamInfo(CypherType.STRING, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         PERCENTILE_COUNT_NUMBER("percentileCount", "percentileCount@number", CypherType.NUMBER,
                 new CypherParamInfo(CypherType.NUMBER, false), new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         PERCENTILE_COUNT_STRING("percentileCount", "percentileCount@string", CypherType.NUMBER,
                 new CypherParamInfo(CypherType.STRING, false), new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         PERCENTILE_DISC_NUMBER("percentileDisc", "percentileDisc@number", CypherType.NUMBER,
                 new CypherParamInfo(CypherType.NUMBER, false), new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         PERCENTILE_DISC_STRING("percentileDisc", "percentileDisct@string", CypherType.NUMBER,
                 new CypherParamInfo(CypherType.STRING, false), new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         ST_DEV("stDev", "stDev", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         ST_DEV_P("stDevP", "stDevP", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },
         SUM("sum", "sum", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){
             @Override
-            public ICypherTypeAnalyzer calculateReturnType(List<IExpression> params) {
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
                 return null;
             }
         },

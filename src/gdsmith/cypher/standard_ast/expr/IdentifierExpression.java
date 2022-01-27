@@ -1,7 +1,13 @@
 package gdsmith.cypher.standard_ast.expr;
 
+import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.IIdentifier;
+import gdsmith.cypher.ast.analyzer.*;
+import gdsmith.cypher.standard_ast.CypherType;
+import gdsmith.cypher.standard_ast.CypherTypeDescriptor;
+
+import java.util.List;
 
 public class IdentifierExpression extends CypherExpression {
 
@@ -19,6 +25,23 @@ public class IdentifierExpression extends CypherExpression {
     @Override
     public void toTextRepresentation(StringBuilder sb) {
         sb.append(identifier.getName());
+    }
+
+    @Override
+    public ICypherTypeDescriptor analyzeType(ICypherSchema schema, List<IIdentifierAnalyzer> identifiers) {
+        IIdentifierAnalyzer identifierAnalyzer = identifiers.stream().filter(i->i.getName().equals(identifier.getName())).findAny().orElse(null);
+        if(identifierAnalyzer != null){
+            if(identifierAnalyzer instanceof INodeAnalyzer){
+                return new CypherTypeDescriptor((INodeAnalyzer) identifierAnalyzer);
+            }
+            if(identifierAnalyzer instanceof IRelationAnalyzer){
+                return new CypherTypeDescriptor((IRelationAnalyzer) identifierAnalyzer);
+            }
+            if(identifierAnalyzer instanceof IAliasAnalyzer){
+                return  ((IAliasAnalyzer) identifierAnalyzer).analyzeType(schema);
+            }
+        }
+        return new CypherTypeDescriptor(CypherType.UNKNOWN);
     }
 
     @Override

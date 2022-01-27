@@ -16,5 +16,7 @@ public interface ICypherSymtab {
     List<IRelationAnalyzer> getLocalRelationPatterns();
     List<INodeAnalyzer> getAvailableNodePatterns();
     List<IRelationAnalyzer> getAvailableRelationPatterns();
+    List<IIdentifierAnalyzer> getLocalIdentifiers();
+    List<IIdentifierAnalyzer> getAvailableIdentifiers();
 
 }

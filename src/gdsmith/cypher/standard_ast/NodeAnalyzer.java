@@ -4,6 +4,8 @@ package gdsmith.cypher.standard_ast;
 import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
+import gdsmith.cypher.ast.analyzer.IContextInfo;
+import gdsmith.cypher.ast.analyzer.IIdentifierAnalyzer;
 import gdsmith.cypher.ast.analyzer.INodeAnalyzer;
 import gdsmith.cypher.schema.ILabelInfo;
 import gdsmith.cypher.schema.IPropertyInfo;
@@ -14,19 +16,19 @@ import java.util.stream.Collectors;
 
 public class NodeAnalyzer extends NodeIdentifier implements INodeAnalyzer {
     INodeAnalyzer formerDef = null;
-    IClauseAnalyzer clauseAnalyzer;
     INodeIdentifier source;
     IExpression sourceExpression;
+    IContextInfo contextInfo; //创建analyzer时的上下文快照
 
-    NodeAnalyzer(INodeIdentifier nodeIdentifier, IClauseAnalyzer clauseAnalyzer){
-        this(nodeIdentifier, clauseAnalyzer, null);
+    NodeAnalyzer(INodeIdentifier nodeIdentifier, IContextInfo contextInfo){
+        this(nodeIdentifier, contextInfo, null);
     }
 
-    NodeAnalyzer(INodeIdentifier nodeIdentifier, IClauseAnalyzer clauseAnalyzer, IExpression sourceExpression) {
+    NodeAnalyzer(INodeIdentifier nodeIdentifier, IContextInfo contextInfo, IExpression sourceExpression) {
         super(nodeIdentifier.getName(), nodeIdentifier.getLabels(), nodeIdentifier.getProperties());
         source = nodeIdentifier;
-        this.clauseAnalyzer = clauseAnalyzer;
         this.sourceExpression = sourceExpression;
+        this.contextInfo = contextInfo;
     }
 
     @Override
@@ -40,14 +42,15 @@ public class NodeAnalyzer extends NodeIdentifier implements INodeAnalyzer {
     }
 
     @Override
+    public IContextInfo getContextInfo() {
+        return contextInfo;
+    }
+
+    @Override
     public INodeAnalyzer getFormerDef() {
         return formerDef;
     }
 
-    @Override
-    public IClauseAnalyzer getClauseAnalyzer() {
-        return clauseAnalyzer;
-    }
 
     @Override
     public void setFormerDef(INodeAnalyzer formerDef) {

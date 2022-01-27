@@ -25,8 +25,8 @@ public interface IIdentifierAnalyzer extends IIdentifier {
     IExpression getSourceRefExpression();
 
     /**
-     * 获取该Identifier所属作用域的Clause
+     * 获取该Identifier所属上下文信息
      * @return
      */
-    IClauseAnalyzer getClauseAnalyzer();
+    IContextInfo getContextInfo();
 }

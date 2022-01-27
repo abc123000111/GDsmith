@@ -1,24 +1,27 @@
 package gdsmith.cypher.standard_ast;
 
+import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.IAlias;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.analyzer.IAliasAnalyzer;
 import gdsmith.cypher.ast.analyzer.IClauseAnalyzer;
+import gdsmith.cypher.ast.analyzer.IContextInfo;
+import gdsmith.cypher.ast.analyzer.ICypherTypeDescriptor;
 
 public class AliasAnalyzer extends Alias implements IAliasAnalyzer {
     IAliasAnalyzer formerDef = null;
-    IClauseAnalyzer clauseAnalyzer;
+    IContextInfo contextInfo;
     IExpression sourceExpression;
     IAlias source;
 
-    AliasAnalyzer(IAlias alias, IClauseAnalyzer clauseAnalyzer){
-        this(alias, clauseAnalyzer, null);
+    AliasAnalyzer(IAlias alias, IContextInfo contextInfo){
+        this(alias, contextInfo, null);
     }
 
-    AliasAnalyzer(IAlias alias, IClauseAnalyzer clauseAnalyzer, IExpression sourceExpression){
+    AliasAnalyzer(IAlias alias, IContextInfo contextInfo, IExpression sourceExpression){
         super(alias.getName(), alias.getExpression());
         this.source = alias;
-        this.clauseAnalyzer = clauseAnalyzer;
+        this.contextInfo = contextInfo;
         this.sourceExpression = sourceExpression;
     }
 
@@ -26,11 +29,6 @@ public class AliasAnalyzer extends Alias implements IAliasAnalyzer {
     @Override
     public IAliasAnalyzer getFormerDef() {
         return formerDef;
-    }
-
-    @Override
-    public IClauseAnalyzer getClauseAnalyzer() {
-        return clauseAnalyzer;
     }
 
     @Override
@@ -51,9 +49,19 @@ public class AliasAnalyzer extends Alias implements IAliasAnalyzer {
         return source;
     }
 
+    @Override
+    public ICypherTypeDescriptor analyzeType(ICypherSchema cypherSchema) {
+        return sourceExpression.analyzeType(cypherSchema, contextInfo.getIdentifiers());
+    }
+
 
     @Override
     public IExpression getSourceRefExpression() {
         return sourceExpression;
+    }
+
+    @Override
+    public IContextInfo getContextInfo() {
+        return contextInfo;
     }
 }
