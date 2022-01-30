@@ -7,9 +7,12 @@ import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.composite.CompositeGlobalState;
 import gdsmith.cypher.gen.random.RandomQueryGenerator;
+import gdsmith.cypher.schema.CypherSchema;
+import gdsmith.cypher.schema.IPropertyInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,8 +41,8 @@ public class CompositeDifferentialOracle implements TestOracle {
         for(int i = 1; i < results.size(); i++) {
             if (!results.get(i).compareWithOutOrder(results.get(i - 1))) {
                 String msg = "The contents of the result sets mismatch!\n";
-                msg = msg + "First: " + results.get(i - 1).resultToStringList() + "\n";
-                msg = msg + "Second: " + results.get(i).resultToStringList() + "\n";
+                msg = msg + "First: " + results.get(i - 1).getRowNum() + " --- " + results.get(i - 1).resultToStringList() + "\n";
+                msg = msg + "Second: " + results.get(i).getRowNum() + " --- " + results.get(i).resultToStringList() + "\n";
                 throw new AssertionError(msg);
             }
         }
@@ -54,14 +57,42 @@ public class CompositeDifferentialOracle implements TestOracle {
 
             //todo 更新属性选择概率
             List<String> coveredProperty = new ArrayList<>();
-            Pattern prop = Pattern.compile("\\.(k\\d{1,2})\\)");
-            Matcher matcher = prop.matcher(sb);
+            Pattern allProps = Pattern.compile("\\.(k\\d{1,2})\\)");
+            Matcher matcher = allProps.matcher(sb);
             while(matcher.find()){
                 if (!coveredProperty.contains(matcher.group(1))) {
                     coveredProperty.add(matcher.group(1));
                 }
             }
-            System.out.println(coveredProperty);
+
+            List<CypherSchema.CypherLabelInfo> labels = globalState.getSchema().getLabels();
+            List<CypherSchema.CypherRelationTypeInfo> relations = globalState.getSchema().getRelationTypes();
+            for (String name: coveredProperty) {
+                found:{
+                    for (CypherSchema.CypherLabelInfo label: labels) {
+                        List<IPropertyInfo> props = label.getProperties();
+                        for (IPropertyInfo prop: props) {
+                            if (Objects.equals(prop.getKey(), name)) {
+                                ((CypherSchema.CypherPropertyInfo)prop).addFreq();
+                                //System.out.println(prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
+                                break found;
+                            }
+                        }
+                    }
+                    for (CypherSchema.CypherRelationTypeInfo relation: relations) {
+                        List<IPropertyInfo> props = relation.getProperties();
+                        for (IPropertyInfo prop: props) {
+                            if (Objects.equals(prop.getKey(), name)) {
+                                ((CypherSchema.CypherPropertyInfo)prop).addFreq();
+                                //System.out.println(prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
+                                break found;
+                            }
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 }

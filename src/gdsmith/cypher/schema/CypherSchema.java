@@ -179,11 +179,13 @@ public abstract class CypherSchema<G extends GlobalState<?,?,?>, A extends Abstr
         private String key;
         private CypherType type;
         private boolean isOptional;
+        private int freq;
 
         public CypherPropertyInfo(String key, CypherType type, boolean isOptional) {
             this.key = key;
             this.type = type;
             this.isOptional = isOptional;
+            this.freq = 0;
         }
 
         @Override
@@ -200,6 +202,15 @@ public abstract class CypherSchema<G extends GlobalState<?,?,?>, A extends Abstr
         public boolean isOptional() {
             return isOptional;
         }
+
+        public int getFreq() {
+            return freq;
+        }
+
+        public void addFreq() {
+            this.freq++;
+        }
+
     }
 
     public static abstract class CypherFunctionInfo implements IFunctionInfo {
