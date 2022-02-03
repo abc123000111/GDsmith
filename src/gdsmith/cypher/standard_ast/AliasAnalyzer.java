@@ -11,7 +11,7 @@ import gdsmith.cypher.ast.analyzer.ICypherTypeDescriptor;
 public class AliasAnalyzer extends Alias implements IAliasAnalyzer {
     IAliasAnalyzer formerDef = null;
     IContextInfo contextInfo;
-    IExpression sourceExpression;
+    IExpression sourceExpression; //在AST中所属的expression
     IAlias source;
 
     AliasAnalyzer(IAlias alias, IContextInfo contextInfo){
@@ -51,7 +51,11 @@ public class AliasAnalyzer extends Alias implements IAliasAnalyzer {
 
     @Override
     public ICypherTypeDescriptor analyzeType(ICypherSchema cypherSchema) {
-        return sourceExpression.analyzeType(cypherSchema, contextInfo.getIdentifiers());
+        IExpression expression = getAliasDefExpression();
+        if(expression != null){
+            return expression.analyzeType(cypherSchema, contextInfo.getIdentifiers());
+        }
+        return new CypherTypeDescriptor(CypherType.UNKNOWN);
     }
 
 

@@ -104,6 +104,12 @@ public class Neo4jSchema extends CypherSchema<Neo4jGlobalState, Neo4jTable> {
                 return null;
             }
         },
+        COLLECT("collect", "collect", CypherType.LIST, new CypherParamInfo(CypherType.ANY, false)){
+            @Override
+            public ICypherTypeDescriptor calculateReturnType(List<IExpression> params) {
+                return null;
+            }
+        }
         ;
 
         Neo4jBuiltInFunctions(String name, String signature, CypherType expectedReturnType, IParamInfo... params){

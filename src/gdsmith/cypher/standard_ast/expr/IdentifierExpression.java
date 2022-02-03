@@ -6,6 +6,7 @@ import gdsmith.cypher.ast.IIdentifier;
 import gdsmith.cypher.ast.analyzer.*;
 import gdsmith.cypher.standard_ast.CypherType;
 import gdsmith.cypher.standard_ast.CypherTypeDescriptor;
+import gdsmith.cypher.standard_ast.ListDescriptor;
 
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class IdentifierExpression extends CypherExpression {
                 return new CypherTypeDescriptor((INodeAnalyzer) identifierAnalyzer);
             }
             if(identifierAnalyzer instanceof IRelationAnalyzer){
+                if(!((IRelationAnalyzer) identifierAnalyzer).isSingleRelation()){ //非定长的，返回的是列表类型
+                    ListDescriptor listDescriptor = new ListDescriptor(new CypherTypeDescriptor((IRelationAnalyzer) identifierAnalyzer));
+                    return new CypherTypeDescriptor(listDescriptor);
+                }
                 return new CypherTypeDescriptor((IRelationAnalyzer) identifierAnalyzer);
             }
             if(identifierAnalyzer instanceof IAliasAnalyzer){

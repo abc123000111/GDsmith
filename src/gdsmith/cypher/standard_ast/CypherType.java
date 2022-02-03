@@ -4,13 +4,17 @@ import gdsmith.Randomly;
 import gdsmith.cypher.ast.ICypherType;
 
 public enum CypherType implements ICypherType {
-    NUMBER, BOOLEAN, STRING, NODE, RELATION, UNKNOWN, LIST, MAP;
+    NUMBER, BOOLEAN, STRING, NODE, RELATION, UNKNOWN, LIST, MAP, BASIC, ANY;
 
     public static CypherType getRandomBasicType(){
         Randomly randomly = new Randomly();
-        if(randomly.getInteger(0, 100) < 50){
+        int randomNum = randomly.getInteger(0, 100);
+        if(randomNum < 40){
             return NUMBER;
         }
-        return STRING;
+        if(randomNum < 80){
+            return STRING;
+        }
+        return BOOLEAN;
     }
 }

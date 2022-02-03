@@ -190,6 +190,19 @@ public class ClauseSequence implements IClauseSequence {
             return this;
         }
 
+        @Override
+        public IClauseSequenceBuilder UnwindClause() {
+            return UnwindClause(null);
+        }
+
+        @Override
+        public IClauseSequenceBuilder UnwindClause(IRet listAsAlias) {
+            IUnwind unwind = new Unwind();
+            unwind.setListAsAliasRet(listAsAlias);
+            clauseSequence.addClause(unwind);
+            return this;
+        }
+
         public IOngoingWith WithClause(){
             return WithClause(null);
         }

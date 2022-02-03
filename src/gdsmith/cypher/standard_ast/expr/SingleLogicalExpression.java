@@ -1,5 +1,6 @@
 package gdsmith.cypher.standard_ast.expr;
 
+import gdsmith.Randomly;
 import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.analyzer.ICypherTypeDescriptor;
@@ -14,6 +15,19 @@ public class SingleLogicalExpression extends CypherExpression {
     @Override
     public ICypherTypeDescriptor analyzeType(ICypherSchema schema, List<IIdentifierAnalyzer> identifiers) {
         return new CypherTypeDescriptor(CypherType.BOOLEAN);
+    }
+
+    public static SingleLogicalExpression randomLogical(IExpression expr){
+        Randomly randomly = new Randomly();
+        int operationNum = randomly.getInteger(0, 90);
+        //int operationNum = randomly.getInteger(0, 59); //todo
+        if(operationNum < 30){
+            return new SingleLogicalExpression(expr, SingleLogicalOperation.NOT);
+        }
+        if(operationNum < 60){
+            return new SingleLogicalExpression(expr, SingleLogicalOperation.IS_NULL);
+        }
+        return new SingleLogicalExpression(expr, SingleLogicalOperation.IS_NOT_NULL);
     }
 
     @Override

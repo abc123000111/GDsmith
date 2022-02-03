@@ -41,11 +41,15 @@ public abstract class ClauseVisitor<C extends IContext> {
         else if(clause instanceof IReturn){
             visitReturn((IReturn) clause, context);
         }
+        else if(clause instanceof IUnwind){
+            visitUnwind((IUnwind) clause, context);
+        }
     }
 
     public abstract void visitMatch(IMatch matchClause, C context);
     public abstract void visitWith(IWith withClause, C context);
     public abstract void visitReturn(IReturn returnClause, C context);
     public abstract void visitCreate(ICreate createClause, C context);
+    public abstract void visitUnwind(IUnwind unwindClause, C context);
 
 }

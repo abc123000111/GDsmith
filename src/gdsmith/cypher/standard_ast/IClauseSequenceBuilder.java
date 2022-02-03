@@ -13,6 +13,9 @@ public interface IClauseSequenceBuilder {
     IOngoingMatch OptionalMatchClause();
     IOngoingMatch OptionalMatchClause(IExpression condition, IPattern...patternTuple);
 
+    IClauseSequenceBuilder UnwindClause();
+    IClauseSequenceBuilder UnwindClause(IRet listAsAlias);
+
     interface IOngoingMatch extends IClauseSequenceBuilder{
     }
 

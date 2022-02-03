@@ -67,6 +67,7 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
                     new RandomPatternGenerator<>(schema, builder.getIdentifierBuilder()),
                     new RandomConditionGenerator<>(schema),
                     new RandomAliasGenerator<>(schema, builder.getIdentifierBuilder()),
+                    new RandomListGenerator<>(schema, builder.getIdentifierBuilder()),
                     schema, builder.getIdentifierBuilder()).startVisit();
         } else {
             IClauseSequence seedSeq = seeds.get(r.getInteger(0, seeds.size() - 1)).sequence;
@@ -77,6 +78,7 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
                     new RandomPatternGenerator<>(schema, builder.getIdentifierBuilder()),
                     new RandomConditionGenerator<>(schema),
                     new RandomAliasGenerator<>(schema, builder.getIdentifierBuilder()),
+                    new RandomListGenerator<>(schema, builder.getIdentifierBuilder()),
                     schema, builder.getIdentifierBuilder()).startVisit();
         }
 

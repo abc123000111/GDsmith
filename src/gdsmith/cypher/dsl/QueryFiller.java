@@ -21,36 +21,57 @@ public class QueryFiller<S extends CypherSchema<?,?>> extends ClauseVisitor<Quer
     private IPatternGenerator patternGenerator;
     private IConditionGenerator conditionGenerator;
     private IAliasGenerator aliasGenerator;
+    private IListGenerator listGenerator;
 
 
     public QueryFiller(IClauseSequence clauseSequence, IPatternGenerator patternGenerator,
                        IConditionGenerator conditionGenerator, IAliasGenerator aliasGenerator,
+                       IListGenerator listGenerator,
                        S schema, IIdentifierBuilder identifierBuilder){
         super(clauseSequence, new QueryFillerContext<>(schema, identifierBuilder));
         this.patternGenerator = patternGenerator;
         this.conditionGenerator = conditionGenerator;
         this.aliasGenerator = aliasGenerator;
+        this.listGenerator = listGenerator;
     }
 
     @Override
     public void visitMatch(IMatch matchClause, QueryFillerContext<S> context) {
-        patternGenerator.fillMatchPattern(matchClause.toAnalyzer());
-        conditionGenerator.fillMatchCondtion(matchClause.toAnalyzer());
+        if(patternGenerator!=null){
+            patternGenerator.fillMatchPattern(matchClause.toAnalyzer());
+        }
+        if(conditionGenerator!=null){
+            conditionGenerator.fillMatchCondtion(matchClause.toAnalyzer());
+        }
     }
 
     @Override
     public void visitWith(IWith withClause, QueryFillerContext<S> context) {
-        aliasGenerator.fillWithAlias(withClause.toAnalyzer());
-        conditionGenerator.fillWithCondition(withClause.toAnalyzer());
+        if(aliasGenerator!=null){
+            aliasGenerator.fillWithAlias(withClause.toAnalyzer());
+        }
+        if(conditionGenerator!=null){
+            conditionGenerator.fillWithCondition(withClause.toAnalyzer());
+        }
+
     }
 
     @Override
     public void visitReturn(IReturn returnClause, QueryFillerContext<S> context) {
-        aliasGenerator.fillReturnAlias(returnClause.toAnalyzer());
+        if(aliasGenerator!=null){
+            aliasGenerator.fillReturnAlias(returnClause.toAnalyzer());
+        }
     }
 
     @Override
     public void visitCreate(ICreate createClause, QueryFillerContext<S> context) {
 
+    }
+
+    @Override
+    public void visitUnwind(IUnwind unwindClause, QueryFillerContext<S> context) {
+        if(listGenerator!=null){
+            listGenerator.fillUnwindList(unwindClause.toAnalyzer());
+        }
     }
 }
