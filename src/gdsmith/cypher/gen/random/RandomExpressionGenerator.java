@@ -24,7 +24,7 @@ public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
         this.schema = schema;
     }
 
-    public IExpression generateNumberAgg(){
+    private IExpression generateNumberAgg(){
         Randomly randomly = new Randomly();
         int randNum = randomly.getInteger(0, 50);
         IExpression param = generateGetProperty(CypherType.NUMBER);
@@ -46,7 +46,7 @@ public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
         return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.SUM, Arrays.asList(param));
     }
 
-    public IExpression generateStringAgg(){
+    private IExpression generateStringAgg(){
         Randomly randomly = new Randomly();
         int randNum = randomly.getInteger(0, 20);
         IExpression param = generateGetProperty(CypherType.NUMBER);
@@ -66,17 +66,17 @@ public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
         return generateStringAgg();
     }
 
-    public IExpression generateUseAlias(CypherType type){
+    private IExpression generateUseAlias(CypherType type){
         List<IAliasAnalyzer> aliasAnalyzers = clauseAnalyzer.getAvailableAliases();
         aliasAnalyzers = aliasAnalyzers.stream().filter(a->a.analyzeType(schema).getType()==type).collect(Collectors.toList());
         IAliasAnalyzer aliasAnalyzer =  aliasAnalyzers.stream().findAny().orElse(null);
         if(aliasAnalyzer!=null){
             return new IdentifierExpression(Alias.createAliasRef(aliasAnalyzer));
         }
-        return new ConstExpression(type);
+        return generateConstExpression(type);
     }
 
-    public IExpression generateGetProperty(CypherType type){
+    private IExpression generateGetProperty(CypherType type){
         Randomly randomly = new Randomly();
 
         List<INodeAnalyzer> nodeAnalyzers = clauseAnalyzer.getAvailableNodeIdentifiers();
@@ -110,13 +110,6 @@ public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
 
     public IExpression generateConstExpression(CypherType type){
         Randomly randomly = new Randomly();
-
-        if(randomly.getInteger(0, 100) < 25){
-            IExpression result = generateGetProperty(type);
-            if(result != null){
-                return result;
-            }
-        }
         switch (type){
             case NUMBER:
                 return new ConstExpression((int)randomly.getInteger());
@@ -128,39 +121,6 @@ public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
                 //todo 对其他类型random的支持
                 return null;
         }
-    }
-
-    public IExpression generateComparison(){
-        Randomly randomly = new Randomly();
-        int randomNum = randomly.getInteger(0, 100);
-        CypherType type = CypherType.NUMBER;
-        if(randomNum < 60){
-            return BinaryComparisonExpression.randomComparison(generateGetProperty(type),
-                    generateConstExpression(type));
-        }
-        return BinaryComparisonExpression.randomComparison(generateGetProperty(type), generateGetProperty(type));
-    }
-
-    private IExpression generateStringMatching(){
-        Randomly randomly = new Randomly();
-        //todo more
-        IExpression getProperty = generateGetProperty(CypherType.STRING);
-        if(getProperty == null){
-            return StringMatchingExpression.
-                    randomMatching(generateConstExpression(CypherType.STRING), generateConstExpression(CypherType.STRING));
-        }
-        return StringMatchingExpression.randomMatching(getProperty, generateConstExpression(CypherType.STRING));
-    }
-
-
-    private IExpression generateBooleanExpression(){
-        Randomly randomly = new Randomly();
-        int randomNum = randomly.getInteger(0, 100);
-        //todo more
-        if(randomNum < 50){
-            return generateComparison();
-        }
-        return generateStringMatching();
     }
 
     public IExpression generateCondition(int depth){
