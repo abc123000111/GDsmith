@@ -33,20 +33,22 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
             return seq;
         }
         Randomly r = new Randomly();
-        String generate = generateClause.get(r.getInteger(0, generateClause.size() - 1));
+        String generate = generateClause.get(r.getInteger(0, generateClause.size()));
         if (generate == "MATCH") {
-            return generateClauses(seq.MatchClause(), len - 1, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH"));
+            return generateClauses(seq.MatchClause(), len - 1, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND"));
         } else if (generate == "OPTIONAL MATCH") {
-            return generateClauses(seq.OptionalMatchClause(), len - 1, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH"));
-            // return generateClauses(seq.OptionalMatchClause(), len - 1, Arrays.asList("OPTIONAL MATCH", "WITH")); //todo
+            return generateClauses(seq.OptionalMatchClause(), len - 1, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND"));
+            // return generateClauses(seq.OptionalMatchClause(), len - 1, Arrays.asList("OPTIONAL MATCH", "WITH", "UNWIND")); //todo
+        } else if (generate == "WITH") {
+            return generateClauses(seq.WithClause(), len - 1, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND"));
         } else {
-            return generateClauses(seq.WithClause(), len - 1, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH"));
+            return generateClauses(seq.UnwindClause(), len - 1, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND"));
         }
     }
 
     public void addSeed(Seed seed){
         //todo 判断是否需要加到seed中，如果需要，则加入seeds
-        if (seed.sequence.getClauseList().size() <= 6) {
+        if (seed.sequence.getClauseList().size() <= 8) {
             seeds.add(seed);
         }
     }
@@ -61,8 +63,8 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
         boolean isNotFromSeeds = Randomly.getBoolean();
         if (isNotFromSeeds || seeds.size() == 0) {
             IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
-            int numOfClauses = r.getInteger(1, 3);
-            sequence = generateClauses(builder.MatchClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH")).ReturnClause().build();
+            int numOfClauses = r.getInteger(1, 4);
+            sequence = generateClauses(builder.MatchClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND")).ReturnClause().build();
             new QueryFiller<S>(sequence,
                     new RandomPatternGenerator<>(schema, builder.getIdentifierBuilder()),
                     new RandomConditionGenerator<>(schema),
@@ -70,10 +72,10 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
                     new RandomListGenerator<>(schema, builder.getIdentifierBuilder()),
                     schema, builder.getIdentifierBuilder()).startVisit();
         } else {
-            IClauseSequence seedSeq = seeds.get(r.getInteger(0, seeds.size() - 1)).sequence;
+            IClauseSequence seedSeq = seeds.get(r.getInteger(0, seeds.size())).sequence;
             IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder(seedSeq);
             int numOfClauses = Randomly.smallNumber();
-            sequence = generateClauses(builder.WithClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH")).ReturnClause().build();
+            sequence = generateClauses(builder.WithClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND")).ReturnClause().build();
             new QueryFiller<S>(sequence,
                     new RandomPatternGenerator<>(schema, builder.getIdentifierBuilder()),
                     new RandomConditionGenerator<>(schema),

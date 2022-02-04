@@ -23,20 +23,20 @@ public class Neo4jSchemaGenerator extends CypherSchemaGenerator<Neo4jSchema, Neo
     @Override
     public Neo4jSchema generateSchemaObject(Neo4jGlobalState globalState, List<CypherSchema.CypherLabelInfo> labels, List<CypherSchema.CypherRelationTypeInfo> relationTypes, List<CypherSchema.CypherPatternInfo> patternInfos) {
         Randomly r = new Randomly();
-        int numOfIndexes = r.getInteger(5, 8);
+        int numOfIndexes = r.getInteger(5, 9);
 
         for (int i = 0; i < numOfIndexes; i++) {
             String createIndex = "CREATE INDEX i" + i;
             createIndex += " IF NOT EXISTS FOR (n:";
             if (Randomly.getBoolean()) {
-                CypherSchema.CypherLabelInfo n = labels.get(r.getInteger(0, labels.size() - 1));
+                CypherSchema.CypherLabelInfo n = labels.get(r.getInteger(0, labels.size()));
                 createIndex = createIndex + n.getName() + ") ON (n.";
-                IPropertyInfo p = n.getProperties().get(r.getInteger(0, n.getProperties().size() - 1));
+                IPropertyInfo p = n.getProperties().get(r.getInteger(0, n.getProperties().size()));
                 createIndex = createIndex + p.getKey() + ")";
             } else {
-                CypherSchema.CypherRelationTypeInfo re = relationTypes.get(r.getInteger(0, relationTypes.size() - 1));
+                CypherSchema.CypherRelationTypeInfo re = relationTypes.get(r.getInteger(0, relationTypes.size()));
                 createIndex = createIndex + re.getName() + ") ON (n.";
-                IPropertyInfo p = re.getProperties().get(r.getInteger(0, re.getProperties().size() - 1));
+                IPropertyInfo p = re.getProperties().get(r.getInteger(0, re.getProperties().size()));
                 createIndex = createIndex + p.getKey() + ")";
             }
             //System.out.println(createIndex);

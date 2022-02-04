@@ -52,7 +52,7 @@ public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPa
                     //boolean isNamed = Randomly.getBoolean();
                     boolean isNamed = !Randomly.getBooleanWithSmallProbability();
                     if (withLabel) {
-                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
+                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels));
                         ILabel label = new Label(labelInfo.getName());
                         if (isNamed) {
                             patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode().withLabels(label).build());
@@ -71,7 +71,7 @@ public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPa
                     if (idNode.size() == 0) {
                         patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newNamedNode().build());
                     } else {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size()));
                         patternTuple.add(new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node).build());
                     }
                 }
@@ -83,7 +83,7 @@ public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPa
                     //boolean isNamedLeft = Randomly.getBoolean();
                     boolean isNamedLeft = !Randomly.getBooleanWithSmallProbability();
                     if (withLabelLeft) {
-                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
+                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels));
                         ILabel label = new Label(labelInfo.getName());
                         if (isNamedLeft) {
                             leftNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode().withLabels(label);
@@ -102,7 +102,7 @@ public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPa
                     if (idNode.size() == 0) {
                         leftNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode();
                     } else {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size()));
                         leftNode = new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node);
                     }
                 }
@@ -112,9 +112,9 @@ public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPa
                 //boolean isNamed = Randomly.getBoolean();
                 boolean isNamed = !Randomly.getBooleanWithSmallProbability();
                 Direction direction = Randomly.fromOptions(Direction.LEFT, Direction.RIGHT, Direction.BOTH);
-                int typeOfLength = r.getInteger(0, 3);
+                int typeOfLength = r.getInteger(0, 4);
                 if (withType) {
-                    CypherSchema.CypherRelationTypeInfo typeInfo = schema.getRelationTypes().get(r.getInteger(0, sizeOfTypes - 1));
+                    CypherSchema.CypherRelationTypeInfo typeInfo = schema.getRelationTypes().get(r.getInteger(0, sizeOfTypes));
                     IType type = new RelationType(typeInfo.getName());
                     if (isNamed) {
                         if (typeOfLength == 0) {
@@ -168,7 +168,7 @@ public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPa
                     //boolean isNamedRight = Randomly.getBoolean();
                     boolean isNamedRight = !Randomly.getBooleanWithSmallProbability();
                     if (withLabelRight) {
-                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels - 1));
+                        CypherSchema.CypherLabelInfo labelInfo = schema.getLabels().get(r.getInteger(0, sizeOfLabels));
                         ILabel label = new Label(labelInfo.getName());
                         if (isNamedRight) {
                             rightNode = relation.newNamedNode().withLabels(label);
@@ -187,7 +187,7 @@ public class RandomPatternGenerator<S extends CypherSchema<?,?>> extends BasicPa
                     if (idNode.size() == 0) {
                         rightNode = new Pattern.PatternBuilder(identifierBuilder).newNamedNode();
                     } else {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size() - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, idNode.size()));
                         rightNode = new Pattern.PatternBuilder(identifierBuilder).newRefDefinedNode(node);
                     }
                 }

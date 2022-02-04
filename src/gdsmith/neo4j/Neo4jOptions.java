@@ -19,7 +19,7 @@ import java.util.List;
 public class Neo4jOptions implements DBMSSpecificOptions<Neo4jOracleFactory> {
 
     public static final String DEFAULT_HOST = "localhost";
-    public static final int DEFAULT_PORT = 7689; //todo 改
+    public static final int DEFAULT_PORT = 7687; //todo 改
 
     public static Neo4jOptions parseOptionFromFile(JsonObject jsonObject){
         Neo4jOptions options = new Neo4jOptions();

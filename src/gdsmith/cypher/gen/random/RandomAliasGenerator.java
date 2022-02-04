@@ -36,22 +36,22 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
             numOfExpressions = 1;
         }*/
 
-        int numOfExpressions = r.getInteger(1, 5);
+        int numOfExpressions = r.getInteger(1, 6);
         ArrayList<IExpression> orderByExpression = new ArrayList<>();
 
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
             if (i == 0) {
-                int kind = r.getInteger(0, 6);
+                int kind = r.getInteger(0, 7);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
-                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
+                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias));
                         result = Ret.createAliasRef(alias);
                         orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                     }
                 } /*else if (kind == 1) {
                     if (sizeOfNode > 0) {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode));
                         result = Ret.createNodeRef(node);
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         for(int j = 0; j < props.size(); j++) {
@@ -63,7 +63,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 2) {
                     if (sizeOfRelation > 0) {
-                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation));
                         result = Ret.createRelationRef(relation);
                         if (relation.isSingleRelation()) {
                             //result = Ret.createRelationRef(relation);//todo
@@ -78,10 +78,10 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 }*/ else if (kind == 1 || kind == 2) {
                     if (sizeOfNode > 0) {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode));
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         if (props.size() > 0) {
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                            IPropertyInfo prop = props.get(r.getInteger(0, props.size()));
                             IdentifierExpression ie = new IdentifierExpression(node);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                             result = Ret.createNewExpressionAlias(identifierBuilder, exp);
@@ -90,11 +90,11 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 3 || kind == 4) {
                     if (sizeOfRelation > 0) {
-                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation));
                         if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             if (props.size() > 0) {
-                                IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                IPropertyInfo prop = props.get(r.getInteger(0, props.size()));
                                 IdentifierExpression ie = new IdentifierExpression(relation);
                                 GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                                 result = Ret.createNewExpressionAlias(identifierBuilder, exp);
@@ -111,16 +111,16 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     result = Ret.createStar();
                 }
             } else {
-                int kind = r.getInteger(0, 5);
+                int kind = r.getInteger(0, 6);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
-                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
+                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias));
                         result = Ret.createAliasRef(alias);
                         orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                     }
                 } /*else if (kind == 1) {
                     if (sizeOfNode > 0) {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode));
                         result = Ret.createNodeRef(node);
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         for(int j = 0; j < props.size(); j++) {
@@ -132,7 +132,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 2) {
                     if (sizeOfRelation > 0) {
-                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation));
                         result = Ret.createRelationRef(relation);
                         if (relation.isSingleRelation()) {
                             //result = Ret.createRelationRef(relation);//todo
@@ -147,10 +147,10 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 }*/ else if (kind == 1 || kind == 2) {
                     if (sizeOfNode > 0) {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode));
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         if (props.size() > 0) {
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                            IPropertyInfo prop = props.get(r.getInteger(0, props.size()));
                             IdentifierExpression ie = new IdentifierExpression(node);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                             result = Ret.createNewExpressionAlias(identifierBuilder, exp);
@@ -159,11 +159,11 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 3 || kind == 4){
                     if (sizeOfRelation > 0) {
-                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation));
                         if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             if (props.size() > 0) {
-                                IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                IPropertyInfo prop = props.get(r.getInteger(0, props.size()));
                                 IdentifierExpression ie = new IdentifierExpression(relation);
                                 GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                                 result = Ret.createNewExpressionAlias(identifierBuilder, exp);
@@ -202,9 +202,9 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
             returnClause.setSkip(new ConstExpression(Randomly.smallNumber()));
         }*/
         if (Randomly.getBooleanWithRatherLowProbability()) {
-            int numOfOrderBy = r.getInteger(1, results.size());
+            int numOfOrderBy = r.getInteger(1, results.size() + 1);
             while (orderByExpression.size() > numOfOrderBy) {
-                orderByExpression.remove(r.getInteger(0, orderByExpression.size() - 1));
+                orderByExpression.remove(r.getInteger(0, orderByExpression.size()));
             }
             if (orderByExpression.size() > 0) {
                 returnClause.setOrderBy(orderByExpression, Randomly.getBoolean());
@@ -232,22 +232,22 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
         if (numOfExpressions == 0 || numOfExpressions >= 3) {
             numOfExpressions = 1;
         }*/
-        int numOfExpressions = r.getInteger(1, 5);
+        int numOfExpressions = r.getInteger(1, 6);
         ArrayList<IExpression> orderByExpression = new ArrayList<>();
 
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
             if (i == 0) {
-                int kind = r.getInteger(0, 6);
+                int kind = r.getInteger(0, 7);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
-                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
+                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias));
                         result = Ret.createAliasRef(alias);
                         orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                     }
                 } else if (kind == 1) {
                     if (sizeOfNode > 0) {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode));
                         result = Ret.createNodeRef(node);
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         for(int j = 0; j < props.size(); j++) {
@@ -259,7 +259,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 2) {
                     if (sizeOfRelation > 0) {
-                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation));
                         result = Ret.createRelationRef(relation);
                         if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
@@ -273,10 +273,10 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 3) {
                     if (sizeOfNode > 0) {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode));
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         if (props.size() > 0) {
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                            IPropertyInfo prop = props.get(r.getInteger(0, props.size()));
                             IdentifierExpression ie = new IdentifierExpression(node);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                             result = Ret.createNewExpressionAlias(identifierBuilder, exp);
@@ -285,11 +285,11 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 4) {
                     if (sizeOfRelation > 0) {
-                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation));
                         if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             if (props.size() > 0) {
-                                IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                IPropertyInfo prop = props.get(r.getInteger(0, props.size()));
                                 IdentifierExpression ie = new IdentifierExpression(relation);
                                 GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                                 result = Ret.createNewExpressionAlias(identifierBuilder, exp);
@@ -306,16 +306,16 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     result = Ret.createStar();
                 }
             } else {
-                int kind = r.getInteger(0, 5);
+                int kind = r.getInteger(0, 6);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
-                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias - 1));
+                        IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias));
                         result = Ret.createAliasRef(alias);
                         orderByExpression.add(new IdentifierExpression(result.getIdentifier()));
                     }
                 } else if (kind == 1) {
                     if (sizeOfNode > 0) {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode));
                         result = Ret.createNodeRef(node);
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         for(int j = 0; j < props.size(); j++) {
@@ -327,7 +327,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 2) {
                     if (sizeOfRelation > 0) {
-                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation));
                         result = Ret.createRelationRef(relation);
                         if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
@@ -341,10 +341,10 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 3) {
                     if (sizeOfNode > 0) {
-                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode - 1));
+                        INodeAnalyzer node = idNode.get(r.getInteger(0, sizeOfNode));
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         if (props.size() > 0) {
-                            IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                            IPropertyInfo prop = props.get(r.getInteger(0, props.size()));
                             IdentifierExpression ie = new IdentifierExpression(node);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                             result = Ret.createNewExpressionAlias(identifierBuilder, exp);
@@ -353,11 +353,11 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     }
                 } else if (kind == 4) {
                     if (sizeOfRelation > 0) {
-                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation - 1));
+                        IRelationAnalyzer relation = idRelation.get(r.getInteger(0, sizeOfRelation));
                         if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             if (props.size() > 0) {
-                                IPropertyInfo prop = props.get(r.getInteger(0, props.size() - 1));
+                                IPropertyInfo prop = props.get(r.getInteger(0, props.size()));
                                 IdentifierExpression ie = new IdentifierExpression(relation);
                                 GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                                 result = Ret.createNewExpressionAlias(identifierBuilder, exp);
@@ -396,9 +396,9 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
             withClause.setSkip(new ConstExpression(Randomly.smallNumber()));
         }*/ //todo
         if (Randomly.getBooleanWithRatherLowProbability()) {
-            int numOfOrderBy = r.getInteger(1, results.size());
+            int numOfOrderBy = r.getInteger(1, results.size() + 1);
             while (orderByExpression.size() > numOfOrderBy) {
-                orderByExpression.remove(r.getInteger(0, orderByExpression.size() - 1));
+                orderByExpression.remove(r.getInteger(0, orderByExpression.size()));
             }
             if (orderByExpression.size() > 0) {
                 withClause.setOrderBy(orderByExpression, Randomly.getBoolean());
