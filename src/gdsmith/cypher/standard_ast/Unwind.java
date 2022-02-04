@@ -60,7 +60,6 @@ public class Unwind extends CypherClause implements IUnwindAnalyzer {
     @Override
     public IRet getListAsAliasRet() {
         if(symtab.getAliasDefinitions() == null || symtab.getAliasDefinitions().size() != 1){
-            //todo 错误处理
             return null;
         }
         return symtab.getAliasDefinitions().get(0);
@@ -68,6 +67,12 @@ public class Unwind extends CypherClause implements IUnwindAnalyzer {
 
     @Override
     public void setListAsAliasRet(IRet listAsAlias) {
-        symtab.setAliasDefinition(Arrays.asList(listAsAlias));
+        if(listAsAlias != null){
+            symtab.setAliasDefinition(Arrays.asList(listAsAlias));
+        }
+        else {
+            symtab.setAliasDefinition(new ArrayList<>());
+        }
+
     }
 }

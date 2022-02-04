@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 public class Return extends CypherClause implements IReturnAnalyzer {
 
-    private List<IRet> returnList = new ArrayList<>();
-
     private IExpression skip = null, limit = null;
     private List<IExpression> orderBy = new ArrayList<>();
     boolean isOrderByDesc = false;
@@ -23,12 +21,12 @@ public class Return extends CypherClause implements IReturnAnalyzer {
 
     @Override
     public List<IRet> getReturnList() {
-        return returnList;
+        return symtab.getAliasDefinitions();
     }
 
     @Override
     public void setReturnList(List<IRet> returnList) {
-        this.returnList = returnList;
+        symtab.setAliasDefinition(returnList);
     }
 
     @Override
@@ -87,7 +85,6 @@ public class Return extends CypherClause implements IReturnAnalyzer {
     @Override
     public ICypherClause getCopy() {
         Return returnClause = new Return();
-        returnClause.returnList = returnList.stream().map(ret -> ret.getCopy()).collect(Collectors.toList());
         if(symtab != null){
             if(symtab != null){
                 returnClause.symtab.setPatterns(symtab.getPatterns().stream().map(p->p.getCopy()).collect(Collectors.toList()));

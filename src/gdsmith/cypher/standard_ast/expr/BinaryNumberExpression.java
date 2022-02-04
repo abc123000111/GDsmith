@@ -24,7 +24,7 @@ public class BinaryNumberExpression extends CypherExpression{
         Randomly randomly = new Randomly();
         int operationNum = randomly.getInteger(0, 100);
         if(operationNum < 25){
-            return new BinaryNumberExpression(left, right, BinaryNumberOperation.DIVISION);
+            //return new BinaryNumberExpression(left, right, BinaryNumberOperation.DIVISION);
         }
         if(operationNum < 50){
             return new BinaryNumberExpression(left, right, BinaryNumberOperation.MULTIPLY);

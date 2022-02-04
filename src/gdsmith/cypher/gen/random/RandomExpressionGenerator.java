@@ -49,9 +49,9 @@ public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
     private IExpression generateStringAgg(){
         Randomly randomly = new Randomly();
         int randNum = randomly.getInteger(0, 20);
-        IExpression param = generateGetProperty(CypherType.NUMBER);
+        IExpression param = generateGetProperty(CypherType.STRING);
         if(param == null){
-            param = generateConstExpression(CypherType.NUMBER);
+            param = generateConstExpression(CypherType.STRING);
         }
         if( randNum < 10){
             return new CallExpression(Neo4jSchema.Neo4jBuiltInFunctions.MAX_STRING, Arrays.asList(param));

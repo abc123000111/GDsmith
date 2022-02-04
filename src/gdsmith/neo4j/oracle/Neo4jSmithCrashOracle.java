@@ -3,7 +3,7 @@ package gdsmith.neo4j.oracle;
 import gdsmith.common.oracle.TestOracle;
 import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.cypher.CypherQueryAdapter;
-import gdsmith.cypher.ast.IClauseSequence;
+import gdsmith.cypher.ast.*;
 import gdsmith.neo4j.Neo4jGlobalState;
 import gdsmith.cypher.gen.random.RandomQueryGenerator;
 import gdsmith.neo4j.schema.Neo4jSchema;
@@ -25,6 +25,39 @@ public class Neo4jSmithCrashOracle implements TestOracle {
         IClauseSequence sequence = randomQueryGenerator.generateQuery(globalState);
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
+        sequence.getClauseList().stream().forEach(s->{
+            if(s instanceof IMatch){
+                System.out.print("MATCH ");
+            }
+            if(s instanceof IWith){
+                System.out.print("WITH ");
+            }
+            if(s instanceof IReturn){
+                System.out.print("RETURN ");
+            }
+            if(s instanceof IUnwind){
+                System.out.print("UNWIND ");
+            }
+            System.out.print(" local: ");
+            s.toAnalyzer().getLocalAliases().stream().forEach(
+                    a->{
+                        System.out.print(a.getName()+" ");
+                    }
+            );
+            System.out.print(" extendable: ");
+            s.toAnalyzer().getExtendableAliases().stream().forEach(
+                    a->{
+                        System.out.print(a.getName()+" ");
+                    }
+            );
+            System.out.print(" avaialble: ");
+            s.toAnalyzer().getAvailableAliases().stream().forEach(
+                    a->{
+                        System.out.print(a.getName()+" ");
+                    }
+            );
+            System.out.print("\n");
+        });
 
         System.out.println(sb);
         // globalState.executeStatement(new CypherQueryAdapter(sb.toString()));

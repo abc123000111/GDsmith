@@ -25,6 +25,11 @@ public class MemGraphSchema extends CypherSchema<MemGraphGlobalState, MemGraphTa
         super(databaseTables, labels, relationTypes, patternInfos);
     }
 
+    @Override
+    public List<IFunctionInfo> getFunctions() {
+        return Arrays.asList(MemGraphBuiltInFunctions.values());
+    }
+
 
     public enum MemGraphBuiltInFunctions implements IFunctionInfo{
         AVG("avg", "avg@number", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){

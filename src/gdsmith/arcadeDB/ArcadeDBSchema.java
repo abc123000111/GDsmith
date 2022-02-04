@@ -25,6 +25,11 @@ public class ArcadeDBSchema extends CypherSchema<ArcadeDBGlobalState, ArcadeDBTa
         super(databaseTables, labels, relationTypes, patternInfos);
     }
 
+    @Override
+    public List<IFunctionInfo> getFunctions() {
+        return Arrays.asList(ArcadeDBBuiltInFunctions.values());
+    }
+
 
     public enum ArcadeDBBuiltInFunctions implements IFunctionInfo{
         AVG("avg", "avg@number", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){

@@ -25,6 +25,11 @@ public class RedisGraphSchema extends CypherSchema<RedisGraphGlobalState, RedisG
         super(databaseTables, labels, relationTypes, patternInfos);
     }
 
+    @Override
+    public List<IFunctionInfo> getFunctions() {
+        return Arrays.asList(RedisGraphBuiltInFunctions.values());
+    }
+
 
     public enum RedisGraphBuiltInFunctions implements IFunctionInfo{
         AVG("avg", "avg@number", CypherType.NUMBER, new CypherParamInfo(CypherType.NUMBER, false)){

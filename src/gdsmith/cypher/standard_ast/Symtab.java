@@ -47,7 +47,7 @@ public class Symtab implements ICypherSymtab {
             return new ArrayList<>();
         }
         List<IAliasAnalyzer> aliases = new ArrayList<>();
-        if(parentClause instanceof IWith || parentClause instanceof IReturn){
+        if(parentClause instanceof IWith || parentClause instanceof IReturn || parentClause instanceof IUnwind){
             for(IRet aliasDef : aliasDefinitions){
                 if(aliasDef.isAlias()){
                     aliases.add(new AliasAnalyzer((IAlias) aliasDef.getIdentifier(),

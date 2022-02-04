@@ -41,6 +41,10 @@ public class CallExpression extends CypherExpression {
 
     @Override
     public ICypherTypeDescriptor analyzeType(ICypherSchema schema, List<IIdentifierAnalyzer> identifiers) {
+        IFunctionInfo functionInfo = schema.getFunctions().stream().filter(f->f.getSignature().equals(functionSignature)).findAny().orElse(null);
+        if(functionInfo!=null){
+            return functionInfo.calculateReturnType(params);
+        }
         return new CypherTypeDescriptor(CypherType.UNKNOWN);
     }
 
