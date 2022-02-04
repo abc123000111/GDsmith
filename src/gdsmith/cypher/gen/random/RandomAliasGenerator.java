@@ -22,6 +22,10 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
 
     @Override
     public List<IRet> generateReturnAlias(IReturnAnalyzer returnClause, IIdentifierBuilder identifierBuilder, S schema) {
+        if(returnClause.getReturnList().size() > 0){
+            return returnClause.getReturnList();
+        }
+
         List<IRet> results = new ArrayList<>();
         List<INodeAnalyzer> idNode = returnClause.getExtendableNodeIdentifiers();
         List<IRelationAnalyzer> idRelation = returnClause.getExtendableRelationIdentifiers();

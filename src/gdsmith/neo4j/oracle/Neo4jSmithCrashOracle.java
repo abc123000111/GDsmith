@@ -25,7 +25,7 @@ public class Neo4jSmithCrashOracle implements TestOracle {
         IClauseSequence sequence = randomQueryGenerator.generateQuery(globalState);
         StringBuilder sb = new StringBuilder();
         sequence.toTextRepresentation(sb);
-        sequence.getClauseList().stream().forEach(s->{
+       /* sequence.getClauseList().stream().forEach(s->{
             if(s instanceof IMatch){
                 System.out.print("MATCH ");
             }
@@ -57,7 +57,7 @@ public class Neo4jSmithCrashOracle implements TestOracle {
                     }
             );
             System.out.print("\n");
-        });
+        });*/
 
         System.out.println(sb);
         // globalState.executeStatement(new CypherQueryAdapter(sb.toString()));

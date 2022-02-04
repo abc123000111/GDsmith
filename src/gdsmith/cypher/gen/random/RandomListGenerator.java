@@ -17,6 +17,9 @@ public class RandomListGenerator<S extends CypherSchema<?,?>> extends BasicListG
     @Override
     public IRet generateList(IUnwindAnalyzer unwindAnalyzer, IIdentifierBuilder identifierBuilder, S schema) {
         //todo
+        if(unwindAnalyzer.getListAsAliasRet()!=null){
+            return unwindAnalyzer.getListAsAliasRet();
+        }
         IExpression listExpression = new RandomExpressionGenerator<>(unwindAnalyzer, schema).generateListWithBasicType(2, CypherType.NUMBER);
         return Ret.createNewExpressionAlias(identifierBuilder, listExpression);
     }
