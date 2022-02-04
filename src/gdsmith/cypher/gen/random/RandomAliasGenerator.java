@@ -46,7 +46,8 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
         for (int i = 0; i < numOfExpressions; i++) {
             Ret result = null;
             if (i == 0) {
-                int kind = r.getInteger(0, 7);
+                //int kind = r.getInteger(0, 7);
+                int kind = r.getInteger(0, 6);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
                         IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias));
@@ -115,7 +116,8 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                     result = Ret.createStar();
                 }
             } else {
-                int kind = r.getInteger(0, 6);
+                //int kind = r.getInteger(0, 6);
+                int kind = r.getInteger(0, 5);
                 if (kind == 0) {
                     if (sizeOfAlias > 0) {
                         IAliasAnalyzer alias = idAlias.get(r.getInteger(0, sizeOfAlias));

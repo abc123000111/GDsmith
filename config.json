@@ -1,17 +1,17 @@
 {
-  /*"neo4j@4.4.3": {
+  "neo4j@4.4.3": {
     "port": 7687,
     "host": "localhost",
     "username": "neo4j",
     "password": "sqlancer"
-  },*/
-  "neo4j@4.3.14": {
+  },
+  "neo4j@4.3.10": {
     "port": 7689,
     "host": "localhost",
     "username": "neo4j",
     "password": "sqlancer"
-  },
-  /*"neo4j@4.2.14": {
+  }/*,
+  "neo4j@4.2.14": {
     "port": 7691,
     "host": "localhost",
     "username": "neo4j",
@@ -28,11 +28,17 @@
     "host": "localhost",
     "username": "neo4j",
     "password": "sqlancer"
-  },*/
+  },
   "memgraph@2.1.1": {
     "port": 7687,
     "host": "localhost",
     "username": "neo4j",
     "password": "sqlancer"
-  }
+  },
+  "redisgraph@2.4.11": {
+    "port": 6379,
+    "host": "localhost",
+    "username": "neo4j",
+    "password": "sqlancer"
+  }*/
 }
