@@ -43,6 +43,9 @@ public abstract class ClauseVisitor<C extends IContext> {
         }
         else if(clause instanceof IUnwind){
             visitUnwind((IUnwind) clause, context);
+            if(clause.getNextClause() != null){
+                visitClause(clause.getNextClause());
+            }
         }
     }
 
