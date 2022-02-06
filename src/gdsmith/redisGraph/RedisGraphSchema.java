@@ -114,6 +114,7 @@ public class RedisGraphSchema extends CypherSchema<RedisGraphGlobalState, RedisG
             this.name = name;
             this.params = Arrays.asList(params);
             this.expectedReturnType = expectedReturnType;
+            this.signature = signature;
         }
 
         private String name, signature;

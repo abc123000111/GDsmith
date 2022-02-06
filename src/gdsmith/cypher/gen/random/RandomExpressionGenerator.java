@@ -223,7 +223,8 @@ public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
             }
             return generateUseAlias(CypherType.NUMBER);
         }
-        return BinaryNumberExpression.randomBinaryNumber(numberExpression(depth - 1), numberExpression(depth - 1));
+        return generateConstExpression(CypherType.NUMBER);
+        //return BinaryNumberExpression.randomBinaryNumber(numberExpression(depth - 1), numberExpression(depth - 1));
     }
 
 }
