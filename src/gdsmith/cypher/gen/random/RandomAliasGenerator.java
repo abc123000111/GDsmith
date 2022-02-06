@@ -35,11 +35,6 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
         int sizeOfNode = idNode.size();
         int sizeOfRelation = idRelation.size();
 
-        /*int numOfExpressions = Randomly.smallNumber();
-        if (numOfExpressions == 0 || numOfExpressions >= 3) {
-            numOfExpressions = 1;
-        }*/
-
         int numOfExpressions = r.getInteger(1, 6);
         ArrayList<IExpression> orderByExpression = new ArrayList<>();
 
@@ -234,10 +229,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
         int sizeOfAlias = idAlias.size();
         int sizeOfNode = idNode.size();
         int sizeOfRelation = idRelation.size();
-        /*int numOfExpressions = Randomly.smallNumber();
-        if (numOfExpressions == 0 || numOfExpressions >= 3) {
-            numOfExpressions = 1;
-        }*/
+
         int numOfExpressions = r.getInteger(1, 6);
         ArrayList<IExpression> orderByExpression = new ArrayList<>();
 
