@@ -33,6 +33,11 @@ public class ClauseSequence implements IClauseSequence {
     }
 
     @Override
+    public void setClauseList(List<ICypherClause> clauses) {
+        this.clauses = clauses;
+    }
+
+    @Override
     public IClauseSequence getCopy() {
         ClauseSequence clauseSequence = new ClauseSequence(identifierBuilder.getCopy());
         clauses.stream().forEach(c->{clauseSequence.addClause(c.getCopy());});
