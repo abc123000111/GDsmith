@@ -175,7 +175,7 @@ public abstract class CypherSchema<G extends GlobalState<?,?,?>, A extends Abstr
         }
     }
 
-    public static class CypherPropertyInfo implements IPropertyInfo{
+    public static class CypherPropertyInfo implements IPropertyInfo, Comparable<CypherPropertyInfo>{
         private String key;
         private CypherType type;
         private boolean isOptional;
@@ -211,6 +211,10 @@ public abstract class CypherSchema<G extends GlobalState<?,?,?>, A extends Abstr
             this.freq++;
         }
 
+        @Override
+        public int compareTo(CypherPropertyInfo prop) {
+            return this.freq - prop.freq;
+        }
     }
 
     public static abstract class CypherFunctionInfo implements IFunctionInfo {

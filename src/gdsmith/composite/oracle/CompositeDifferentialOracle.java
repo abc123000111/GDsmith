@@ -50,23 +50,23 @@ public class CompositeDifferentialOracle implements TestOracle {
         int resultLength = results.get(0).getRowNum();
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
 
+        List<CypherSchema.CypherLabelInfo> labels = globalState.getSchema().getLabels();
+        List<CypherSchema.CypherRelationTypeInfo> relations = globalState.getSchema().getRelationTypes();
         if (resultLength > 0) {
             randomQueryGenerator.addSeed(new RandomQueryGenerator.Seed(
                     sequence, isBugDetected, resultLength
             ));//添加seed
 
-            //todo 更新属性选择概率
             List<String> coveredProperty = new ArrayList<>();
-            Pattern allProps = Pattern.compile("\\.(k\\d{1,2})\\)");
+            Pattern allProps = Pattern.compile("(\\.)(k\\d+)(\\))");
             Matcher matcher = allProps.matcher(sb);
             while(matcher.find()){
-                if (!coveredProperty.contains(matcher.group(1))) {
-                    coveredProperty.add(matcher.group(1));
+                if (!coveredProperty.contains(matcher.group(2))) {
+                    coveredProperty.add(matcher.group(2));
+                    System.out.println(matcher.group(2));
                 }
             }
 
-            List<CypherSchema.CypherLabelInfo> labels = globalState.getSchema().getLabels();
-            List<CypherSchema.CypherRelationTypeInfo> relations = globalState.getSchema().getRelationTypes();
             for (String name: coveredProperty) {
                 found:{
                     for (CypherSchema.CypherLabelInfo label: labels) {
@@ -74,7 +74,6 @@ public class CompositeDifferentialOracle implements TestOracle {
                         for (IPropertyInfo prop: props) {
                             if (Objects.equals(prop.getKey(), name)) {
                                 ((CypherSchema.CypherPropertyInfo)prop).addFreq();
-                                //System.out.println(prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
                                 break found;
                             }
                         }
@@ -84,15 +83,25 @@ public class CompositeDifferentialOracle implements TestOracle {
                         for (IPropertyInfo prop: props) {
                             if (Objects.equals(prop.getKey(), name)) {
                                 ((CypherSchema.CypherPropertyInfo)prop).addFreq();
-                                //System.out.println(prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
                                 break found;
                             }
                         }
                     }
                 }
             }
+        }
 
-
+        for (CypherSchema.CypherLabelInfo label: labels) {
+            List<IPropertyInfo> props = label.getProperties();
+            for (IPropertyInfo prop: props) {
+                System.out.println(label.getName() + ":" + prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
+            }
+        }
+        for (CypherSchema.CypherRelationTypeInfo relation: relations) {
+            List<IPropertyInfo> props = relation.getProperties();
+            for (IPropertyInfo prop: props) {
+                System.out.println(relation.getName() + ":" + prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
+            }
         }
     }
 }
