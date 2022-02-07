@@ -44,7 +44,7 @@ public abstract class ClauseVisitor<C extends IContext> {
         }
     }
 
-    protected IClauseSequence getClauseSequence(){
+    public IClauseSequence getClauseSequence(){
         return clauseSequence;
     }
 

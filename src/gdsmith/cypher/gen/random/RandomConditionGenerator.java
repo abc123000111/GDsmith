@@ -23,7 +23,6 @@ public class RandomConditionGenerator<S extends CypherSchema<?,?>> extends Basic
         }
 
         Randomly r = new Randomly();
-        r.getString();
         if(r.getInteger(0, 100)< NO_CONDITION_RATE){
             return null;
         }

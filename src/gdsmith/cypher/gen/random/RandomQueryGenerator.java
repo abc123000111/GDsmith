@@ -1,9 +1,12 @@
 package gdsmith.cypher.gen.random;
 
+import gdsmith.MainOptions;
 import gdsmith.Randomly;
 import gdsmith.cypher.CypherGlobalState;
 import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.cypher.dsl.QueryFiller;
+import gdsmith.cypher.mutation.ClauseScissorsMutator;
+import gdsmith.cypher.mutation.ConditionMutator;
 import gdsmith.cypher.schema.CypherSchema;
 import gdsmith.cypher.standard_ast.ClauseSequence;
 import gdsmith.cypher.standard_ast.IClauseSequenceBuilder;
@@ -27,6 +30,7 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
     }
 
     private List<Seed> seeds = new ArrayList<>();
+    private int numOfQueries = 0;
 
     private IClauseSequenceBuilder generateClauses(IClauseSequenceBuilder seq, int len, List<String> generateClause) {
         if (len == 0) {
@@ -54,14 +58,11 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
     }
 
     public IClauseSequence generateQuery(G globalState){
-
         S schema = globalState.getSchema();
         Randomly r = new Randomly();
-        IClauseSequence sequence;
+        IClauseSequence sequence = null;
 
-        //boolean isNotFromSeeds = Randomly.getBooleanWithRatherLowProbability();
-        boolean isNotFromSeeds = Randomly.getBoolean();
-        if (isNotFromSeeds || seeds.size() == 0) {
+        if (numOfQueries < globalState.getOptions().getNrQueries() / 10) {
             IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
             int numOfClauses = r.getInteger(1, 4);
             sequence = generateClauses(builder.MatchClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND")).ReturnClause().build();
@@ -73,17 +74,28 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
                     schema, builder.getIdentifierBuilder()).startVisit();
         } else {
             IClauseSequence seedSeq = seeds.get(r.getInteger(0, seeds.size())).sequence;
-            IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder(seedSeq);
-            int numOfClauses = Randomly.smallNumber();
-            sequence = generateClauses(builder.WithClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND")).ReturnClause().build();
-            new QueryFiller<S>(sequence,
-                    new RandomPatternGenerator<>(schema, builder.getIdentifierBuilder()),
-                    new RandomConditionGenerator<>(schema),
-                    new RandomAliasGenerator<>(schema, builder.getIdentifierBuilder()),
-                    new RandomListGenerator<>(schema, builder.getIdentifierBuilder()),
-                    schema, builder.getIdentifierBuilder()).startVisit();
+            int kind = r.getInteger(1, 4);
+            if (kind == 1) {
+                IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder(seedSeq);
+                int numOfClauses = Randomly.smallNumber();
+                sequence = generateClauses(builder.WithClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND")).ReturnClause().build();
+                new QueryFiller<S>(sequence,
+                        new RandomPatternGenerator<>(schema, builder.getIdentifierBuilder()),
+                        new RandomConditionGenerator<>(schema),
+                        new RandomAliasGenerator<>(schema, builder.getIdentifierBuilder()),
+                        new RandomListGenerator<>(schema, builder.getIdentifierBuilder()),
+                        schema, builder.getIdentifierBuilder()).startVisit();
+            } else if (kind == 2) {
+                ClauseScissorsMutator mutator = new ClauseScissorsMutator(seedSeq);
+                mutator.mutate();
+                sequence = mutator.getClauseSequence();
+            } else if (kind == 3) {
+                ConditionMutator mutator = new ConditionMutator<>(seedSeq);
+                mutator.mutate();
+                sequence = mutator.getClauseSequence();
+            }
         }
-
+        numOfQueries++;
         return sequence;
     }
 }

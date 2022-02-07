@@ -89,7 +89,6 @@ public class Neo4jSmithCrashOracle implements TestOracle {
             while(matcher.find()){
                 if (!coveredProperty.contains(matcher.group(2))) {
                     coveredProperty.add(matcher.group(2));
-                    System.out.println(matcher.group(2));
                 }
             }
 
@@ -117,7 +116,7 @@ public class Neo4jSmithCrashOracle implements TestOracle {
             }
         }
 
-        for (CypherSchema.CypherLabelInfo label: labels) {
+        /*for (CypherSchema.CypherLabelInfo label: labels) {
             List<IPropertyInfo> props = label.getProperties();
             for (IPropertyInfo prop: props) {
                 System.out.println(label.getName() + ":" + prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
@@ -128,6 +127,6 @@ public class Neo4jSmithCrashOracle implements TestOracle {
             for (IPropertyInfo prop: props) {
                 System.out.println(relation.getName() + ":" + prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
             }
-        }
+        }*/
     }
 }
