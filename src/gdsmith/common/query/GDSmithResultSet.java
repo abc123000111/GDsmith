@@ -48,12 +48,12 @@ public class GDSmithResultSet implements Closeable {
                 return false;
             }
         }
-        List<String> firstSortList = new ArrayList<>(resultToStringList());
-        List<String> secondSortList = new ArrayList<>(secondGDSmithResultSet.resultToStringList());
-
-        if (firstSortList.size() != secondSortList.size()) {
+        if (getRowNum() != secondGDSmithResultSet.getRowNum()) {
             return false;
         }
+
+        List<String> firstSortList = new ArrayList<>(resultToStringList());
+        List<String> secondSortList = new ArrayList<>(secondGDSmithResultSet.resultToStringList());
 
         if (!withOrder) {
             Collections.sort(firstSortList);
@@ -101,7 +101,7 @@ public class GDSmithResultSet implements Closeable {
     }
 
     public GDSmithResultSet(com.redislabs.redisgraph.ResultSet rs) throws SQLException {
-        resultRowNum = rs.size();
+        resultRowNum = 0;
         result = new ArrayList<Map<String, Object>>();
 
         while (rs.hasNext()) {
@@ -110,6 +110,7 @@ public class GDSmithResultSet implements Closeable {
             for (String k : r.keys()) {
                 row.put(k, r.getValue(k));
             }
+            resultRowNum++;
             // System.out.println(row);
             result.add(row);
         }

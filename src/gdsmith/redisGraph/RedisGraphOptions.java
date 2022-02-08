@@ -17,7 +17,7 @@ import java.util.List;
 public class RedisGraphOptions implements DBMSSpecificOptions<RedisGraphOptions.RedisGraphOracleFactory> {
 
     public static final String DEFAULT_HOST = "localhost";
-    public static final int DEFAULT_PORT = 5432; //todo 改
+    public static final int DEFAULT_PORT = 6379; //todo 改
 
     public static RedisGraphOptions parseOptionFromFile(JsonObject jsonObject){
         RedisGraphOptions options = new RedisGraphOptions();
@@ -46,7 +46,7 @@ public class RedisGraphOptions implements DBMSSpecificOptions<RedisGraphOptions.
     public int port = DEFAULT_PORT;
 
     @Parameter(names = "--username")
-    public String username = "sqlancer";
+    public String username = "neo4j";
 
     @Parameter(names = "--password")
     public String password = "sqlancer";

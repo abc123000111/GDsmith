@@ -5,12 +5,12 @@
     "username": "neo4j",
     "password": "sqlancer"
   },
-  "neo4j@4.3.10": {
+  /*"neo4j@4.3.10": {
     "port": 7689,
     "host": "localhost",
     "username": "neo4j",
     "password": "sqlancer"
-  }/*,
+  },
   "neo4j@4.2.14": {
     "port": 7691,
     "host": "localhost",
@@ -34,11 +34,17 @@
     "host": "localhost",
     "username": "neo4j",
     "password": "sqlancer"
-  },
+  },*/
   "redisgraph@2.4.11": {
     "port": 6379,
     "host": "localhost",
     "username": "neo4j",
+    "password": "sqlancer"
+  }/*,
+  "agensgraph@2.5.0": {
+    "port": 5432,
+    "host": "localhost",
+    "username": "agens",
     "password": "sqlancer"
   }*/
 }

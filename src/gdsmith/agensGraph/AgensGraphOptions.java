@@ -29,7 +29,7 @@ public class AgensGraphOptions implements DBMSSpecificOptions<AgensGraphOptions.
     public int port = DEFAULT_PORT;
 
     @Parameter(names = "--username")
-    public String username = "sqlancer";
+    public String username = "agens";
 
     @Parameter(names = "--password")
     public String password = "sqlancer";
