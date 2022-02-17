@@ -62,7 +62,7 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
         Randomly r = new Randomly();
         IClauseSequence sequence = null;
 
-        if (numOfQueries < globalState.getOptions().getNrQueries() / 10) {
+        if (numOfQueries < globalState.getOptions().getNrQueries() / 3) {
             IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
             int numOfClauses = r.getInteger(1, 4);
             sequence = generateClauses(builder.MatchClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND")).ReturnClause().build();
@@ -96,6 +96,7 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
             }
         }
         numOfQueries++;
+        System.out.println(numOfQueries);
         return sequence;
     }
 }

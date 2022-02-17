@@ -18,7 +18,7 @@ import java.util.List;
 public class MemGraphGraphGenerator {
     private static int minNumOfNodes = 10;
     private static int maxNumOfNodes = 20;
-    private static double percentOfEdges = 0.0001;
+    private static double percentOfEdges = 0.001;
     private static List<IPattern> INodesPattern;
 
     private final MemGraphGlobalState globalState;

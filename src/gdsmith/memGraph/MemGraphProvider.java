@@ -41,25 +41,6 @@ public class MemGraphProvider extends CypherProviderAdapter<MemGraphGlobalState,
         for(CypherQueryAdapter query : queries){
             globalState.executeStatement(query);
         }
-
-        /*for(int i = 0; i < 10; i++){
-            CypherQueryAdapter createNode = MemGraphNodeGenerator.createNode(globalState);
-            globalState.executeStatement(createNode);
-        }*/
-        /*while (globalState.getSchema().getDatabaseTables().size() < Randomly.smallNumber() + 1) { //创建tables
-            String tableName = DBMSCommon.createTableName(globalState.getSchema().getDatabaseTables().size());//只是负责命名的final类
-            SQLQueryAdapter createTable = MySQLTableGenerator.generate(globalState, tableName);
-            globalState.executeStatement(createTable);
-        }
-
-        //似乎Action列出了所有的对应数据库的语句，每一个Action对应于mysql/gen中的一个语句
-        StatementExecutor<MemGraphGlobalState, MySQLProvider.Action> se = new StatementExecutor<>(globalState, MySQLProvider.Action.values(),
-                MySQLProvider::mapActions, (q) -> {
-            if (globalState.getSchema().getDatabaseTables().isEmpty()) {
-                throw new IgnoreMeException();
-            }
-        });
-        se.executeStatements(); //执行query，相当于随机地改变表的结构并添加行？*/
     }
 
     @Override

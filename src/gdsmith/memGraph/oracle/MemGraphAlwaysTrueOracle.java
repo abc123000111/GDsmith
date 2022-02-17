@@ -1,12 +1,20 @@
 package gdsmith.memGraph.oracle;
 
 import gdsmith.common.query.GDSmithResultSet;
+import gdsmith.cypher.schema.CypherSchema;
+import gdsmith.cypher.schema.IPropertyInfo;
 import gdsmith.memGraph.MemGraphSchema;
 import gdsmith.common.oracle.TestOracle;
 import gdsmith.cypher.CypherQueryAdapter;
 import gdsmith.cypher.ast.IClauseSequence;
 import gdsmith.memGraph.MemGraphGlobalState;
 import gdsmith.cypher.gen.random.RandomQueryGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MemGraphAlwaysTrueOracle implements TestOracle {
 
@@ -27,18 +35,63 @@ public class MemGraphAlwaysTrueOracle implements TestOracle {
         sequence.toTextRepresentation(sb);
         
         System.out.println(sb);
-        //globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
         GDSmithResultSet r = globalState.executeStatementAndGet(new CypherQueryAdapter(sb.toString())).get(0);
 
-        boolean isCoverageIncreasing = false;
         boolean isBugDetected = false;
         int resultLength = r.getRowNum();
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
 
-        if (isCoverageIncreasing || isBugDetected || resultLength > 0) {
+        List<CypherSchema.CypherLabelInfo> labels = globalState.getSchema().getLabels();
+        List<CypherSchema.CypherRelationTypeInfo> relations = globalState.getSchema().getRelationTypes();
+        if (resultLength > 0) {
             randomQueryGenerator.addSeed(new RandomQueryGenerator.Seed(
                     sequence, isBugDetected, resultLength
             ));//添加seed
+
+            List<String> coveredProperty = new ArrayList<>();
+            Pattern allProps = Pattern.compile("(\\.)(k\\d+)(\\))");
+            Matcher matcher = allProps.matcher(sb);
+            while(matcher.find()){
+                if (!coveredProperty.contains(matcher.group(2))) {
+                    coveredProperty.add(matcher.group(2));
+                }
+            }
+
+            for (String name: coveredProperty) {
+                found:{
+                    for (CypherSchema.CypherLabelInfo label: labels) {
+                        List<IPropertyInfo> props = label.getProperties();
+                        for (IPropertyInfo prop: props) {
+                            if (Objects.equals(prop.getKey(), name)) {
+                                ((CypherSchema.CypherPropertyInfo)prop).addFreq();
+                                break found;
+                            }
+                        }
+                    }
+                    for (CypherSchema.CypherRelationTypeInfo relation: relations) {
+                        List<IPropertyInfo> props = relation.getProperties();
+                        for (IPropertyInfo prop: props) {
+                            if (Objects.equals(prop.getKey(), name)) {
+                                ((CypherSchema.CypherPropertyInfo)prop).addFreq();
+                                break found;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (CypherSchema.CypherLabelInfo label: labels) {
+            List<IPropertyInfo> props = label.getProperties();
+            for (IPropertyInfo prop: props) {
+                System.out.println(label.getName() + ":" + prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
+            }
+        }
+        for (CypherSchema.CypherRelationTypeInfo relation: relations) {
+            List<IPropertyInfo> props = relation.getProperties();
+            for (IPropertyInfo prop: props) {
+                System.out.println(relation.getName() + ":" + prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
+            }
         }
     }
 }

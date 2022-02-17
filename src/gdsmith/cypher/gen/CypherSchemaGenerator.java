@@ -27,10 +27,9 @@ public abstract class CypherSchemaGenerator <S extends CypherSchema<G,?>, G exte
         Randomly r = new Randomly();
 
 
-        int numOfLabels = r.getInteger(5,8);
-        int numOfRelationTypes = r.getInteger(5, 8);
-        int numOfPatternInfos = r.getInteger(5, 8);
-        int numOfIndexes = r.getInteger(5, 8);
+        int numOfLabels = r.getInteger(3,6);
+        int numOfRelationTypes = r.getInteger(3, 6);
+        int numOfPatternInfos = r.getInteger(3, 6);
         int indexOfProperty = 0;
 
         for (int i = 0; i < numOfLabels; i++) {

@@ -17,8 +17,8 @@ import java.util.List;
 
 public class Neo4jGraphGenerator {
     private static int minNumOfNodes = 10;
-    private static int maxNumOfNodes = 50;
-    private static double percentOfEdges = 0.0001;
+    private static int maxNumOfNodes = 20;
+    private static double percentOfEdges = 0.001;
     private static List<IPattern> INodesPattern;
 
     private final Neo4jGlobalState globalState;

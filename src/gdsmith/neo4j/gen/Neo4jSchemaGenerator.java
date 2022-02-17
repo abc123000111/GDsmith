@@ -23,7 +23,7 @@ public class Neo4jSchemaGenerator extends CypherSchemaGenerator<Neo4jSchema, Neo
     @Override
     public Neo4jSchema generateSchemaObject(Neo4jGlobalState globalState, List<CypherSchema.CypherLabelInfo> labels, List<CypherSchema.CypherRelationTypeInfo> relationTypes, List<CypherSchema.CypherPatternInfo> patternInfos) {
         Randomly r = new Randomly();
-        int numOfIndexes = r.getInteger(5, 9);
+        int numOfIndexes = r.getInteger(5, 8);
 
         for (int i = 0; i < numOfIndexes; i++) {
             String createIndex = "CREATE INDEX i" + i;
@@ -39,7 +39,6 @@ public class Neo4jSchemaGenerator extends CypherSchemaGenerator<Neo4jSchema, Neo
                 IPropertyInfo p = re.getProperties().get(r.getInteger(0, re.getProperties().size()));
                 createIndex = createIndex + p.getKey() + ")";
             }
-            //System.out.println(createIndex);
             try {
                 globalState.executeStatement(new CypherQueryAdapter(createIndex));
             } catch (Exception e) {

@@ -68,10 +68,8 @@ public class Neo4jSmithCrashOracle implements TestOracle {
         });*/
 
         System.out.println(sb);
-        // globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
         GDSmithResultSet r = globalState.executeStatementAndGet(new CypherQueryAdapter(sb.toString())).get(0);
-        
-        boolean isCoverageIncreasing = false;
+
         boolean isBugDetected = false;
         int resultLength = r.getRowNum();
         //todo 上层通过抛出的异常检测是否通过，所以这里可以捕获并检测异常的类型，可以计算一些统计数据，然后重抛异常
@@ -116,7 +114,7 @@ public class Neo4jSmithCrashOracle implements TestOracle {
             }
         }
 
-        /*for (CypherSchema.CypherLabelInfo label: labels) {
+        for (CypherSchema.CypherLabelInfo label: labels) {
             List<IPropertyInfo> props = label.getProperties();
             for (IPropertyInfo prop: props) {
                 System.out.println(label.getName() + ":" + prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
@@ -127,6 +125,6 @@ public class Neo4jSmithCrashOracle implements TestOracle {
             for (IPropertyInfo prop: props) {
                 System.out.println(relation.getName() + ":" + prop.getKey() + ":" + ((CypherSchema.CypherPropertyInfo)prop).getFreq());
             }
-        }*/
+        }
     }
 }
