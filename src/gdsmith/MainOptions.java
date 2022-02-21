@@ -32,7 +32,7 @@ public class MainOptions {
 
     @Parameter(names = {
             "--num-queries" }, description = "Specifies the number of queries to be issued to a database before creating a new database")
-    private int nrQueries = 6000; // NOPMD
+    private int nrQueries = 100000; // NOPMD
 
     @Parameter(names = {
             "--num-statement-kind-retries" }, description = "Specifies the number of times a specific statement kind (e.g., INSERT) should be retried when the DBMS indicates that it failed")

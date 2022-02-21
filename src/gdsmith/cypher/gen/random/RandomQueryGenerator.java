@@ -1,6 +1,5 @@
 package gdsmith.cypher.gen.random;
 
-import gdsmith.MainOptions;
 import gdsmith.Randomly;
 import gdsmith.cypher.CypherGlobalState;
 import gdsmith.cypher.ast.IClauseSequence;
@@ -52,7 +51,7 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
 
     public void addSeed(Seed seed){
         //todo 判断是否需要加到seed中，如果需要，则加入seeds
-        if (seed.sequence.getClauseList().size() <= 8) {
+        if (seed.sequence.getClauseList().size() <= 12) {
             seeds.add(seed);
         }
     }
@@ -62,9 +61,10 @@ public class RandomQueryGenerator<S extends CypherSchema<G,?>,G extends CypherGl
         Randomly r = new Randomly();
         IClauseSequence sequence = null;
 
-        if (numOfQueries < globalState.getOptions().getNrQueries() / 3) {
+        if (numOfQueries < globalState.getOptions().getNrQueries() / 2) {
             IClauseSequenceBuilder builder = ClauseSequence.createClauseSequenceBuilder();
             int numOfClauses = r.getInteger(1, 4);
+            // int numOfClauses = r.getInteger(4, 11); //todo
             sequence = generateClauses(builder.MatchClause(), numOfClauses, Arrays.asList("MATCH", "OPTIONAL MATCH", "WITH", "UNWIND")).ReturnClause().build();
             new QueryFiller<S>(sequence,
                     new RandomPatternGenerator<>(schema, builder.getIdentifierBuilder()),

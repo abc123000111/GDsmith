@@ -27,6 +27,7 @@ public class RandomExpressionGenerator<S extends CypherSchema<?,?>>
     private IExpression generateNumberAgg(){
         Randomly randomly = new Randomly();
         int randNum = randomly.getInteger(0, 50);
+        // int randNum = randomly.getInteger(0, 20); //todo
         IExpression param = generateGetProperty(CypherType.NUMBER);
         if(param == null){
             param = generateConstExpression(CypherType.NUMBER);
