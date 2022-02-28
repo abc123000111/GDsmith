@@ -303,7 +303,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         result = Ret.createNodeRef(node);
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         for(int j = 0; j < props.size(); j++) {
-                            IPropertyInfo prop = props.get(i);
+                            IPropertyInfo prop = props.get(j);
                             IdentifierExpression ie = new IdentifierExpression(node);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                             orderByExpression.add(exp);
@@ -316,7 +316,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             for(int j = 0; j < props.size(); j++) {
-                                IPropertyInfo prop = props.get(i);
+                                IPropertyInfo prop = props.get(j);
                                 IdentifierExpression ie = new IdentifierExpression(relation);
                                 GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                                 orderByExpression.add(exp);
@@ -395,7 +395,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         result = Ret.createNodeRef(node);
                         List<IPropertyInfo> props = node.getAllPropertiesAvailable(schema);
                         for(int j = 0; j < props.size(); j++) {
-                            IPropertyInfo prop = props.get(i);
+                            IPropertyInfo prop = props.get(j);
                             IdentifierExpression ie = new IdentifierExpression(node);
                             GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                             orderByExpression.add(exp);
@@ -408,7 +408,7 @@ public class RandomAliasGenerator<S extends CypherSchema<?,?>> extends BasicAlia
                         if (relation.isSingleRelation()) {
                             List<IPropertyInfo> props = relation.getAllPropertiesAvailable(schema);
                             for(int j = 0; j < props.size(); j++) {
-                                IPropertyInfo prop = props.get(i);
+                                IPropertyInfo prop = props.get(j);
                                 IdentifierExpression ie = new IdentifierExpression(relation);
                                 GetPropertyExpression exp = new GetPropertyExpression(ie, prop.getKey());
                                 orderByExpression.add(exp);

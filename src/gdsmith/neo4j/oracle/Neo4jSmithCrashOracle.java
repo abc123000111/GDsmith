@@ -35,7 +35,7 @@ public class Neo4jSmithCrashOracle implements TestOracle {
     public void check() throws Exception {
         //todo oracle 的检测逻辑，会被调用多次
         IClauseSequence sequence = randomQueryGenerator.generateQuery(globalState);
-        if (sequence.getClauseList().size() <= 12) {
+        if (sequence.getClauseList().size() <= 8) {
             StringBuilder sb = new StringBuilder();
             sequence.toTextRepresentation(sb);
            /* sequence.getClauseList().stream().forEach(s->{
@@ -120,13 +120,13 @@ public class Neo4jSmithCrashOracle implements TestOracle {
                 }
             }
 
-            if (sequence.getClauseList().size() >= 6 && sequence.getClauseList().size() <= 10) {
-                numOfTotalQueries[sequence.getClauseList().size() - 6]++;
+            /*if (sequence.getClauseList().size() >= 3 && sequence.getClauseList().size() <= 7) {
+                numOfTotalQueries[sequence.getClauseList().size() - 3]++;
                 if (resultLength > 0) {
-                    numOfNonEmptyQueries[sequence.getClauseList().size() - 6]++;
+                    numOfNonEmptyQueries[sequence.getClauseList().size() - 3]++;
                 }
-                System.out.println(sequence.getClauseList().size() + " rate is: " + numOfNonEmptyQueries[sequence.getClauseList().size() - 6] * 1.0 / numOfTotalQueries[sequence.getClauseList().size() - 6]);
-            }
+                System.out.println(sequence.getClauseList().size() + " rate is: " + numOfNonEmptyQueries[sequence.getClauseList().size() - 3] * 1.0 / numOfTotalQueries[sequence.getClauseList().size() - 3]);
+            }*/
 
             for (CypherSchema.CypherLabelInfo label: labels) {
                 List<IPropertyInfo> props = label.getProperties();

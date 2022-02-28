@@ -17,8 +17,8 @@ import java.util.List;
 
 public class RedisGraphGraphGenerator {
     private static int minNumOfNodes = 10;
-    private static int maxNumOfNodes = 100;
-    private static double percentOfEdges = 0.0001;
+    private static int maxNumOfNodes = 20;
+    private static double percentOfEdges = 0.001;
     private static List<IPattern> INodesPattern;
 
     private final RedisGraphGlobalState globalState;
@@ -55,10 +55,10 @@ public class RedisGraphGraphGenerator {
         for (int i = 0; i < numOfNodes; ++i) {
             Pattern.PatternBuilder.OngoingNode n = new Pattern.PatternBuilder(builder.getIdentifierBuilder()).newNamedNode();
             for (CypherSchema.CypherLabelInfo l : labels) {
-                if (r.getBooleanWithRatherLowProbability()) { // choose label
+                if (r.getBoolean()) { // choose label
                     n = n.withLabels(new Label(l.getName()));
                     for (IPropertyInfo p : l.getProperties()) {
-                        if (r.getBooleanWithRatherLowProbability()) { // choose property
+                        if (r.getBoolean()) { // choose property
                             n = n.withProperties(new Property(p.getKey(), p.getType(), generatePropertyValue(r, p.getType())));
                         }
                     }
@@ -90,7 +90,7 @@ public class RedisGraphGraphGenerator {
                                 .newNamedRelation().withType(new RelationType(relationType.getName()));
 
                         for (IPropertyInfo p : relationType.getProperties()) {
-                            if (r.getBooleanWithRatherLowProbability()) { // choose this property
+                            if (r.getBoolean()) { // choose this property
                                 rel = rel.withProperties(new Property(p.getKey(), p.getType(), generatePropertyValue(r, p.getType())));
                             }
                         }
