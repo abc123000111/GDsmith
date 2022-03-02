@@ -6,7 +6,11 @@ import gdsmith.*;
 import gdsmith.common.log.LoggableFactory;
 
 import gdsmith.cypher.*;
+import gdsmith.cypher.mutation.GraphCreatingMutator;
+import gdsmith.cypher.mutation.GraphMutator;
+import gdsmith.cypher.standard_ast.ClauseSequence;
 import gdsmith.neo4j.gen.Neo4jGraphGenerator;
+import gdsmith.neo4j.schema.Neo4jSchema;
 import org.neo4j.driver.Driver;
 import gdsmith.neo4j.gen.Neo4jNodeGenerator;
 
@@ -83,10 +87,17 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
 
     @Override
     public void generateDatabase(Neo4jGlobalState globalState) throws Exception {
-        List<CypherQueryAdapter> queries = Neo4jGraphGenerator.createGraph(globalState);
-        for(CypherQueryAdapter query : queries){
-            globalState.executeStatement(query);
+        List<ClauseSequence> queries = Neo4jGraphGenerator.createGraph(globalState);
+
+        for(ClauseSequence query : queries){
+            StringBuilder sb = new StringBuilder();
+            query.toTextRepresentation(sb);
+            globalState.executeStatement(new CypherQueryAdapter(sb.toString()));
+            System.out.println("original");
         }
+
+        List<ClauseSequence> mutated = new GraphMutator<Neo4jSchema>(globalState.getSchema()).mutate(queries);
+
 
         /*for(int i = 0; i < 10; i++){
             CypherQueryAdapter createNode = Neo4jNodeGenerator.createNode(globalState);

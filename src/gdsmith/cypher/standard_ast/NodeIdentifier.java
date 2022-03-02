@@ -65,6 +65,11 @@ public class NodeIdentifier implements INodeIdentifier {
         return labels;
     }
 
+    @Override
+    public void setProperties(List<IProperty> properties) {
+        this.properties = properties;
+    }
+
 
     @Override
     public INodeIdentifier createRef() {

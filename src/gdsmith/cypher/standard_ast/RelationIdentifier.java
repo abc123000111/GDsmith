@@ -100,6 +100,11 @@ public class RelationIdentifier implements IRelationIdentifier {
     }
 
     @Override
+    public void setProperties(List<IProperty> properties) {
+        this.properties = properties;
+    }
+
+    @Override
     public void toTextRepresentation(StringBuilder sb) {
         switch (direction){
             case RIGHT:
