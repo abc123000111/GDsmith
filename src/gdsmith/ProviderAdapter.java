@@ -54,6 +54,7 @@ public abstract class ProviderAdapter<G extends GlobalState<O, ? extends Abstrac
                     localState.executedWithoutError();
                 }
             }
+            System.exit(0);
         } finally {
             globalState.getConnection().close();
         }

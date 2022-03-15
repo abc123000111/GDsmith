@@ -25,10 +25,8 @@ import gdsmith.arcadeDB.ArcadeDBProvider;
 import gdsmith.common.log.Loggable;
 import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
-import gdsmith.common.query.SQLancerResultSet;
 import gdsmith.composite.CompositeProvider;
 import gdsmith.memGraph.MemGraphProvider;
-import gdsmith.mysql.MySQLProvider;
 import gdsmith.neo4j.Neo4jProvider;
 import gdsmith.agensGraph.AgensGraphProvider;
 import gdsmith.redisGraph.RedisGraphProvider;
@@ -543,7 +541,6 @@ public final class Main {
     static List<DatabaseProvider<?, ?, ?>> providers = new ArrayList<>();
     public static List<DatabaseProvider<?, ?, ?>> getDBMSProviders() {
         if(providers.size()==0){
-            providers.add(new MySQLProvider());
             providers.add(new Neo4jProvider());
             providers.add(new AgensGraphProvider());
             providers.add(new RedisGraphProvider());

@@ -120,13 +120,13 @@ public class Neo4jSmithCrashOracle implements TestOracle {
                 }
             }
 
-            /*if (sequence.getClauseList().size() >= 3 && sequence.getClauseList().size() <= 7) {
+            if (sequence.getClauseList().size() >= 3 && sequence.getClauseList().size() <= 7) {
                 numOfTotalQueries[sequence.getClauseList().size() - 3]++;
                 if (resultLength > 0) {
                     numOfNonEmptyQueries[sequence.getClauseList().size() - 3]++;
                 }
                 System.out.println(sequence.getClauseList().size() + " rate is: " + numOfNonEmptyQueries[sequence.getClauseList().size() - 3] * 1.0 / numOfTotalQueries[sequence.getClauseList().size() - 3]);
-            }*/
+            }
 
             for (CypherSchema.CypherLabelInfo label: labels) {
                 List<IPropertyInfo> props = label.getProperties();
