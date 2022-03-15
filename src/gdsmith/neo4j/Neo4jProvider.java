@@ -14,7 +14,7 @@ import gdsmith.neo4j.schema.Neo4jSchema;
 import org.neo4j.driver.Driver;
 import gdsmith.neo4j.gen.Neo4jNodeGenerator;
 
-import java.io.FileWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
         Driver driver = Neo4jDriverManager.getDriver(url, username, password);
         Neo4jConnection con = new Neo4jConnection(driver);
         con.executeStatement("MATCH (n) DETACH DELETE n");
-        con.executeStatement("CALL apoc.schema.assert({}, {})");
+        //con.executeStatement("CALL apoc.schema.assert({}, {})");
         return con;
     }
 
@@ -96,7 +96,38 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
             System.out.println("original");
         }
 
-        List<ClauseSequence> mutated = new GraphMutator<Neo4jSchema>(globalState.getSchema()).mutate(queries);
+        int mutationNum = 50;
+        for(int i = 0; i < mutationNum; i++){
+            List<ClauseSequence> mutated = new GraphMutator<Neo4jSchema>(globalState.getSchema()).mutate(queries);
+            String path = "./logs/neo4j/databse"+Main.nrDatabases.get();
+
+            try {
+                File dir = new File(path);
+                if(!dir.exists()){
+                    dir.mkdirs();
+                }
+                File file = new File(path+"/mutation"+i+".txt");
+                if(!file.exists()){
+                    file.createNewFile();
+                }
+                FileOutputStream outputStream = new FileOutputStream(file);
+                StringBuilder sb = new StringBuilder();
+                for(int j = 0; j < mutated.size(); j++){
+                    mutated.get(j).toTextRepresentation(sb);
+                    sb.append("\n");
+                }
+                outputStream.write(sb.toString().getBytes());
+                outputStream.flush();
+                System.out.println(i);
+                //processBuilder.command("go","fmt",path+"/main.go").start();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
 
         /*for(int i = 0; i < 10; i++){
