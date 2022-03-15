@@ -2,13 +2,12 @@ package gdsmith;
 
 import gdsmith.common.query.GDSmithResultSet;
 import gdsmith.common.query.Query;
-import gdsmith.common.query.SQLancerResultSet;
 import gdsmith.common.schema.AbstractSchema;
 import gdsmith.common.schema.AbstractTable;
 
 import java.util.List;
 
-public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends AbstractSchema<?, ?>, C extends SQLancerDBConnection> {
+public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends AbstractSchema<?, ?>, C extends GDSmithDBConnection> {
 
     protected C databaseConnection;
     private Randomly r;

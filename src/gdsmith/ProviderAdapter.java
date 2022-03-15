@@ -8,7 +8,7 @@ import gdsmith.common.oracle.CompositeTestOracle;
 import gdsmith.common.oracle.TestOracle;
 import gdsmith.common.schema.AbstractSchema;
 
-public abstract class ProviderAdapter<G extends GlobalState<O, ? extends AbstractSchema<G, ?>, C>, O extends DBMSSpecificOptions<? extends OracleFactory<G>>, C extends SQLancerDBConnection>
+public abstract class ProviderAdapter<G extends GlobalState<O, ? extends AbstractSchema<G, ?>, C>, O extends DBMSSpecificOptions<? extends OracleFactory<G>>, C extends GDSmithDBConnection>
         implements DatabaseProvider<G, O, C> {
 
     private final Class<G> globalClass;

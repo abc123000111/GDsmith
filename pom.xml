@@ -2,38 +2,11 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.sqlancer</groupId>
-  <artifactId>sqlancer</artifactId>
-  <version>1.1.0</version>
-  <name>SQLancer</name>
-  <url>http://www.sqlancer.com/</url>
-  <description>SQLancer finds logic bugs in Database Management Systems through automatic testing</description>
-  <licenses>
-    <license>
-      <name>MIT License</name>
-      <url>https://github.com/gdsmith/gdsmith/blob/master/LICENSE.md</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <developers>
-    <developer>
-      <id>mrigger</id>
-      <name>Manuel Rigger</name>
-      <email>manuel.rigger@inf.ethz.ch</email>
-      <organization>ETH Zurich</organization>
-      <organizationUrl>https://ethz.ch/</organizationUrl>
-      <url>https://www.manuelrigger.at/</url>
-      <roles>
-        <role>architect</role>
-        <role>developer</role>
-      </roles>
-    </developer>
-  </developers>
-  <scm>
-    <url>https://github.com/sqlancer/sqlancer/</url>
-    <connection>scm:git:git://github.com/sqlancer/sqlancer.git</connection>
-    <developerConnection>scm:git:ssh://github.com:sqlancer/sqlancer.git</developerConnection>
-  </scm>
+  <groupId>org.GDsmith</groupId>
+  <artifactId>GDsmith</artifactId>
+  <version>0.1.0</version>
+  <name>GDsmith</name>
+  <description>GDsmtih finds logic bugs in Graph Database Management Systems through automatic testing</description>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

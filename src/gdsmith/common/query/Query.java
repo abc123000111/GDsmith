@@ -1,12 +1,12 @@
 package gdsmith.common.query;
 
 import gdsmith.GlobalState;
-import gdsmith.SQLancerDBConnection;
+import gdsmith.GDSmithDBConnection;
 import gdsmith.common.log.Loggable;
 
 import java.util.List;
 
-public abstract class Query<C extends SQLancerDBConnection> implements Loggable {
+public abstract class Query<C extends GDSmithDBConnection> implements Loggable {
 
     /**
      * Gets the query string, which is guaranteed to be terminated with a semicolon.

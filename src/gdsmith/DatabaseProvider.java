@@ -2,7 +2,7 @@ package gdsmith;
 
 import gdsmith.common.log.LoggableFactory;
 
-public interface DatabaseProvider<G extends GlobalState<O, ?, C>, O extends DBMSSpecificOptions<?>, C extends SQLancerDBConnection> {
+public interface DatabaseProvider<G extends GlobalState<O, ?, C>, O extends DBMSSpecificOptions<?>, C extends GDSmithDBConnection> {
 
     /**
      * Gets the the {@link GlobalState} class.
