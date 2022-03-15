@@ -1,5 +1,8 @@
 package gdsmith.cypher.standard_ast;
 
+import gdsmith.GlobalState;
+import gdsmith.MainOptions;
+import gdsmith.Randomly;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.dsl.IIdentifierBuilder;
 
@@ -53,7 +56,8 @@ public class Alias implements IAlias {
             expression.toTextRepresentation(sb);
             sb.append(" AS ");
         }
-        sb.append(name);
+        sb.append("a"+new Randomly().getInteger(0, GlobalState.curMainOptions.getAliasRandomNums()));
+//        sb.append(name);
     }
 
     @Override

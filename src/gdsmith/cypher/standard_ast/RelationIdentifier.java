@@ -1,5 +1,6 @@
 package gdsmith.cypher.standard_ast;
 
+import gdsmith.GlobalState;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.dsl.IIdentifierBuilder;
 
@@ -116,10 +117,11 @@ public class RelationIdentifier implements IRelationIdentifier {
                 break;
         }
         if(name != null){
-            sb.append(name);
+//            sb.append(name);
+            sb.append("r"+ GlobalState.curMainOptions.getRelationRandomNums());
         }
         if(relationType != null && relationType.getName() != null && relationType.getName().length()!=0){
-            sb.append(" :").append(relationType.getName());
+            sb.append(" :").append("T"+GlobalState.curMainOptions.getRelationTypeRandomNums());
         }
         if(!(lengthLowerBound == 1 && lengthUpperBound == 1)){
             sb.append(" *");

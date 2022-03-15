@@ -1,5 +1,6 @@
 package gdsmith.cypher.standard_ast;
 
+import gdsmith.GlobalState;
 import gdsmith.cypher.ast.ICypherType;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.IProperty;
@@ -46,7 +47,7 @@ public class Property implements IProperty {
 
     @Override
     public void toTextRepresentation(StringBuilder sb) {
-        sb.append(key).append(":");
+        sb.append("k"+ GlobalState.curMainOptions.getPropertyRandomNums()).append(":");
         value.toTextRepresentation(sb);
     }
 

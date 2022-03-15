@@ -101,6 +101,24 @@ public class MainOptions {
     @Parameter(names = "--database-prefix", description = "The prefix used for each database created")
     private String databasePrefix = "database"; // NOPMD
 
+    @Parameter(names =  "--node-random-nums", description = "For baseline, random pick a node from 0 to this parameter")
+    private int nodeRandomNums = 20;
+
+    @Parameter(names =  "--alias-random-nums", description = "For baseline, random pick an alias from 0 to this parameter")
+    private int aliasRandomNums = 20;
+
+    @Parameter(names =  "--relation-random-nums", description = "For baseline, random pick a relation from 0 to this parameter")
+    private int relationRandomNums = 20;
+
+    @Parameter(names =  "--label-random-nums", description = "For baseline, random pick a label from 0 to this parameter")
+    private int labelRandomNums = 20;
+
+    @Parameter(names =  "--relation-type-random-nums", description = "For baseline, random pick a relation-type from 0 to this parameter")
+    private int relationTypeRandomNums = 20;
+
+    @Parameter(names =  "--property-random-nums", description = "For baseline, random pick a property from 0 to this parameter")
+    private int propertyRandomNums = 20;
+
     public int getMaxExpressionDepth() {
         return maxExpressionDepth;
     }
@@ -226,4 +244,27 @@ public class MainOptions {
         return useConnectionTest;
     }
 
+    public int getNodeRandomNums() {
+        return nodeRandomNums;
+    }
+
+    public int getAliasRandomNums() {
+        return aliasRandomNums;
+    }
+
+    public int getRelationRandomNums() {
+        return relationRandomNums;
+    }
+
+    public int getLabelRandomNums() {
+        return labelRandomNums;
+    }
+
+    public int getRelationTypeRandomNums() {
+        return relationTypeRandomNums;
+    }
+
+    public int getPropertyRandomNums() {
+        return propertyRandomNums;
+    }
 }

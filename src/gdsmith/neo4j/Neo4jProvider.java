@@ -45,7 +45,7 @@ public class Neo4jProvider extends CypherProviderAdapter<Neo4jGlobalState, Neo4j
         Driver driver = Neo4jDriverManager.getDriver(url, username, password);
         Neo4jConnection con = new Neo4jConnection(driver);
         con.executeStatement("MATCH (n) DETACH DELETE n");
-        con.executeStatement("CALL apoc.schema.assert({}, {})");
+        //con.executeStatement("CALL apoc.schema.assert({}, {})");
         return con;
     }
 

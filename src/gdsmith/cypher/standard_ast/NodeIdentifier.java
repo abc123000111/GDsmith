@@ -1,5 +1,6 @@
 package gdsmith.cypher.standard_ast;
 
+import gdsmith.GlobalState;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.dsl.IIdentifierBuilder;
 
@@ -80,12 +81,13 @@ public class NodeIdentifier implements INodeIdentifier {
     public void toTextRepresentation(StringBuilder sb) {
         sb.append("(");
         if(name != null){
-            sb.append(name);
+            sb.append("n" + GlobalState.curMainOptions.getNodeRandomNums());
+//            sb.append(name);
         }
         if(labels != null){
             for(ILabel label: labels){
                 if(label.getName() != null && label.getName().length()!=0){
-                    sb.append(" :").append(label.getName());
+                    sb.append(" :").append("L" + GlobalState.curMainOptions.getLabelRandomNums());
                 }
             }
         }

@@ -19,6 +19,8 @@ public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends Ab
     private Main.QueryManager<C> manager;
     private String databaseName;
 
+    public static MainOptions curMainOptions = null;
+
     public void setConnection(C con) {
         this.databaseConnection = con;
     }
@@ -49,6 +51,7 @@ public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends Ab
     }
 
     public void setMainOptions(MainOptions options) {
+        curMainOptions = options;
         this.options = options;
     }
 
