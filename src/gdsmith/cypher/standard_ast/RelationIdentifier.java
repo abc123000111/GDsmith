@@ -1,6 +1,7 @@
 package gdsmith.cypher.standard_ast;
 
 import gdsmith.GlobalState;
+import gdsmith.Randomly;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.dsl.IIdentifierBuilder;
 
@@ -45,7 +46,7 @@ public class RelationIdentifier implements IRelationIdentifier {
 
     @Override
     public String getName() {
-        return name;
+        return "r"+ new Randomly().getInteger(0,GlobalState.curMainOptions.getRelationRandomNums());
     }
 
     @Override
@@ -118,7 +119,7 @@ public class RelationIdentifier implements IRelationIdentifier {
         }
         if(name != null){
 //            sb.append(name);
-            sb.append("r"+ GlobalState.curMainOptions.getRelationRandomNums());
+            sb.append("r"+ new Randomly().getInteger(0, GlobalState.curMainOptions.getRelationRandomNums()));
         }
         if(relationType != null && relationType.getName() != null && relationType.getName().length()!=0){
             sb.append(" :").append("T"+GlobalState.curMainOptions.getRelationTypeRandomNums());

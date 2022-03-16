@@ -1,6 +1,7 @@
 package gdsmith.cypher.standard_ast;
 
 import gdsmith.GlobalState;
+import gdsmith.Randomly;
 import gdsmith.cypher.ast.*;
 import gdsmith.cypher.dsl.IIdentifierBuilder;
 
@@ -36,7 +37,7 @@ public class NodeIdentifier implements INodeIdentifier {
 
     @Override
     public String getName() {
-        return name;
+        return "n" + new Randomly().getInteger(0, GlobalState.curMainOptions.getNodeRandomNums());
     }
 
     @Override
@@ -81,7 +82,7 @@ public class NodeIdentifier implements INodeIdentifier {
     public void toTextRepresentation(StringBuilder sb) {
         sb.append("(");
         if(name != null){
-            sb.append("n" + GlobalState.curMainOptions.getNodeRandomNums());
+            sb.append("n" + new Randomly().getInteger(0, GlobalState.curMainOptions.getNodeRandomNums()));
 //            sb.append(name);
         }
         if(labels != null){

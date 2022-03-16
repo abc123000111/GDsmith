@@ -25,7 +25,7 @@ public class Alias implements IAlias {
 
     @Override
     public String getName() {
-        return name;
+        return "a"+new Randomly().getInteger(0, GlobalState.curMainOptions.getAliasRandomNums());
     }
 
     @Override

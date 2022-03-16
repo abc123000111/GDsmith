@@ -1,5 +1,7 @@
 package gdsmith.cypher.standard_ast.expr;
 
+import gdsmith.GlobalState;
+import gdsmith.MainOptions;
 import gdsmith.cypher.ICypherSchema;
 import gdsmith.cypher.ast.IExpression;
 import gdsmith.cypher.ast.analyzer.*;
@@ -24,7 +26,7 @@ public class GetPropertyExpression extends CypherExpression {
     public void toTextRepresentation(StringBuilder sb) {
         sb.append("(");
         fromExpression.toTextRepresentation(sb);
-        sb.append(".").append(propertyName).append(")");
+        sb.append(".").append("k"+ GlobalState.curMainOptions.getPropertyRandomNums()).append(")");
     }
 
     @Override

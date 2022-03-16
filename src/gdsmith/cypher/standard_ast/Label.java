@@ -1,5 +1,7 @@
 package gdsmith.cypher.standard_ast;
 
+import gdsmith.GlobalState;
+import gdsmith.Randomly;
 import gdsmith.cypher.ast.ILabel;
 
 public class Label implements ILabel {
@@ -11,7 +13,7 @@ public class Label implements ILabel {
 
     @Override
     public String getName() {
-        return name;
+        return "k"+new Randomly().getInteger(0, GlobalState.curMainOptions.getPropertyRandomNums());
     }
 
     @Override
