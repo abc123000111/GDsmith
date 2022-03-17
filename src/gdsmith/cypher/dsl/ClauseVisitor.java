@@ -74,10 +74,11 @@ public abstract class ClauseVisitor<C extends IContext> {
         }
     }
 
-    public abstract void visitMatch(IMatch matchClause, C context);
-    public abstract void visitWith(IWith withClause, C context);
-    public abstract void visitReturn(IReturn returnClause, C context);
-    public abstract void visitCreate(ICreate createClause, C context);
-    public abstract void visitUnwind(IUnwind unwindClause, C context);
+    public void visitMatch(IMatch matchClause, C context){}
+    public void visitWith(IWith withClause, C context){}
+    public void visitReturn(IReturn returnClause, C context){}
+    public void visitCreate(ICreate createClause, C context){}
+    public void visitUnwind(IUnwind unwindClause, C context){}
+    public void visitMerge(IMerge mergeClause, C context){}
 
 }

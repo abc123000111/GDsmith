@@ -38,7 +38,7 @@ public class ClauseSequence implements IClauseSequence {
     }
 
     @Override
-    public IClauseSequence getCopy() {
+    public ClauseSequence getCopy() {
         ClauseSequence clauseSequence = new ClauseSequence(identifierBuilder.getCopy());
         clauses.stream().forEach(c->{clauseSequence.addClause(c.getCopy());});
         return clauseSequence;

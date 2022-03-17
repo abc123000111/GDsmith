@@ -217,7 +217,7 @@ public final class Main {
 
     }
 
-    public static class QueryManager<C extends SQLancerDBConnection> {
+    public static class QueryManager<C extends GDSmithDBConnection> {
 
         private final GlobalState<?, ?, C> globalState;
 
@@ -255,7 +255,7 @@ public final class Main {
         System.exit(executeMain(args));
     }
 
-    public static class DBMSExecutor<G extends GlobalState<O, ?, C>, O extends DBMSSpecificOptions<?>, C extends SQLancerDBConnection> {
+    public static class DBMSExecutor<G extends GlobalState<O, ?, C>, O extends DBMSSpecificOptions<?>, C extends GDSmithDBConnection> {
 
         private final DatabaseProvider<G, O, C> provider;
         private final MainOptions options;
@@ -288,7 +288,7 @@ public final class Main {
 
         public void testConnection() throws Exception {
             G state = getInitializedGlobalState(options.getRandomSeed());
-            try (SQLancerDBConnection con = provider.createDatabase(state)) {
+            try (GDSmithDBConnection con = provider.createDatabase(state)) {
                 return;
             }
         }
@@ -349,7 +349,7 @@ public final class Main {
         }
     }
 
-    public static class DBMSExecutorFactory<G extends GlobalState<O, ?, C>, O extends DBMSSpecificOptions<?>, C extends SQLancerDBConnection> {
+    public static class DBMSExecutorFactory<G extends GlobalState<O, ?, C>, O extends DBMSSpecificOptions<?>, C extends GDSmithDBConnection> {
 
         private final DatabaseProvider<G, O, C> provider;
         private final MainOptions options;

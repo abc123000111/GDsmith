@@ -1,6 +1,6 @@
 package gdsmith;
 
-public interface SQLancerDBConnection extends AutoCloseable {
+public interface GDSmithDBConnection extends AutoCloseable {
 
     String getDatabaseVersion() throws Exception;
 }

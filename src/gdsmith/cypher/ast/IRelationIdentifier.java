@@ -12,4 +12,5 @@ public interface IRelationIdentifier extends IPatternElement{
     IRelationIdentifier createRef();
     int getLengthLowerBound();
     int getLengthUpperBound();
+    void setProperties(List<IProperty> properties);
 }
